@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="本文主要是对Android绘图机制与处理技巧进行学习和反思">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓基础-Android绘图机制与处理技巧">
+<meta property="og:url" content="http://example.com/2018/01/16/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-activity-Android%E7%BB%98%E5%9B%BE%E6%9C%BA%E5%88%B6%E4%B8%8E%E5%A4%84%E7%90%86%E6%8A%80%E5%B7%A7/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本文主要是对Android绘图机制与处理技巧进行学习和反思">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-01-16T13:53:31.000Z">
+<meta property="article:modified_time" content="2021-07-11T10:31:35.565Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="activity">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2018/01/16/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-activity-Android%E7%BB%98%E5%9B%BE%E6%9C%BA%E5%88%B6%E4%B8%8E%E5%A4%84%E7%90%86%E6%8A%80%E5%B7%A7/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2018/01/16/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-activity-Android%E7%BB%98%E5%9B%BE%E6%9C%BA%E5%88%B6%E4%B8%8E%E5%A4%84%E7%90%86%E6%8A%80%E5%B7%A7/","path":"2018/01/16/安卓基础-activity-Android绘图机制与处理技巧/","title":"安卓基础-Android绘图机制与处理技巧"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>安卓基础-Android绘图机制与处理技巧 | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">29</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">104</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B1%8F%E5%B9%95%E7%9A%84%E5%B0%BA%E5%AF%B8%E4%BF%A1%E6%81%AF"><span class="nav-number">1.</span> <span class="nav-text">屏幕的尺寸信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E5%B1%8F%E5%B9%95%E5%AF%86%E5%BA%A6"><span class="nav-number">2.</span> <span class="nav-text">系统屏幕密度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8B%AC%E7%AB%8B%E5%83%8F%E7%B4%A0%E5%AF%86%E5%BA%A6-dp"><span class="nav-number">3.</span> <span class="nav-text">独立像素密度 dp</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2D%E7%BB%98%E5%9B%BE%E5%9F%BA%E7%A1%80"><span class="nav-number">4.</span> <span class="nav-text">2D绘图基础</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Android-xml%E7%BB%98%E5%9B%BE"><span class="nav-number">5.</span> <span class="nav-text">Android xml绘图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Android-%E7%BB%98%E5%9B%BE%E6%8A%80%E5%B7%A7"><span class="nav-number">6.</span> <span class="nav-text">Android 绘图技巧</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%BB%E7%AC%94%E7%89%B9%E6%95%88%E5%A4%84%E7%90%86"><span class="nav-number">7.</span> <span class="nav-text">画笔特效处理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SurfaceView"><span class="nav-number">8.</span> <span class="nav-text">SurfaceView</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAsurfaceview%EF%BC%9A"><span class="nav-number">8.1.</span> <span class="nav-text">创建surfaceview：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96SurfaceView"><span class="nav-number">8.2.</span> <span class="nav-text">初始化SurfaceView</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8SurfaceView"><span class="nav-number">8.3.</span> <span class="nav-text">使用SurfaceView</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mikilangkilo" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mikilangkilo" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:913925047@qq.com" title="E-Mail → mailto:913925047@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/mikilangkilo" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/01/16/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-activity-Android%E7%BB%98%E5%9B%BE%E6%9C%BA%E5%88%B6%E4%B8%8E%E5%A4%84%E7%90%86%E6%8A%80%E5%B7%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          安卓基础-Android绘图机制与处理技巧
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-01-16 21:53:31" itemprop="dateCreated datePublished" datetime="2018-01-16T21:53:31+08:00">2018-01-16</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-11 18:31:35" itemprop="dateModified" datetime="2021-07-11T18:31:35+08:00">2021-07-11</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">安卓基础</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">本文主要是对Android绘图机制与处理技巧进行学习和反思</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>本章用于做群英传第六章《Android绘图机制与处理技巧》的学习笔记。主要是整理自己不熟悉的知识点。</p>
+<h1 id="屏幕的尺寸信息"><a href="#屏幕的尺寸信息" class="headerlink" title="屏幕的尺寸信息"></a>屏幕的尺寸信息</h1><ol>
+<li>屏幕大小</li>
+</ol>
+<p>屏幕大小指对角线的长度，一般使用寸来度量，寸指英寸，一英寸为2.54cm</p>
+<ol start="2">
+<li>分辨率</li>
+</ol>
+<p>分辨率指手机屏幕的像素点个数。1920*1080指宽有1920个像素点，高有1080个像素点</p>
+<ol start="3">
+<li>ppi</li>
+</ol>
+<p>pixel per inch，每英寸像素，又称为dpi，为对角线的像素点除以屏幕大小得到。</p>
+<h1 id="系统屏幕密度"><a href="#系统屏幕密度" class="headerlink" title="系统屏幕密度"></a>系统屏幕密度</h1><p>根据dpi大小来进行设置，系统定义了几个标准的dpi值。</p>
+<p>120: ldpi<br>160: mdpi<br>240: hdpi<br>320: xhdpi<br>480: xxhdpi</p>
+<h1 id="独立像素密度-dp"><a href="#独立像素密度-dp" class="headerlink" title="独立像素密度 dp"></a>独立像素密度 dp</h1><p>在mdpi，即dpi为160时， 1dp = 1px。之后顺推即可，xxhdpi为160的3倍，即1dp = 3px</p>
+<p>dp涉及到像素工具类的使用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">public class DisplayUtil&#123;</span><br><span class="line"></span><br><span class="line">	public static int px2dp(Context context, float px)&#123;</span><br><span class="line">		final float scale = context.getResource().getDisplayMetrics().density;</span><br><span class="line">		return (int)(px/scale + 0.5f);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public static int dp2px(Context context, float dp)&#123;</span><br><span class="line">		final float scale = context.getResource().getDisplayMetrics().density;</span><br><span class="line">		return (int)(dp*scale + 0.5f);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public static int px2sp(Context context, float px)&#123;</span><br><span class="line">		final float fontScale = context.getResource().getDisplayMetrics().scaledDensity;</span><br><span class="line">		return (int)(px/fontScale + 0.5f);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public static int sp2dp(Context context, float sp)&#123;</span><br><span class="line">		final float fontScale = context.getResource().getDisplayMetrics().scaledDensity;</span><br><span class="line">		return (int)(sp*fontScale + 0.5f);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	//以上为使用公式进行换算的</span><br><span class="line">	//还可以使用TypedValue进行换算</span><br><span class="line"></span><br><span class="line">	public static int dp2px(int dp)&#123;</span><br><span class="line">		return (int)TypedValue.applyDimension(</span><br><span class="line">			TypedValue.COMPLEX_UNIT_DIP,</span><br><span class="line">			dp,</span><br><span class="line">			getResources().getDisplayMetrics());</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public static int sp2px(int sp)&#123;</span><br><span class="line">		return (int)TypeValue.applyDimension(</span><br><span class="line">			TypedValue.COMPLEX_UNIT_SP,</span><br><span class="line">			sp,</span><br><span class="line">			getResources().getDisplayMetrics());</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="2D绘图基础"><a href="#2D绘图基础" class="headerlink" title="2D绘图基础"></a>2D绘图基础</h1><p>2d绘图即使用系统提供的Canvas对象来提供绘图方法，该章主要是复习一些常用的api。</p>
+<ol>
+<li>paint</li>
+</ol>
+<p>setAntiAlias():设置抗锯齿效果<br>setColor():设置画笔的颜色<br>setARGB():设置画笔的啊a,r,g,b值<br>setAlpha():设置画笔透明度<br>setTextSize():设置字体的尺寸<br>setStyle():设置画笔的风格（空心或者实心）<br>setStrokeWidth():设置空心边框的宽度</p>
+<ol start="2">
+<li>canvas</li>
+</ol>
+<p>canvas.drawPoint(x, y, paint): 绘制点</p>
+<p>canvas.drawLine(startX, startY, endX, endY, paint): 绘制直线</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">float[] pts = &#123;</span><br><span class="line">	startX1, startY1, endX1, endY1,</span><br><span class="line">	... ...</span><br><span class="line">	startXn, startYn, endXn, endYn</span><br><span class="line">&#125;;</span><br><span class="line">canvas.drawLines(pts, paint);</span><br><span class="line">//画多条直线</span><br></pre></td></tr></table></figure>
+
+<p>canvas.drawRect(left, top, right, bottom, paint): 绘制矩形</p>
+<p>canvas.drawRoundRect(left, top, right, bottom, radiusX, radiuxY, paint):绘制圆角矩形</p>
+<p>canvas.drawCircle(circleX, circleY, radius, paint):绘制圆</p>
+<p>canvas.drawArc(left, top, right, bottom, startAngle, sweepAngle, useCenter, paint):绘制弧形，扇形，区别在于useCenter</p>
+<p>canvas.drawOval(left, top, right, bottom, paint):画椭圆</p>
+<p>canvas.drawText(text, startX, startY, paint):绘制文本</p>
+<p>canvas.drawPosText(text, new float[]{X1, Y1, X2, Y2… … Xn, Yn}, paint):在制定位置绘制文本</p>
+<p>canvas.drawPath(path, paint):绘制路径</p>
+<h1 id="Android-xml绘图"><a href="#Android-xml绘图" class="headerlink" title="Android xml绘图"></a>Android xml绘图</h1><ol>
+<li>Bitmap</li>
+</ol>
+<p>在xml中使用bitmap</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;bitmap xmlns:Android=&quot;http://schemas.Android.com/apk/res/Android&quot;</span><br><span class="line">	Android:src=&quot;@drawable/ic_launcher&quot;/&gt;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>Shape</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&lt;shape xmlns:Android:&quot;http://schemas.Android.com/apk/res/Android&quot;</span><br><span class="line">	Android:shape=[&quot;rectangle&quot; | &quot;oval&quot; | &quot;line&quot; | &quot;ring&quot;]&gt;</span><br><span class="line">	//默认为rectangle</span><br><span class="line">	&lt;corners //shape = &quot;rectangle&quot; 有用</span><br><span class="line">		// 半径，会被后面的单个半径属性覆盖，默认为1dp</span><br><span class="line">		Android:radius=&quot;integer&quot;</span><br><span class="line">		Android:topLeftRadius=&quot;integer&quot;</span><br><span class="line">		Android:topRightRadius=&quot;integer&quot;</span><br><span class="line">		Android:bottomLeftRadius=&quot;integer&quot;</span><br><span class="line">		Android:bottomRightRadius=&quot;integer&quot;/&gt;</span><br><span class="line">	&lt;gradient //渐变</span><br><span class="line">		Android:angle=&quot;integer&quot;</span><br><span class="line">		Android:centerX=&quot;integer&quot;</span><br><span class="line">		Android:centerY=&quot;integer&quot;</span><br><span class="line">		Android:centerColor=&quot;integer&quot;</span><br><span class="line">		Android:endColor=&quot;color&quot;</span><br><span class="line">		Android:gradientRadius=&quot;integer&quot;</span><br><span class="line">		Android:startColor=&quot;color&quot;</span><br><span class="line">		Android:type=[&quot;linear&quot;| &quot;radius&quot; | &quot;sweep&quot;]</span><br><span class="line">		Android:useLevel=[&quot;true&quot; | &quot;false&quot;]/&gt;</span><br><span class="line">	&lt;padding</span><br><span class="line">		Android:left=&quot;integer&quot;</span><br><span class="line">		Android:top=&quot;integer&quot;</span><br><span class="line">		Android:right=&quot;integer&quot;</span><br><span class="line">		Android:bottom=&quot;integer&quot;/&gt;</span><br><span class="line">	&lt;size // 指定大小，一般用在imageview配合scaletype属性使用</span><br><span class="line">		Android:width=&quot;integer&quot;</span><br><span class="line">		Android:height=&quot;integer&quot;/&gt;</span><br><span class="line">	&lt;solid // 填充颜色</span><br><span class="line">		Android:color=&quot;color&quot;/&gt;</span><br><span class="line">	&lt;stroke //指定边框</span><br><span class="line">		Android:width=&quot;integer&quot;</span><br><span class="line">		Android:color=&quot;color&quot;</span><br><span class="line">		Android:dashWidth=&quot;integer&quot; //虚线宽度</span><br><span class="line">		Android:dashGap=&quot;integer&quot; // 虚线间隔宽度</span><br><span class="line">		/&gt;</span><br><span class="line">&lt;/shape&gt;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>Layer</li>
+</ol>
+<p>layer中可以使用层级来进行叠加，主要是用item，item可以使用drawable，也可使用shape</p>
+<ol start="4">
+<li>Selector</li>
+</ol>
+<p>Selector用于帮开发者实现静态绘图中的事件反馈，通过不同的事件设置不同的图像。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;</span><br><span class="line">&lt;selector xmlns:Android=&quot;http://schemas.Android.com/apk/res/Android&quot;&gt;</span><br><span class="line">	//默认时的背景图片</span><br><span class="line">	&lt;item Android:drawable=&quot;@drawable/x1&quot;/&gt;</span><br><span class="line">	//没有焦点时的图片</span><br><span class="line">	&lt;item Android:state_window_focused=&quot;false&quot; Android:drawable=&quot;@drawable/x2&quot;/&gt;</span><br><span class="line">	//非触摸模式下获得焦点并单击时的背景图片</span><br><span class="line">	&lt;item Android:state_focuse=&quot;true&quot; Android:state_pressed=&quot;true&quot; Android:drawable=&quot;@drawable/x3&quot;/&gt;</span><br><span class="line">	//触摸模式下单击时的背景图片</span><br><span class="line">	&lt;item Android:state_focuse=&quot;false&quot; Android:state_pressed=&quot;true&quot; Android:drawable=&quot;@drawable/x4&quot;/&gt;</span><br><span class="line">	//选中时的背景图片</span><br><span class="line">	&lt;item Android:state_selected=&quot;true&quot; Android:drawable=&quot;@drawable/x5&quot;/&gt;</span><br><span class="line">	//获得焦点时的背景图片</span><br><span class="line">	&lt;item Android:state_focused=&quot;true&quot; Android:drawable=&quot;@drawable/x6&quot;/&gt;</span><br><span class="line">&lt;/selector&gt;</span><br></pre></td></tr></table></figure>
+
+<p>以上可以用于制作view的触摸反馈。</p>
+<h1 id="Android-绘图技巧"><a href="#Android-绘图技巧" class="headerlink" title="Android 绘图技巧"></a>Android 绘图技巧</h1><p>之上的是基本绘图技巧，之下的是常用绘图技巧</p>
+<ol>
+<li>Canvas</li>
+</ol>
+<p>Canvas.save(): 将之前的所有绘制图像保存起来，之后的操作就好像在一个新的图层上面操作一样。</p>
+<p>Canvas.restore(): 用于合并图层，可以用于将save之后绘制的所有图像与save之前的图像合并</p>
+<p>Canvas.translate():调用translate(x, y)操作可以将原点(0, 0)移动到(x, y)之后的所有操作都将以(x, y)为原点执行</p>
+<p>Canvas.rotate():调用rotate(degree)之后可以将canvas调转一定的角度。</p>
+<ol start="2">
+<li>Layer图层</li>
+</ol>
+<p>Android通过调用saveLayer()方法，saveLayerAlpha()方法将一个图层入栈，使用restore()方法,restoreToCount()方法将一个图层出栈。出栈的时候，会把图像绘制到上层Canvas上。</p>
+<h1 id="画笔特效处理"><a href="#画笔特效处理" class="headerlink" title="画笔特效处理"></a>画笔特效处理</h1><ol>
+<li>PorterDuffXferMode</li>
+</ol>
+<p>该模式控制的是两个图像间的混合显示模式。dst是先画的图形，src是后画的图形。</p>
+<ol start="2">
+<li>Shader</li>
+</ol>
+<p>shader被称为着色器，渲染器。可以用来实现一系列的渐变、渲染效果。</p>
+<p>其中shader包括：<br>BitmapShader   —  位图shader<br>LinearGradient —  线性shader<br>RadialGradient —  光束shader<br>SweepGradient  —  梯度shader<br>ComposeShader  —  混合shader</p>
+<p>shader的作用就是通过paint对画布进行指定的bitmap的填充，填充时有三种模式</p>
+<p>CLAMP  — 拉伸的是图片最后的那一个像素，不断重复<br>REPEAT — 横向纵向不断重复<br>MIRROR — 横向不断翻转重复，纵向不断翻转重复</p>
+<ol start="3">
+<li>PathEffect</li>
+</ol>
+<p>patheffect是指用各种笔触效果来绘制一个路径。</p>
+<p>CornerPathEffect:   将拐角处变的圆滑<br>DiscretePathEffect:    使用这个之后线段上会出现很多杂点<br>DashPathEffect:        使用这个可以绘制虚线，用一个数组来设置各个点之间的间隔，此后绘制虚线时就重复这样的间隔进行绘制，另一个参数phase可以用来绘制时数组的一个偏移量，可以通过设置值来实现路径的动态效果。<br>PathDashPathEffect: 与dashpatheffect类似，不过功能更强大，可以设置点的图形，例如方形点的虚线，圆形点的虚线<br>ComposePathEffect   可以通过composepatheffect来组合patheffect，这个方法的功能就是将任意的两种路径特性组合起来形成一个新的效果。</p>
+<h1 id="SurfaceView"><a href="#SurfaceView" class="headerlink" title="SurfaceView"></a>SurfaceView</h1><ol>
+<li>surfaceview 和view的区别</li>
+</ol>
+<p>对view来说，Android系统通过发出VSYNC信号来进行屏幕的重绘，刷新的间隔为16ms，如果在16ms内view完成了所需要执行的所有操作，那么用户在视觉上就不会产生卡顿的感觉。但是执行的操作逻辑太多，在需要频繁刷新的界面上，就会阻塞主线程，因此Android提供了surfaceview。</p>
+<p>view主要适用于主动更新的情况下，而surfaceview主要适用于被动更新，例如频繁刷新<br>view在主线程中对画面进行刷新，surfaceview则通常会通过一个子线程来进行页面的刷新<br>view在绘图时没有使用双缓冲机制，而surfaceview在底层实现机制中就已经实现了双缓冲机制</p>
+<ol start="2">
+<li>surfaceview的使用</li>
+</ol>
+<p>surfaceview使用有一套模版可以根据模版进行操作</p>
+<h2 id="创建surfaceview："><a href="#创建surfaceview：" class="headerlink" title="创建surfaceview："></a>创建surfaceview：</h2><p>创建自定义的surfaceview需要继承SurfaceView,并实现两个接口– surfaceholder callback和 runnable</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class SurfaceViewTemplate extends SurfaceView implements SurfaceHolder.Callback, Runnable</span><br></pre></td></tr></table></figure>
+
+<p>之后需要实现这两个接口</p>
+<h2 id="初始化SurfaceView"><a href="#初始化SurfaceView" class="headerlink" title="初始化SurfaceView"></a>初始化SurfaceView</h2><p>自定义surfaceview的构造方法中，需要对surfaceview进行初始化，在自定义的surfaceview中，通常需要定义三个成员变量</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//SurfaceHolder</span><br><span class="line">private SurfaceHolder mHolder;</span><br><span class="line">//用于绘图的Canvas</span><br><span class="line">private Canvas mCanvas;</span><br><span class="line">//子线程标识位</span><br><span class="line">private boolean mIsDrawing;</span><br></pre></td></tr></table></figure>
+
+<p>canvas用于绘图，标志位用于控制子线程。</p>
+<h2 id="使用SurfaceView"><a href="#使用SurfaceView" class="headerlink" title="使用SurfaceView"></a>使用SurfaceView</h2><p>通过surfaceholder对象的lockCanvas()方法，就可以得到当前的canvas绘图对象，接下来就可以与在view中绘制一样的操作了。<br>每次调用这个方法获取到的canvas都是继续上次的对象。清屏可以使用drawColor()操作。</p>
+<p>绘制的时候，在surfaceCreated()中开启子线程进行绘制，而子线程使用一个while(mIsDrawing)的循环来不停的进行绘制。<br>绘制的具体过程，使用lockCanvas()方法获得的Canvas对象进行绘制，并通过unlockCanvasAndPost(mCanvas)方法对画布内容进行提交。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/activity/" rel="tag"># activity</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/01/14/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93-20180114/" rel="prev" title="工作小结-2018一月(2)">
+                  <i class="fa fa-chevron-left"></i> 工作小结-2018一月(2)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/01/21/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93-20180121/" rel="next" title="工作小结-2018一月(3)">
+                  工作小结-2018一月(3) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

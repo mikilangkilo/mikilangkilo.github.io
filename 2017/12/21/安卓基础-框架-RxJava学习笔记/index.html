@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="本文主要是对Rxjava的通用方法进行学习和反思">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓基础-Rxjava（1）">
+<meta property="og:url" content="http://example.com/2017/12/21/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-%E6%A1%86%E6%9E%B6-RxJava%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本文主要是对Rxjava的通用方法进行学习和反思">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-12-21T08:24:02.000Z">
+<meta property="article:modified_time" content="2020-11-10T02:38:37.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Rxjava">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2017/12/21/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-%E6%A1%86%E6%9E%B6-RxJava%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2017/12/21/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-%E6%A1%86%E6%9E%B6-RxJava%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/","path":"2017/12/21/安卓基础-框架-RxJava学习笔记/","title":"安卓基础-Rxjava（1）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>安卓基础-Rxjava（1） | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">29</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">104</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">基础概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Rxjava%E4%B8%AD%E5%AE%9A%E4%B9%89%E7%9A%84%E4%BA%8B%E4%BB%B6%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">Rxjava中定义的事件方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#observable%E7%9A%84%E5%87%A0%E7%A7%8D%E5%88%9B%E5%BB%BA%E6%96%B9%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">observable的几种创建方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ObservableEmitter"><span class="nav-number">4.</span> <span class="nav-text">ObservableEmitter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Disposable"><span class="nav-number">5.</span> <span class="nav-text">Disposable</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6"><span class="nav-number">6.</span> <span class="nav-text">线程调度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%AC%A6"><span class="nav-number">7.</span> <span class="nav-text">操作符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flowable%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-number">8.</span> <span class="nav-text">Flowable的理解</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mikilangkilo" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mikilangkilo" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:913925047@qq.com" title="E-Mail → mailto:913925047@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/mikilangkilo" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/12/21/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-%E6%A1%86%E6%9E%B6-RxJava%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          安卓基础-Rxjava（1）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-12-21 16:24:02" itemprop="dateCreated datePublished" datetime="2017-12-21T16:24:02+08:00">2017-12-21</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2020-11-10 10:38:37" itemprop="dateModified" datetime="2020-11-10T10:38:37+08:00">2020-11-10</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">安卓基础</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">本文主要是对Rxjava的通用方法进行学习和反思</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>#<a target="_blank" rel="noopener" href="http://blog.csdn.net/flybasker/article/details/78703295">Rxjava2.0</a></p>
+<h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><p>Observable：在观察者模式中称为“被观察者”；<br>Observer：观察者模式中的“观察者”，可接收Observable发送的数据；<br>subscribe：订阅，观察者与被观察者，通过Observable的subscribe()方法进行订阅；<br>Subscriber：也是一种观察者，在2.0中 它与Observer没什么实质的区别，不同的是 Subscriber要与Flowable(也是一种被观察者)联合使用，该部分 内容是2.0新增的，后续文章再介绍。Obsesrver用于订阅Observable，而Subscriber用于订阅Flowable.</p>
+<h2 id="Rxjava中定义的事件方法"><a href="#Rxjava中定义的事件方法" class="headerlink" title="Rxjava中定义的事件方法"></a>Rxjava中定义的事件方法</h2><p>onNext(),普通事件,按照队列依次进行处理.<br>onComplete(),事件队列完结时调用该方法<br>onError(),事件处理过程中出现异常时，onError()触发，同时队列终止,不再有事件发出.<br>onSubscribe(),RxJava 2.0 中新增的，传递参数为Disposable,可用于切断接收事件让Observable (被观察者)开启子线程执行耗操作，完成耗时操作后，触发回调，通知Observer (观察者)进行主线程UI更新</p>
+<h2 id="observable的几种创建方式"><a href="#observable的几种创建方式" class="headerlink" title="observable的几种创建方式"></a>observable的几种创建方式</h2><ol>
+<li><p>just()方式<br>使用just( )，将创建一个Observable并自动调用onNext( )发射数据。<br>也就是通过just( )方式 直接触发onNext()，just中传递的参数将直接在Observer的onNext()方法中接收到。</p>
+</li>
+<li><p>fromIterable()方式<br>使用fromIterable()，遍历集合，发送每个item.多次自动调用onNext()方法，每次传入一个item.<br>注意：Collection接口是Iterable接口的子接口，所以所有Collection接口的实现类都可以作为Iterable对象直接传入fromIterable()    方法。</p>
+</li>
+<li><p>defer()方式<br>当观察者订阅时,才创建Observable，并且针对每个观察者创建都是一个新的Observable.<br>通过Callable中的回调方法call(),决定使用以何种方式来创建这个Observable对象,当订阅后，发送事件.</p>
+</li>
+<li><p>interval( )方式<br>创建一个按固定时间间隔发射整数序列的Observable，可用作定时器。按照固定时间间隔来调用onNext()方法。</p>
+</li>
+<li><p>timer( )方式<br>通过此种创建一个Observable,它在一个给定的延迟后发射一个特殊的值，即表示延迟指定时间后，调用onNext()方法。</p>
+</li>
+<li><p>range( )方式,range(x,y)<br>创建一个发射特定整数序列的Observable，第一个参数x为起始值，第二个y为发送的个数，如果y为0则不发送，y为负数则抛异常。<br>range(1,5)<br>上述表示发射1到5的数。即调用5次Next()方法，依次传入1-5数字。</p>
+</li>
+<li><p>repeat( )方式<br>创建一个Observable，该Observable的事件可以重复调用。</p>
+</li>
+</ol>
+<h2 id="ObservableEmitter"><a href="#ObservableEmitter" class="headerlink" title="ObservableEmitter"></a>ObservableEmitter</h2><p>Emitter是发射器的意思,就是用来发出事件的，它可以发出三种类型的事件<br>通过调用onNext(T value),发出next事件<br>通过调用onComplete(),发出complete事件<br>通过调用onError(Throwable error),发出error事件<br>注意事项:<br>onComplete和onError唯一并且互斥<br>发送多个onComplete, 第一个onComplete接收到,就不再接收了.<br>发送多个onError, 则收到第二个onError事件会导致程序会崩溃.<br>不可以随意乱七八糟发射事件，需要满足一定的规则：<br>上游可以发送无限个onNext, 下游也可以接收无限个onNext.<br>当上游发送了一个onComplete后, 上游onComplete之后的事件将会继续发送, 而下游收到onComplete事件之后将不再继续接收事件.<br>上游发送了一个onError后, 上游onError之后的事件将继续发送, 而下游收到onError事件之后将不再继续接收事件.<br>上游可以不发送onComplete或onError.<br>最为关键的是onComplete和onError必须唯一并且互斥, 即不能发多个onComplete, 也不能发多个onError, 也不能先发一个onComplete, 然后再发一个onError </p>
+<h2 id="Disposable"><a href="#Disposable" class="headerlink" title="Disposable"></a>Disposable</h2><p>一次性,它理解成两根管道之间的一个机关, 当调用它的dispose()方法时, 它就会将两根管道切断, 从而导致下游收不到事件.<br>在RxJava中,用它来切断Observer(观察者)与Observable(被观察者)之间的连接，当调用它的dispose()方法时, 它就会将Observer(观察者)与Observable(被观察者)之间的连接切断, 从而导致Observer(观察者)收不到事件。<br>注意: 调用dispose()并不会导致上游不再继续发送事件, 上游会继续发送剩余的事件 </p>
+<h2 id="线程调度"><a href="#线程调度" class="headerlink" title="线程调度"></a>线程调度</h2><ol>
+<li><p>Schedulers.immediate():<br>直接在当前线程运行，相当于不指定线程。这是默认的Scheduler。</p>
+</li>
+<li><p>Schedulers.newThread():<br>总是启用新线程，并在新线程执行操作。</p>
+</li>
+<li><p>Schedulers.io(): I/O<br>操作（读写文件、读写数据库、网络信息交互等）所使用的Scheduler。行为模式和newThread()差不多，区别在于io()的内部实现是是用一个无数量上限的线程池，可以重用空闲的线程，因此多数情况下io()比newThread()更有效率。不要把计算工作放在io()中，可以避免创建不必要的线程。</p>
+</li>
+<li><p>Schedulers.computation():<br>计算所使用的Scheduler。这个计算指的是 CPU 密集型计算，即不会被 I/O 等操作限制性能的操作，例如图形的计算。这个Scheduler使用的固定的线程池，大小为 CPU 核数。不要把 I/O 操作放在computation()中，否则 I/O 操作的等待时间会浪费 CPU。</p>
+</li>
+<li><p>AndroidSchedulers.mainThread()，<br>Android专用线程，指定操作在主线程运行。</p>
+</li>
+</ol>
+<p>如何切换线程呢？RxJava中提供了两个方法：<br>    subscribeOn() 和 observeOn() ，<br>两者的不同点在于：</p>
+<p>subscribeOn(): 指定subscribe()订阅所发生的线程，或者叫做事件产生的线程。</p>
+<p>observeOn(): 指定Observer所运行在的线程，即onNext()执行的线程。或者叫做事件消费的线程。</p>
+<h2 id="操作符"><a href="#操作符" class="headerlink" title="操作符"></a>操作符</h2><p>操作符就是用于在Observable和最终的Observer之间，通过转换Observable为其他观察者对象的过程，修改发出的事件,最终将最简洁的数据传递给Observer对象. </p>
+<ol>
+<li><p>map()操作符，就是把原来的Observable对象转换成另一个Observable对象，同时将传输的数据进行一些灵活的操作，方便Observer获得想要的数据形式。<br>举例:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Observable&lt;Integer&gt; observable = Observable</span><br><span class="line">        .just(&quot;hello&quot;)</span><br><span class="line">        .map(new Function&lt;String, Integer&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public Integer apply(String s) throws Exception &#123;</span><br><span class="line">                return s.length();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure></li>
+<li><p>flatMap()操作符<br>flatMap()对于数据的转换比map()更加彻底，如果发送的数据是集合，flatmap()重新生成一个Observable对象，并把数据转换成Observer想 要的数据形式。它可以返回任何它想返回的Observable对象。<br>举例:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Observable.just(list)</span><br><span class="line">       .flatMap(new Function&lt;List&lt;String&gt;, ObservableSource&lt;?&gt;&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public ObservableSource&lt;?&gt; apply(List&lt;String&gt; strings) throws Exception &#123;</span><br><span class="line">                return Observable.fromIterable(strings);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure></li>
+<li><p>filter()操作符<br>filter()操作符根据它的test()方法中，根据自己想过滤的数据加入相应的逻辑判断，返回true则表示数据满足条件，返回false则表示数据需要被过滤。最后过滤出的数据将加入到新的Observable对象中，方便传递给Observer想要的数据形式。<br>举例:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Observable</span><br><span class="line">        .just(list)</span><br><span class="line">        .flatMap(new Function&lt;List&lt;String&gt;, ObservableSource&lt;?&gt;&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public ObservableSource&lt;?&gt; apply(List&lt;String&gt; strings) throws Exception &#123;</span><br><span class="line">                return Observable.fromIterable(strings);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).filter(new Predicate&lt;Object&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public boolean test(Object s) throws Exception &#123;</span><br><span class="line">                String newStr = (String) s;</span><br><span class="line">                if (newStr.charAt(5) - &#x27;0&#x27; &gt; 5) &#123;</span><br><span class="line">                    return true;</span><br><span class="line">                &#125;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).subscribe(new Consumer&lt;Object&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void accept(Object o) throws Exception &#123;</span><br><span class="line">                System.out.println((String)o);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure></li>
+<li><p>take()操作符<br>输出最多指定数量的结果.(接收指定数量的结果)<br>举例:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Observable.just(new ArrayList&lt;String&gt;()&#123;</span><br><span class="line">            &#123;</span><br><span class="line">                for (int i = 0; i &lt; 8; i++) &#123;</span><br><span class="line">                    add(&quot;data&quot;+i);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).flatMap(new Function&lt;List&lt;String&gt;, ObservableSource&lt;?&gt;&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public ObservableSource&lt;?&gt; apply(List&lt;String&gt; strings) throws Exception &#123;</span><br><span class="line">                return Observable.fromIterable(strings);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).take(5).subscribe(new Consumer&lt;Object&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void accept(Object s) throws Exception &#123;</span><br><span class="line">                DemonstrateUtil.showLogResult(s.toString());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure></li>
+<li><p>doOnNext()操作符<br>允许我们在每次输出一个元素之前做一些额外的事情<br>举例:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Observable.just(new ArrayList&lt;String&gt;()&#123;</span><br><span class="line">            &#123;</span><br><span class="line">                for (int i = 0; i &lt; 6; i++) &#123;</span><br><span class="line">                    add(&quot;data&quot;+i);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).flatMap(new Function&lt;List&lt;String&gt;, ObservableSource&lt;?&gt;&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public ObservableSource&lt;?&gt; apply(List&lt;String&gt; strings) throws Exception &#123;</span><br><span class="line">                return Observable.fromIterable(strings);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).take(5).doOnNext(new Consumer&lt;Object&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void accept(Object o) throws Exception &#123;</span><br><span class="line">                DemonstrateUtil.showLogResult(&quot;额外的准备工作!&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).subscribe(new Consumer&lt;Object&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void accept(Object s) throws Exception &#123;</span><br><span class="line">                DemonstrateUtil.showLogResult(s.toString());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="Flowable的理解"><a href="#Flowable的理解" class="headerlink" title="Flowable的理解"></a>Flowable的理解</h2><p>Flowable是一个被观察者，与Subscriber(观察者)配合使用，解决Backpressure问题<br>Backpressure(背压)。所谓背压，即生产者的速度大于消费者的速度带来的问题。</p>
+<blockquote>
+<p>什么情况下才会产生Backpressure问题？<br>1.如果生产者和消费者在一个线程的情况下，无论生产者的生产速度有多快，每生产一个事件都会通知消费者，等待消费者消费完毕，再生产下一个事件。<br>所以在这种情况下，根本不存在Backpressure问题。即同步情况下，Backpressure问题不存在。<br>2.如果生产者和消费者不在同一线程的情况下，如果生产者的速度大于消费者的速度，就会产生Backpressure问题。<br>即异步情况下，Backpressure问题才会存在。</p>
+</blockquote>
+<p>现象演示说明:<br>被观察者是事件的生产者,观察者是事件的消费者.假如生产者无限生成事件,而消费者以很缓慢的节奏来消费事件,会造成事件无限堆积,形成背压,最后造成OOM!<br>Flowable悠然而生，专门用来处理这类问题。<br>Flowable是为了应对Backpressure而产生的。Flowable是一个被观察者，<br>与Subscriber(观察者)配合使用，解决Backpressure问题。<br>注意：处理Backpressure的策略仅仅是处理Subscriber接收事件的方式，并不影响Flowable发送事件的方法。<br>即使采用了处理Backpressure的策略，Flowable原来以什么样的速度产生事件，现在还是什么样的速度不会变化，主要处理的是Subscriber接收事件的方式。</p>
+<p>处理Backpressure问题的策略,或者来解决Backpressure问题</p>
+<pre><code>BackpressureStrategy.ERROR
+如果缓存池溢出,就会立刻抛出MissingBackpressureException异常
+request()用来向生产者申请可以消费的事件数量,这样我们便可以根据本身的消费能力进行消费事件.
+虽然并不限制向request()方法中传入任意数字，但是如果消费者并没有这么多的消费能力，依旧会造成资源浪费，最后产生OOM
+at java.lang.OutOfMemoryError.&lt;init&gt;(OutOfMemoryError.java:33)
+在异步调用时，RxJava中有个缓存池，用来缓存消费者处理不了暂时缓存下来的数据，缓存池的默认大小为128，即只能缓存128个事件。
+无论request()中传入的数字比128大或小，缓存池中在刚开始都会存入128个事件。
+当然如果本身并没有这么多事件需要发送，则不会存128个事件。
+应用举例:
+
+
+BackpressureStrategy.BUFFER
+是把RxJava中默认的只能存128个事件的缓存池换成一个大的缓存池,支持存更多的数据.
+消费者通过request()即使传入一个很大的数字，生产者也会生产事件,并将处理不了的事件缓存.
+注意:
+这种方式任然比较消耗内存，除非是我们比较了解消费者的消费能力，能够把握具体情况，不会产生OOM。
+BUFFER要慎用
+
+BackpressureStrategy.DROP
+顾名思义,当消费者处理不了事件，就丢弃!
+例如,当数据源创建了200个事件,先不进行消费临时进行缓存实际缓存128个,我们第一次申请消费了100个,再次申请消费100个,
+那么实际只消费了128个,而其余的72个被丢弃了!
+
+BackpressureStrategy.LATEST
+LATEST与DROP功能基本一致,当消费者处理不了事件，就丢弃!
+唯一的区别就是LATEST总能使消费者能够接收到生产者产生的最后一个事件。
+例如,当数据源创建了200个事件,先不进行消费临时进行缓存,我们第一次申请消费了100个,再次申请消费100个,
+那么实际只消费了129个,而其余的71个被丢弃了,但是第200个(最后一个)会被消费.
+
+
+BackpressureStrategy.MISSING
+生产的事件没有进行缓存和丢弃,下游接收到的事件必须进行消费或者处理!
+</code></pre>
+<p>在RxJava中会经常遇到一种情况就是被观察者发送消息十分迅速以至于观察者不能及时的响应这些消息<br>举例:<br>Observable.create(new ObservableOnSubscribe<Integer>() {<br>        @Override<br>        public void subscribe(ObservableEmitter<Integer> e) throws Exception {<br>            while (true){<br>                e.onNext(1);<br>            }<br>        }<br>    })<br>            .subscribeOn(Schedulers.io())<br>            .observeOn(AndroidSchedulers.mainThread())<br>            .subscribe(new Consumer<Integer>() {<br>        @Override<br>        public void accept(Integer integer) throws Exception {<br>            Thread.sleep(2000);<br>            System.out.println(integer);<br>        }<br>    });<br>    被观察者是事件的生产者，观察者是事件的消费者。上述例子中可以看出生产者无限生成事件，而消费者每2秒才能消费一个事件，这会造成事件无限堆积，最后造成OOM。<br>Flowable就是由此产生，专门用来处理这类问题</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Rxjava/" rel="tag"># Rxjava</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/12/21/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-rom-rom%E7%BC%96%E8%AF%91%E5%AD%A6%E4%B9%A0/" rel="next" title="安卓基础-Rom编译">
+                  安卓基础-Rom编译 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

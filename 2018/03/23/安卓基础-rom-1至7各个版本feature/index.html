@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="本文主要是学习Android1.0-7.0各版本feature">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓基础-Android1.0-7.0各版本feature">
+<meta property="og:url" content="http://example.com/2018/03/23/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-rom-1%E8%87%B37%E5%90%84%E4%B8%AA%E7%89%88%E6%9C%ACfeature/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本文主要是学习Android1.0-7.0各版本feature">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-03-23T02:03:03.000Z">
+<meta property="article:modified_time" content="2021-07-11T10:31:35.455Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Rom">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2018/03/23/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-rom-1%E8%87%B37%E5%90%84%E4%B8%AA%E7%89%88%E6%9C%ACfeature/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2018/03/23/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-rom-1%E8%87%B37%E5%90%84%E4%B8%AA%E7%89%88%E6%9C%ACfeature/","path":"2018/03/23/安卓基础-rom-1至7各个版本feature/","title":"安卓基础-Android1.0-7.0各版本feature"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>安卓基础-Android1.0-7.0各版本feature | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">29</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">104</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#5-0-api-21"><span class="nav-number">1.</span> <span class="nav-text">5.0 - api 21</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E5%87%BAmaterial-design"><span class="nav-number">1.1.</span> <span class="nav-text">新出material design</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#view%E5%A2%9E%E5%8A%A0%E4%BA%86z%E5%B1%9E%E6%80%A7"><span class="nav-number">1.2.</span> <span class="nav-text">view增加了z属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#view%E5%A2%9E%E5%8A%A0%E4%BA%86%E8%BD%AE%E5%BB%93"><span class="nav-number">1.3.</span> <span class="nav-text">view增加了轮廓</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#view%E7%9A%84%E8%A3%81%E5%89%AA"><span class="nav-number">1.4.</span> <span class="nav-text">view的裁剪</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tint%E5%B1%9E%E6%80%A7"><span class="nav-number">1.5.</span> <span class="nav-text">tint属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Palette%E8%B0%83%E8%89%B2%E7%89%88"><span class="nav-number">1.6.</span> <span class="nav-text">Palette调色版</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vector%E7%9F%A2%E9%87%8F%E5%9B%BE"><span class="nav-number">1.7.</span> <span class="nav-text">vector矢量图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E5%A2%9Ewidget"><span class="nav-number">1.8.</span> <span class="nav-text">新增widget</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RecyclerView"><span class="nav-number">1.9.</span> <span class="nav-text">RecyclerView</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cardview"><span class="nav-number">1.10.</span> <span class="nav-text">cardview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#toolbar"><span class="nav-number">1.11.</span> <span class="nav-text">toolbar</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%BC%E5%AE%B9%E6%80%A7"><span class="nav-number">1.12.</span> <span class="nav-text">兼容性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8v7%E5%8C%85"><span class="nav-number">1.12.1.</span> <span class="nav-text">使用v7包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E7%BB%84%E4%BB%B6"><span class="nav-number">1.12.2.</span> <span class="nav-text">系统组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%A4%9A%E4%B8%AAvalue%E5%92%8Clayout"><span class="nav-number">1.12.3.</span> <span class="nav-text">创建多个value和layout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E6%A3%80%E6%9F%A5"><span class="nav-number">1.12.4.</span> <span class="nav-text">版本检查</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%AF%E6%8C%8164%E4%BD%8Dart%E8%99%9A%E6%8B%9F%E6%9C%BA"><span class="nav-number">1.13.</span> <span class="nav-text">支持64位art虚拟机</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-0-api-23"><span class="nav-number">2.</span> <span class="nav-text">6.0 - api 23</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E7%BA%B9%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81"><span class="nav-number">2.1.</span> <span class="nav-text">指纹身份验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E9%93%BE%E6%8E%A5"><span class="nav-number">2.2.</span> <span class="nav-text">应用链接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E5%A4%87%E4%BB%BD%E5%BA%94%E7%94%A8"><span class="nav-number">2.3.</span> <span class="nav-text">自动备份应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E9%9F%B3%E4%BA%A4%E4%BA%92"><span class="nav-number">2.4.</span> <span class="nav-text">语音交互</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Assist-API"><span class="nav-number">2.5.</span> <span class="nav-text">Assist API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E9%87%87%E7%94%A8%E7%9A%84%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87"><span class="nav-number">2.6.</span> <span class="nav-text">可采用的存储设备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E7%9F%A5"><span class="nav-number">2.7.</span> <span class="nav-text">通知</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E6%9C%BA%E5%8A%9F%E8%83%BD"><span class="nav-number">2.8.</span> <span class="nav-text">相机功能</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-0"><span class="nav-number">3.</span> <span class="nav-text">7.0</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E7%AA%97%E5%8F%A3%E6%94%AF%E6%8C%81"><span class="nav-number">3.1.</span> <span class="nav-text">多窗口支持</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E7%9F%A5%E5%A2%9E%E5%BC%BA%E5%8A%9F%E8%83%BD"><span class="nav-number">3.2.</span> <span class="nav-text">通知增强功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-%E4%B8%AD%E7%9A%84-ICU4J-API"><span class="nav-number">3.3.</span> <span class="nav-text">Android 中的 ICU4J API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#webview"><span class="nav-number">3.4.</span> <span class="nav-text">webview</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mikilangkilo" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mikilangkilo" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:913925047@qq.com" title="E-Mail → mailto:913925047@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/mikilangkilo" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/03/23/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-rom-1%E8%87%B37%E5%90%84%E4%B8%AA%E7%89%88%E6%9C%ACfeature/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          安卓基础-Android1.0-7.0各版本feature
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-03-23 10:03:03" itemprop="dateCreated datePublished" datetime="2018-03-23T10:03:03+08:00">2018-03-23</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-11 18:31:35" itemprop="dateModified" datetime="2021-07-11T18:31:35+08:00">2021-07-11</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">安卓基础</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">本文主要是学习Android1.0-7.0各版本feature</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="5-0-api-21"><a href="#5-0-api-21" class="headerlink" title="5.0 - api 21"></a>5.0 - api 21</h1><h2 id="新出material-design"><a href="#新出material-design" class="headerlink" title="新出material design"></a>新出material design</h2><h2 id="view增加了z属性"><a href="#view增加了z属性" class="headerlink" title="view增加了z属性"></a>view增加了z属性</h2><p>在5.0之前，我们如果想给view添加阴影效果，以体现其层次感，通常的做法是给view设置一个带阴影的背景图片，现在，我们只需要简单的修改view的Z属性，就能让其具备阴影的层次感。</p>
+<p>Z属性会扩大view的显示区域，如果它的大小大于或等于父视图的大小，那么它的阴影效果就无法显示了，view并不会因为z属性而把自身缩小腾出空间显示阴影。</p>
+<p>Z属性不仅影响着view的阴影效果，还影响着view的绘制顺序，在同一个父view内部，Z属性越小，绘制的时机就越早。也就是优先被绘制，而z属性越大，则绘制时间越晚，后绘制的将会遮盖住先绘制的，只有Z属性相同，才按照添加的顺序绘制。</p>
+<h2 id="view增加了轮廓"><a href="#view增加了轮廓" class="headerlink" title="view增加了轮廓"></a>view增加了轮廓</h2><p>在xml布局中，可以通过Android:outlineProvider来指定轮廓的判定方式：</p>
+<p>none 即使设置了Z属性，也不会显示阴影<br>background 会按照背景来设置阴影形状<br>bounds 会按照View的大小来描绘阴影<br>paddedBounds 和bounds类似，不过阴影会稍微向右偏移一点</p>
+<p>在代码中，我们可以通过setOutlineProvider来指定一个View的轮廓：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ViewOutlineProvider viewOutlineProvider = new ViewOutlineProvider() &#123;</span><br><span class="line">    public void getOutline(View view, Outline outline) &#123;</span><br><span class="line">        // 可以指定圆形，矩形，圆角矩形，path</span><br><span class="line">        outline.setOval(0, 0, view.getWidth(), view.getHeight());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">View.setOutlineProvider(viewOutlineProvider );</span><br></pre></td></tr></table></figure>
+
+<h2 id="view的裁剪"><a href="#view的裁剪" class="headerlink" title="view的裁剪"></a>view的裁剪</h2><p>给View指定轮廓，可以决定阴影的显示形状，如果给View指定一个小于自身大小的轮廓，正常情况下阴影会被View遮住，这个时候View的显示内容并没有因为轮廓的缩小而缩小。</p>
+<p>如果想根据轮廓来缩小一个View，则可以通过剪裁。如果一个View指定了轮廓，调用setClipToOutline方法，就可以根据轮廓来剪裁一个View。想要剪裁轮廓，必须要给View先指定轮廓，并且轮廓是可以被剪裁的，目前只有圆形，矩形，圆角矩形支持剪裁，可以通过outline.canClip()来判断一个轮廓是否支持剪裁。</p>
+<p>Path剪裁不会改变View的大小，但是如果Path的范围比View要的bounds要小，则剪裁后会改变View的位置，位置偏移和Z属性有关，这可能是一个BUG，view的设计者可能在绘制阴影时根据轮廓偏移了画布，而在绘制完后忘记把画布还原了。</p>
+<p>剪裁不会改变View的测量大小和布局大小，也不会改变View的触摸区域，剪裁只是在onDraw的时候对画布做了剪裁处理，剪裁也不同于scale，scale是调整画布matrix的缩放属性，调整后，View仍然能完整显示，而剪裁是缩小画布的剪裁区域，剪裁后我们只能看到View的一部分。</p>
+<p>试图给View一个比较大的轮廓进行剪裁也是不成功的，实验证明剪裁后的View只能比原有体积小，扩大轮廓只会扩大轮廓的绘制区域。</p>
+<p>剪裁是一个非常消耗资源的操作，我们不应该用此来做动画效果，如果要实现这样的动画，可以使用Reveal Effect</p>
+<h2 id="tint属性"><a href="#tint属性" class="headerlink" title="tint属性"></a>tint属性</h2><p>tint属性是一个颜色值，可以对图片做颜色渲染，我们可以给view的背景设置tint色值，给ImageView的图片设置tint色值，也可以给任意Drawable或者NinePatchDrawable设置tint色值。</p>
+<p>在应用的主题中也可以通过设置 Android:tint 来给主题设置统一的颜色渲染。</p>
+<p>tint的渲染模式有总共有16种，xml文件中可以使用6种，代码中我们可以设置16种，渲染模式决定了渲染颜色和原图颜色的取舍和合成规则：</p>
+<p>PorterDuff.Mode.CLEAR 所绘制不会提交到画布上。<br>PorterDuff.Mode.SRC 显示上层绘制图片<br>PorterDuff.Mode.DST 显示下层绘制图片<br>PorterDuff.Mode.SRC_OVER 正常绘制显示，上下层绘制叠盖。<br>PorterDuff.Mode.DST_OVER 上下层都显示。下层居上显示。<br>PorterDuff.Mode.SRC_IN 取两层绘制交集。显示上层。<br>PorterDuff.Mode.DST_IN 取两层绘制交集。显示下层。<br>PorterDuff.Mode.SRC_OUT 取上层绘制非交集部分。<br>PorterDuff.Mode.DST_OUT 取下层绘制非交集部分。<br>PorterDuff.Mode.SRC_ATOP 取下层非交集部分与上层交集部分<br>PorterDuff.Mode.DST_ATOP 取上层非交集部分与下层交集部分<br>PorterDuff.Mode.XOR 取两层绘制非交集。两层绘制非交集。<br>PorterDuff.Mode.DARKEN 上下层都显示。变暗<br>PorterDuff.Mode.LIGHTEN 上下层都显示。变亮<br>PorterDuff.Mode.MULTIPLY 取两层绘制交集<br>PorterDuff.Mode.SCREEN 上下层都显示。</p>
+<p>通过tint属性处理后的图片会和原图显示出不一样的颜色，我们可以通过这种方式利用一张图片做出图片选择器的效果，让控件在按压状态下显示另外一种颜色:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">通过给图片设置tint色生成另外一种图片</span><br><span class="line">&lt;bitmap xmlns:Android=&quot;http://schemas.Android.com/apk/res/Android&quot;</span><br><span class="line">        Android:src=&quot;@drawable/ring&quot;</span><br><span class="line">        Android:tintMode=&quot;multiply&quot;</span><br><span class="line">        Android:tint=&quot;#5677fc&quot; /&gt;</span><br><span class="line">利用新的图片生成图片选择器</span><br><span class="line">&lt;selector xmlns:Android=&quot;http://schemas.Android.com/apk/res/Android&quot;&gt;</span><br><span class="line">        &lt;item Android:drawable=&quot;@drawable/tint_bitmap&quot; Android:state_pressed=&quot;true&quot;/&gt;</span><br><span class="line">        &lt;item Android:drawable=&quot;@drawable/ring&quot; /&gt;</span><br><span class="line">&lt;/selector&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Palette调色版"><a href="#Palette调色版" class="headerlink" title="Palette调色版"></a>Palette调色版</h2><p>Palette调色板，可以很方便的让我们从图片中提取颜色。并且可以指定提取某种类型的颜色。<br>Vibrant 鲜艳的<br>Vibrant dark鲜艳的暗色<br>Vibrant light鲜艳的亮色<br>Muted 柔和的<br>Muted dark柔和的暗色<br>Muted light柔和的亮色</p>
+<p>对图片取色是一个比较消耗性能的操作，其内部会对图片的像素值进来遍历以分析对比，所以我们要在异步线程中去完成。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">如果操作本来就属于后台线程，可以使用：</span><br><span class="line">Palette p = Palette.generate(Bitmap bitmap);</span><br><span class="line">如果在主线程中，我们可以使用异步的方式：</span><br><span class="line">Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() &#123;</span><br><span class="line">        public void onGenerated(Palette palette) &#123;  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>当操作完成后或者异步回调后，我们就可以使用以下方式来获取对应的色值了，并且可以在没有获取到的情况下之指定默认值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">p.getVibrantColor(int defaultColor);</span><br><span class="line">p.getDarkVibrantColor(int defaultColor);</span><br><span class="line">p.getLightVibrantColor(int defaultColor);</span><br><span class="line">p.getMutedColor(int defaultColor);</span><br><span class="line">p.getDarkMutedColor(int defaultColor);</span><br><span class="line">p.getLightMutedColor(int defaultColor);</span><br></pre></td></tr></table></figure>
+
+<p>在使用palette之前，bitmap提供获取指定位置的像素值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bitmap.getPixel(x,y)</span><br></pre></td></tr></table></figure>
+
+<p>但是该方式只能获取某一点的像素值，palette是对整个bitmap的所有像素值进行分析，并选出几个像素占比比较多的像素值，这样选择出来的色值更符合图片的整体色值。</p>
+<h2 id="vector矢量图"><a href="#vector矢量图" class="headerlink" title="vector矢量图"></a>vector矢量图</h2><p>矢量图也称为面向对象的图像或绘图图像，是计算机图形学中用点、直线或者多边形等基于数学方程的几何图元表示的图像。矢量图形最大的优点是无论放大、缩小或旋转等不会失真；最大的缺点是难以表现色彩层次丰富、逼真的图像效果。</p>
+<p>Android L开始支持矢量图，我们可以用它来处理一些图形简单的icon，方便我们的适配。</p>
+<p>Android L中对矢量图的支持是通过xml文件构建，通过矢量图的path描述来生成一个矢量图，对应的java对象为VectorDrawable。</p>
+<p>下面是官方文档提供的一个矢量图，利用改文件，我们可以创建一个随意放大缩小都不会失真的心形。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;vector xmlns:Android=&quot;http://schemas.Android.com/apk/res/Android&quot;</span><br><span class="line">        Android:height=&quot;300dp&quot;</span><br><span class="line">        Android:width=&quot;300dp&quot;</span><br><span class="line">        Android:viewportHeight=&quot;40&quot;</span><br><span class="line">        Android:viewportWidth=&quot;40&quot;&gt;</span><br><span class="line">        &lt;path Android:fillColor=&quot;#ff00ff&quot;</span><br><span class="line">                Android:pathData=&quot;M20.5,9.5</span><br><span class="line">                        c-1.955,0,-3.83,1.268,-4.5,3</span><br><span class="line">                        c-0.67,-1.732,-2.547,-3,-4.5,-3</span><br><span class="line">                        C8.957,9.5,7,11.432,7,14</span><br><span class="line">                        c0,3.53,3.793,6.257,9,11.5</span><br><span class="line">                        c5.207,-5.242,9,-7.97,9,-11.5</span><br><span class="line">                        C25,11.432,23.043,9.5,20.5,9.5z&quot;/&gt;</span><br><span class="line">&lt;/vector&gt;</span><br></pre></td></tr></table></figure>
+
+<p>矢量图的pathData数据就是用来描述矢量图的数学公式，其含义如下表：</p>
+<p>命令类型    使用描述    代表含义                    举例说明<br>移动指令    M x,y    M移动绝对位置                M 100,240<br>移动指令    m x,y    m移动相对于上一个点        m 100,240<br>绘制        L 或 l    从当前点绘制直线到指定点    L 100,100<br>绘制        H 或 h    水平直线                    h 100<br>绘制        V 或 v    垂直直线                    v 100<br>绘制        C 或 c    三次方程式贝塞尔曲线        C 100,200 200,400 300,200<br>绘制        Q 或 q    二次方程式贝塞尔曲线        Q 100,200 300,200<br>绘制        S 或 s    平滑三次方程式贝塞尔曲线    S 100,200 200,400 300,200<br>绘制        T 或 t    平滑二次方程式贝塞尔曲线    T 100,200 300,200<br>绘制        A 或 a    椭圆                        A 5,5 0 0 1 10,10<br>关闭指令    Z 或 z    将图形的首、尾点用直线连接    Z<br>填充        F0    EvenOdd 填充规则<br>填充        F1    Nonzero 填充规则    </p>
+<p>通过path命令来进行简单的图形还是可行的，但是复杂的图形我们就需要借助工具来生成了，比如使用 Expression Design，就可以直接粘贴来自其它软件的矢量图形，然后选择导出，导出时做如后选择：文件-&gt;导出-&gt;导出属性-&gt;格式-&gt;XAML Silverlight 画布，即可得到XAML格式的矢量图形，也就是Path。</p>
+<p>更多矢量图学习可参考：<a target="_blank" rel="noopener" href="http://www.w3.org/TR/SVG11/paths.html#PathData">http://www.w3.org/TR/SVG11/paths.html#PathData</a> 我们可以访问<a target="_blank" rel="noopener" href="http://editor.method.ac/">http://editor.method.ac</a> 在线制作矢量图并导出path。</p>
+<h2 id="新增widget"><a href="#新增widget" class="headerlink" title="新增widget"></a>新增widget</h2><h2 id="RecyclerView"><a href="#RecyclerView" class="headerlink" title="RecyclerView"></a>RecyclerView</h2><p>RecyclerView是ListView的升级版，它具备了更好的性能，且更容易使用。和ListView一样，RecyclerView是用来显示大量数据的容器，并通过复用有限数量的View，来提高滚动时的性能。当你的视图上的元素经常动态的且有规律的改变时候，可以使用RecyclerView控件。</p>
+<p>与ListView不同的是RecyclerView不再负责布局，只专注于复用机制，布局交由LayoutManager来管理。 RecyclerView仍然通过Adapter来获取需要显示的对象。</p>
+<p>要使用RecyclerView组件，创建Adapter不再继承自BaseAdapter，而是应该继承自RecyclerView.Adapter类，并且最好指定一个继承自RecyclerView.ViewHolder的范型，Adapter不再要求你返回一个View，而是一个ViewHolder。</p>
+<p>继承自Adapter后，需要实现3个抽象方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 当RecyclerView需要一个ViewHolder时会回调该方法，如果有可复用的View则该方法不会得倒回调</span><br><span class="line">public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)；</span><br><span class="line">// 当一个View需要出现在屏幕上时，该方法会被回调，你需要在该方法中根据数据来更改视图</span><br><span class="line">public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i)；</span><br><span class="line">// 用于告诉RecyclerView有多个视图需要显示</span><br><span class="line">public int getItemCount()；</span><br></pre></td></tr></table></figure>
+
+<p>新的Adapter和原有的Adapter并没有太多的差别，只是不再需要我们写复用判断的逻辑，因为复用逻辑其实都是相似的，它已经有了自身的实现。和原有的Adapter一样，仍然可以通过notifyDataSetChanged来刷新UI，通过getItemViewType来获取对应位置的类型，但是它不再需要你指定有多少类型了，因为该方法已经能够判断出有多少类型。新增的onViewRecycled方法可以让使用者监听View被移除屏幕的时机，并且还提供了一个AdapterDataObserver的观察者，对外提供数据改变时的回调。</p>
+<p>ViewHolder是对所有的单个item的封装，不仅包含了item需要显示的View，并且还包含和item相关的其它数据，例如：当前的position、之前的position、即将显示的position、被回收的次数、View的类型、是否处于显示中等信息。创建一个ViewHolder需要传递一个View对象，这个View就是该holder的显示视图，该View中通常会包含一些子视图，我们最好把这些子视图都记录在holder中，便于复用时设置不同的数据。</p>
+<p>RecyclerView不再对布局进行管理，而是通过LayoutManager管理布局，我们可以通过继承自LayoutManager来实现特殊的布局，系统提供了三种常用的布局管理器：</p>
+<p>LinearLayoutManager 线性布局<br>GridLayoutManager 九宫格布局<br>StaggeredGridLayoutManager 瀑布流布局</p>
+<p>并且每一种都可以设置横行和纵向的布局，可惜的均不能添加header，如果要添加header，我们可以在Adapter中使用不同的类型来达到该效果。</p>
+<p>RecyclerView默认提供了item的增加和删除的动画效果，如果我们使用自定义的动画，需要继承继承RecyclerView.ItemAnimator类，通过RecyclerView.setItemAnimator()方法来设置我们自定义的动画。</p>
+<h2 id="cardview"><a href="#cardview" class="headerlink" title="cardview"></a>cardview</h2><p>在实现扁平化的UI处理上，通常离不开阴影和圆角，我们通常是让美工提供一个带有阴影和圆角效果的背景图片，现在我们有了更好的实现方式，那就是CardView。</p>
+<p>CardView实际是一个FrameLayout类的子类，它为视图提供卡片样式，并保持在不同平台上拥有统一的风格。CardView组件可以设定阴影和圆角。</p>
+<p>我们可以使用cardElevation属性在xml布局中设置阴影效果，在代码中可以通过setCardElevation达到同样的效果。阴影的设置和Android L中的Z属性类似。</p>
+<p>设置圆角也相当容易，在xml中通过cardCornerRadius来设置，在代码中则使用setRadius，圆角的设置和Android L中的剪裁很相似。</p>
+<p>如果我们想设置cardview的背景，请注意使用carBackgroundColor方法，setBackgroundColor也许会影响我们的圆角效果</p>
+<h2 id="toolbar"><a href="#toolbar" class="headerlink" title="toolbar"></a>toolbar</h2><p>Toolbar是Android L引入的一个新控件，用于取代ActionBar，它提供了ActionBar类似的功能，但是更灵活。不像ActionBar那么固定，Toolbar更像是一般的View元素，可以被放置在view树体系的任意位置，可以应用动画，可以跟着ScrollView滚动，可以与布局中的其他View交互。当然，你还可以用Toolbar替换掉ActionBar，只需调用Activity.setActionBar()。</p>
+<p>为了兼容更多的设备一般我们都是通过AppCompat中的Android.support.v7.widget.Toolbar来使用Toolbar。</p>
+<p>有两种使用Toolbar的方式：</p>
+<p>将Toolbar当作actionbar来使用。这种情况一般发生在你想利用actionbar现有的一些功能（比如能够显示菜单中的操作项，响应菜单点击事件，使用ActionBarDrawerToggle等），但是又想获得比actionbar更多的控制权限。<br>将Toolbar当作一个独立的控件来使用，这种方式又名Standalone。</p>
+<p>如果你要将Toolbar当作actionbar来使用，你首先要去掉actionbar，最简单的方法是使用Theme.AppCompat.NoActionBar主题。或者是设置主题的属性Android:windowNoTitle为true。然后在Activity的onCreate中调用setSupportActionBar(toolbar)，原本应该出现在ActionBar上的menu会自动出现在actionbar上。</p>
+<p>Toolbar的高度、宽度、背景颜色等等一切View的属性完全取决于你，这都是因为Toolbar本质上只是个ViewGroup。将Toolbar当作一个独立的控件来使用是不需要去掉actionbar的（两者可以共存），可以使用任意主题。但是在这种情况下，menu菜单并不会自动的显示在Toolbar上，Toolbar也不会响应菜单的回调函数，如果你想让menu菜单项显示在Toolbar上，必须手动inflate menu。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public boolean onMenuItemClick(MenuItem item) &#123;</span><br><span class="line">        // 处理menu事件</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">// 创建一个menu添加到toolbar上</span><br><span class="line">toolbar.inflateMenu(R.menu.your_toolbar_menu);</span><br></pre></td></tr></table></figure>
+
+<h2 id="兼容性"><a href="#兼容性" class="headerlink" title="兼容性"></a>兼容性</h2><p>虽然Material Design新增了许多新特性，但是并不是所有新内容对对下保持了兼容。</p>
+<h3 id="使用v7包"><a href="#使用v7包" class="headerlink" title="使用v7包"></a>使用v7包</h3><p>v7 support libraries r21 及更高版本包含了以下Material Design特性：</p>
+<p>使用Theme.AppCompat主题包含调色板主体属性，可以对应用的主题做统一的配色，但是不包括状态栏和底部操作栏<br>RecyclerView和CardView被独立出来，只要引入jar包，即可适配7以上的所有版本。<br>Palette类用于从图片提取主色调</p>
+<h3 id="系统组件"><a href="#系统组件" class="headerlink" title="系统组件"></a>系统组件</h3><p>Theme.AppCompat主题中提供了这些组件的Material Design style：</p>
+<p>EditText<br>Spinner<br>CheckBox<br>RadioButton<br>SwitchCompat<br>CheckedTextView<br>Color Palette</p>
+<h3 id="创建多个value和layout"><a href="#创建多个value和layout" class="headerlink" title="创建多个value和layout"></a>创建多个value和layout</h3><p>针对Android L我们可以创建value-v21指定Material Design主题，而在其他value中指定Theme.AppCompat。layout布局也可以采用该方式，在Android L中使用系统控件，在低版本中使用我们自定义的控件活着第三方包来达到该效果。</p>
+<h3 id="版本检查"><a href="#版本检查" class="headerlink" title="版本检查"></a>版本检查</h3><p>以下特性只在Android 5.0 (API level 21) 及以上版本中可用：</p>
+<p>转场动画<br>触摸反馈<br>圆形展示动画<br>路径动画<br>矢量图<br>tint染色<br>所以在代码中遇上使用这些api的地方需要进行版本判断：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP) &#123;</span><br><span class="line">    // 使用新特性</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    // 用其他替代方式</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="支持64位art虚拟机"><a href="#支持64位art虚拟机" class="headerlink" title="支持64位art虚拟机"></a>支持64位art虚拟机</h2><h1 id="6-0-api-23"><a href="#6-0-api-23" class="headerlink" title="6.0 - api 23"></a>6.0 - api 23</h1><h2 id="指纹身份验证"><a href="#指纹身份验证" class="headerlink" title="指纹身份验证"></a>指纹身份验证</h2><p>6.0上面可以使用指纹进行身份验证</p>
+<h2 id="应用链接"><a href="#应用链接" class="headerlink" title="应用链接"></a>应用链接</h2><p>此版本通过提供功能更强大的应用链接，增强了 Android 的 intent 系统。您可以利用此功能将应用与您拥有的某个 Web 域关联。平台可以根据此关联确定在处理特定 Web 链接时默认使用的应用，跳过提示用户选择应用的步骤。</p>
+<h2 id="自动备份应用"><a href="#自动备份应用" class="headerlink" title="自动备份应用"></a>自动备份应用</h2><p>现在，系统可以自动为应用执行完整数据备份和恢复。您的应用的目标平台必须是 Android 6.0（API 级别 23），才能启用此行为；您无需额外添加任何代码。如果用户删除其 Google 帐户，其备份数据也会随之删除。要了解该功能的工作方式以及配置文件系统备份内容的方法，请参阅配置应用自动备份。</p>
+<h2 id="语音交互"><a href="#语音交互" class="headerlink" title="语音交互"></a>语音交互</h2><p>调用 isVoiceInteraction() 方法可确定是否是响应语音操作触发了您的 Activity。如果是这样，则您的应用可以使用 VoiceInteractor 类请求用户进行语音确认、从选项列表中进行选择以及执行其他操作。<br>大多数语音交互都由用户语音操作发起。但语音交互 Activity 也可在没有用户输入的情况下启动。例如，通过语音交互启动的另一应用也可发送 intent 来启动语音交互。要确定您的 Activity 是由用户语音查询还是另一语音交互应用启动，请调用 isVoiceInteractionRoot() 方法。如果另一应用启动了您的 Activity，该方法会返回 false。您的应用可能随即提示用户确认其有意执行此操作。</p>
+<h2 id="Assist-API"><a href="#Assist-API" class="headerlink" title="Assist API"></a>Assist API</h2><p>此版本提供了一种让用户通过助手程序与应用进行互动的新方式。要使用此功能，用户必须启用助手以使用当前上下文。启用助手后，用户可通过长按首页按钮在任何应用内召唤助手。</p>
+<p>您的应用可通过设置 FLAG_SECURE 标记选择不与助手共享当前上下文。除了平台传递给助手的一组标准信息外，您的应用还可利用新增的 AssistContent 类共享其他信息。</p>
+<p>要为助手提供您的应用内的其他上下文，请执行以下步骤：</p>
+<p>实现 Application.OnProvideAssistDataListener 接口。<br>利用 registerOnProvideAssistDataListener() 注册此侦听器。<br>要提供特定于 Activity 的上下文信息，请重写 onProvideAssistData() 回调和新的 onProvideAssistContent() 回调（可选操作）</p>
+<h2 id="可采用的存储设备"><a href="#可采用的存储设备" class="headerlink" title="可采用的存储设备"></a>可采用的存储设备</h2><p>使用此版本时，用户可以采用 SD 卡等外部存储设备。采用外部存储设备可加密和格式化设备，使其具有类似内部存储设备的行为。用户可以利用此特性在存储设备之间移动应用及其私有数据。移动应用时，系统会遵守清单中的 Android:installLocation 首选项。</p>
+<p>请注意，在内部存储设备与外部存储设备之间移动应用时，如果您的应用访问以下 API 或字段，它们返回的文件路径将会动态变化。强烈建议：在生成文件路径时，请始终动态调用这些 API。请勿使用硬编码文件路径或之前生成的永久性完全限定文件路径。</p>
+<p>Context 方法：<br>getFilesDir()<br>getCacheDir()<br>getCodeCacheDir()<br>getDatabasePath()<br>getDir()<br>getNoBackupFilesDir()<br>getFileStreamPath()<br>getPackageCodePath()<br>getPackageResourcePath()<br>ApplicationInfo 字段：<br>dataDir<br>sourceDir<br>nativeLibraryDir<br>publicSourceDir<br>splitSourceDirs<br>splitPublicSourceDirs</p>
+<h2 id="通知"><a href="#通知" class="headerlink" title="通知"></a>通知</h2><p>此版本针对通知功能引入了下列 API 变更：</p>
+<p>新增了 INTERRUPTION_FILTER_ALARMS 过滤级别，它对应于新增的“仅闹铃”免打扰模式。<br>新增了 CATEGORY_REMINDER 类别值，用于区分用户安排的提醒与其他事件 (CATEGORY_EVENT) 和闹铃 (CATEGORY_ALARM)。<br>新增了 Icon 类，您可以通过 setSmallIcon()方法和 setLargeIcon()方法将其附加到通知上。同理，addAction() 方法现在接受 Icon 对象，而不接受可绘制资源 ID。<br>新增了 getActiveNotifications() 方法，让您的应用能够了解哪些通知目前处于活动状态。要查看使用此功能的应用实现，请参阅 ActiveNotifications 示例。</p>
+<h2 id="相机功能"><a href="#相机功能" class="headerlink" title="相机功能"></a>相机功能</h2><p>此版本提供了下列用于访问相机闪光灯和相机图像再处理的新 API：</p>
+<p>Flashlight API<br>如果相机设备带有闪光灯，您可以通过调用 setTorchMode() 方法，在不打开相机设备的情况下打开或关闭闪光灯的火炬模式。应用对闪光灯或相机设备不享有独占所有权。每当相机设备不可用，或者开启火炬的其他相机资源不可用时，火炬模式即会被关闭并变为不可用状态。其他应用也可调用 setTorchMode() 来关闭火炬模式。当最后一个开启火炬模式的应用关闭时，火炬模式就会被关闭。</p>
+<p>您可以注册一个回调，通过调用 registerTorchCallback() 方法接收有关火炬模式状态的通知。第一次注册回调时，系统会立即调用它，并返回所有当前已知配备闪光灯的相机设备的火炬模式状态。如果成功开启或关闭火炬模式，系统会调用 onTorchModeChanged() 方法。</p>
+<p>Reprocessing API<br>Camera2 API 进行了扩展，以支持 YUV 和专用不透明格式图像再处理。要确定这些再处理功能是否可用，请调用 getCameraCharacteristics() 并检查有无 REPROCESS_MAX_CAPTURE_STALL 密钥。如果设备支持再处理，您可以通过调用 createReprocessableCaptureSession() 创建一个可再处理的相机采集会话并创建输入缓冲区再处理请求。</p>
+<p>使用 ImageWriter 类可将输入缓冲区流与相机再处理输入相连。要获得空白缓冲区，请遵循以下编程模型：</p>
+<p>调用 dequeueInputImage() 方法。<br>在输入缓冲区中填充数据。<br>通过调用 queueInputImage() 方法将缓冲区发送至相机。<br>如果您将 ImageWriter 对象与 PRIVATE 图像一起使用，您的应用并不能直接访问图像数据。请改为调用 queueInputImage() 方法，将 PRIVATE 图像直接传递给 ImageWriter，而不进行任何缓冲区复制。</p>
+<p>ImageReader 类现在支持 PRIVATE 格式图像流。凭借此支持特性，您的应用可使 ImageReader 输出图像保持为循环图像队列，还可选择一个或多个图像并将其发送给 ImageWriter 进行相机再处理。</p>
+<h1 id="7-0"><a href="#7-0" class="headerlink" title="7.0"></a>7.0</h1><h2 id="多窗口支持"><a href="#多窗口支持" class="headerlink" title="多窗口支持"></a>多窗口支持</h2><p>就是分屏</p>
+<h2 id="通知增强功能"><a href="#通知增强功能" class="headerlink" title="通知增强功能"></a>通知增强功能</h2><p>在 Android 7.0 中，我们重新设计了通知，使其更易于使用并且速度更快。部分变更包括：</p>
+<p>模板更新：我们正在更新通知模板，新强调了英雄形象和化身。开发者将能够充分利用新模板，只需进行少量的代码调整。<br>消息传递样式自定义：您可以自定义更多与您的使用 MessagingStyle 类的通知相关的用户界面标签。您可以配置消息、会话标题和内容视图。<br>捆绑通知：系统可以将消息组合在一起（例如，按消息主题）并显示组。用户可以适当地进行拒绝或归档等操作。如果您已实现 Android Wear 的通知，那么您已经很熟悉此模式。<br>直接回复：对于实时通信应用，Android 系统支持内联回复，以便用户可以直接在通知界面中快速回复短信。<br>自定义视图：两个新的 API 让您在通知中使用自定义视图时可以充分利用系统装饰元素，如通知标题和操作。</p>
+<h2 id="Android-中的-ICU4J-API"><a href="#Android-中的-ICU4J-API" class="headerlink" title="Android 中的 ICU4J API"></a>Android 中的 ICU4J API</h2><p>Android 7.0 目前在 Android 框架（位于 Android.icu 软件包下）中提供 ICU4J API 的子集。迁移很简单，主要是需要从 com.java.icu 命名空间更改为 Android.icu。如果您已在您的应用中使用 ICU4J 捆绑包，切换到 Android 框架中提供的 Android.icu API 可以大量节省 APK 大小。</p>
+<h2 id="webview"><a href="#webview" class="headerlink" title="webview"></a>webview</h2><p>Javascript 在页面加载之前运行<br>从以 Android 7.0 为目标平台的应用开始，JavaScript 上下文会在加载新页面时重置。目前，新 WebView 实例中加载的第一个页面会继承上下文。</p>
+<p>想要在 WebView 中注入 Javascript 的开发者应在页面开始加载后执行脚本。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Rom/" rel="tag"># Rom</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/03/22/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-rom-android8%E7%89%88%E6%9C%ACfeature/" rel="prev" title="安卓基础-Android8.0-feature一览">
+                  <i class="fa fa-chevron-left"></i> 安卓基础-Android8.0-feature一览
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/03/25/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93-20180325/" rel="next" title="工作小结-2018三月(4)">
+                  工作小结-2018三月(4) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

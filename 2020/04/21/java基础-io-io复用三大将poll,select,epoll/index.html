@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="本文是学习io复用相关">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Io复用三大将poll,select,epoll">
+<meta property="og:url" content="http://example.com/2020/04/21/java%E5%9F%BA%E7%A1%80-io-io%E5%A4%8D%E7%94%A8%E4%B8%89%E5%A4%A7%E5%B0%86poll,select,epoll/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本文是学习io复用相关">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-04-21T00:29:38.000Z">
+<meta property="article:modified_time" content="2021-07-11T11:39:49.268Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="io">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/04/21/java%E5%9F%BA%E7%A1%80-io-io%E5%A4%8D%E7%94%A8%E4%B8%89%E5%A4%A7%E5%B0%86poll,select,epoll/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2020/04/21/java%E5%9F%BA%E7%A1%80-io-io%E5%A4%8D%E7%94%A8%E4%B8%89%E5%A4%A7%E5%B0%86poll,select,epoll/","path":"2020/04/21/java基础-io-io复用三大将poll,select,epoll/","title":"Io复用三大将poll,select,epoll"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Io复用三大将poll,select,epoll | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">29</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">104</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#select"><span class="nav-number">1.</span> <span class="nav-text">select</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#select-%E6%9E%84%E9%80%A0"><span class="nav-number">1.1.</span> <span class="nav-text">select 构造</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#select-%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6"><span class="nav-number">1.2.</span> <span class="nav-text">select 运行机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#select-%E7%BC%BA%E7%82%B9"><span class="nav-number">1.3.</span> <span class="nav-text">select 缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#select%E4%BC%98%E7%82%B9"><span class="nav-number">1.4.</span> <span class="nav-text">select优点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Poll"><span class="nav-number">2.</span> <span class="nav-text">Poll</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Poll%E7%9A%84%E6%9E%84%E9%80%A0"><span class="nav-number">2.1.</span> <span class="nav-text">Poll的构造</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#poll%E7%9A%84%E6%9C%BA%E5%88%B6"><span class="nav-number">2.2.</span> <span class="nav-text">poll的机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#poll-%E7%BC%BA%E7%82%B9"><span class="nav-number">2.3.</span> <span class="nav-text">poll 缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#poll%E4%BC%98%E7%82%B9"><span class="nav-number">2.4.</span> <span class="nav-text">poll优点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Epoll"><span class="nav-number">3.</span> <span class="nav-text">Epoll</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Epoll%E7%9A%84%E6%9E%84%E9%80%A0"><span class="nav-number">3.1.</span> <span class="nav-text">Epoll的构造</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Epoll%E7%9A%84%E6%9C%BA%E5%88%B6"><span class="nav-number">3.2.</span> <span class="nav-text">Epoll的机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Epoll%E7%9A%84%E4%BC%98%E7%82%B9"><span class="nav-number">3.3.</span> <span class="nav-text">Epoll的优点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9"><span class="nav-number">3.4.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#kqueue"><span class="nav-number">5.</span> <span class="nav-text">kqueue</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mikilangkilo" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mikilangkilo" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:913925047@qq.com" title="E-Mail → mailto:913925047@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/mikilangkilo" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/04/21/java%E5%9F%BA%E7%A1%80-io-io%E5%A4%8D%E7%94%A8%E4%B8%89%E5%A4%A7%E5%B0%86poll,select,epoll/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Io复用三大将poll,select,epoll
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-04-21 08:29:38" itemprop="dateCreated datePublished" datetime="2020-04-21T08:29:38+08:00">2020-04-21</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-11 19:39:49" itemprop="dateModified" datetime="2021-07-11T19:39:49+08:00">2021-07-11</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java基础</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">本文是学习io复用相关</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">1.select/poll</span><br><span class="line">老李去火车站买票，委托黄牛，然后每隔6小时电话黄牛询问，黄牛三天内买到票，然后老李去火车站交钱领票。</span><br><span class="line">耗费：打电话</span><br><span class="line">2.epoll</span><br><span class="line">老李去火车站买票，委托黄牛，黄牛买到后即通知老李去领，然后老李去火车站交钱领票。</span><br><span class="line">耗费：无需打电话</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">作者：凉拌姨妈好吃</span><br><span class="line">链接：https://www.jianshu.com/p/6a6845464770</span><br><span class="line">来源：简书</span><br><span class="line">著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</span><br></pre></td></tr></table></figure>
+
+<p>哈哈，通俗点讲就是这样啊。</p>
+<h1 id="select"><a href="#select" class="headerlink" title="select"></a>select</h1><p>初次接触select还是学习okhttp之okio的时候学习的，依稀还记得channel，selector之类的名词</p>
+<p>但事实上select作为同步io的一种实现方式，和okio的异步io还是有差别的</p>
+<h2 id="select-构造"><a href="#select-构造" class="headerlink" title="select 构造"></a>select 构造</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout);</span><br><span class="line"></span><br><span class="line">fd_set其实这是一个数组的宏定义，实际上是一long类型的数组，每一个数组元素都能与一打开的文件句柄(socket、文件、管道、设备等)建立联系，建立联系的工作由程序员完成，当调用select()时，由内核根据IO状态修改fd_set的内容，由此来通知执行了select()的进程哪个句柄可读。</span><br><span class="line"></span><br><span class="line">fd_set可以通过一系列操作进行增加或者删除监听句柄的操作</span><br><span class="line"></span><br><span class="line">void FD_ZERO(fd_set *fdset);</span><br><span class="line">//清空集合</span><br><span class="line">void FD_SET(int fd, fd_set *fdset);</span><br><span class="line">//将一个给定的文件描述符加入集合之中</span><br><span class="line">void FD_CLR(int fd, fd_set *fdset);</span><br><span class="line">//将一个给定的文件描述符从集合中删除</span><br><span class="line">int FD_ISSET(int fd, fd_set *fdset);</span><br><span class="line">// 检查集合中指定的文件描述符是否可以读写</span><br><span class="line"></span><br><span class="line">但是问题就是限制了最大句柄为1024，C环境下通过对结构体尾部参数增大内存可以更改句柄数量，但是并不安全，会带来宏失效等风险，因此有限制最大1024个句柄。</span><br></pre></td></tr></table></figure>
+
+<p>nfds：指定待测试的文件描述符个数，它的值是待测试的最大描述字加1。<br>readfds,writefds,exceptfds：指定了我们让内核测试读、写和异常条件的文件描述符<br>fd_set：为一个存放文件描述符的信息的结构体，可以通过下面的宏进行设置。<br>返回值：int 若有就绪描述符返回其数目，若超时则为0，若出错则为-1</p>
+<h2 id="select-运行机制"><a href="#select-运行机制" class="headerlink" title="select 运行机制"></a>select 运行机制</h2><p>（1）使用copy_from_user从用户空间拷贝fd_set到内核空间</p>
+<p>（2）注册回调函数__pollwait</p>
+<p>（3）遍历所有fd，调用其对应的poll方法（对于socket，这个poll方法是sock_poll，sock_poll根据情况会调用到tcp_poll,udp_poll或者datagram_poll）</p>
+<p>（4）以tcp_poll为例，其核心实现就是__pollwait，也就是上面注册的回调函数。</p>
+<p>（5）__pollwait的主要工作就是把current（当前进程）挂到设备的等待队列中，不同的设备有不同的等待队列，对于tcp_poll来说，其等待队列是sk-&gt;sk_sleep（注意把进程挂到等待队列中并不代表进程已经睡眠了）。在设备收到一条消息（网络设备）或填写完文件数据（磁盘设备）后，会唤醒设备等待队列上睡眠的进程，这时current便被唤醒了。</p>
+<p>（6）poll方法返回时会返回一个描述读写操作是否就绪的mask掩码，根据这个mask掩码给fd_set赋值。</p>
+<p>（7）如果遍历完所有的fd，还没有返回一个可读写的mask掩码，则会调用schedule_timeout是调用select的进程（也就是current）进入睡眠。当设备驱动发生自身资源可读写后，会唤醒其等待队列上睡眠的进程。如果超过一定的超时时间（schedule_timeout指定），还是没人唤醒，则调用select的进程会重新被唤醒获得CPU，进而重新遍历fd，判断有没有就绪的fd。</p>
+<p>（8）把fd_set从内核空间拷贝到用户空间。</p>
+<h2 id="select-缺点"><a href="#select-缺点" class="headerlink" title="select 缺点"></a>select 缺点</h2><p>1、每次调用select，都需要把fd集合从用户态拷贝到内核态，这个开销在fd很多时会很大</p>
+<p>2、同时每次调用select都需要在内核遍历传递进来的所有fd，这个开销在fd很多时也很大</p>
+<p>3、select支持的文件描述符数量太小了，默认是1024</p>
+<h2 id="select优点"><a href="#select优点" class="headerlink" title="select优点"></a>select优点</h2><p>古老，因此每个平台都实现了，可以跨平台使用</p>
+<h1 id="Poll"><a href="#Poll" class="headerlink" title="Poll"></a>Poll</h1><p>说实话我之前只知道epoll，不知道poll</p>
+<h2 id="Poll的构造"><a href="#Poll的构造" class="headerlink" title="Poll的构造"></a>Poll的构造</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">int poll(struct pollfd *fds, nfds_t nfds, int timeout);</span><br><span class="line">typedef struct pollfd &#123;</span><br><span class="line">        int fd;                         // 需要被检测或选择的文件描述符</span><br><span class="line">        short events;                   // 对文件描述符fd上感兴趣的事件</span><br><span class="line">        short revents;                  // 文件描述符fd上当前实际发生的事件</span><br><span class="line">&#125; pollfd_t;</span><br></pre></td></tr></table></figure>
+
+<p>poll的构造对比select其实简便很多，由于使用了pollfd结构，因此没有fd_set的1024限制</p>
+<p>fds为监听文件句柄集合</p>
+<p>nfds为记录fds中描述符的总数量</p>
+<p>返回值和select相同</p>
+<h2 id="poll的机制"><a href="#poll的机制" class="headerlink" title="poll的机制"></a>poll的机制</h2><p>poll本质上和select无大区别，同select，先拷贝，后轮训，查得到处理，查不到休眠</p>
+<h2 id="poll-缺点"><a href="#poll-缺点" class="headerlink" title="poll 缺点"></a>poll 缺点</h2><p>poll的缺点和select很相同</p>
+<p>1、每次都需要拷贝fds从用户态到内核态，而且poll无fds限制，因此可能会拷贝很大很大</p>
+<p>2、仍然需要每次都遍历，时间复杂度仍然为O（n）</p>
+<p>3、水平触发，fd不处理的话，不同于select会删除，而是会仍然放在里面，导致下一次还需要处理</p>
+<p>4、我个人推测的，可能不是跨平台兼容</p>
+<h2 id="poll优点"><a href="#poll优点" class="headerlink" title="poll优点"></a>poll优点</h2><p>连接数（也就是文件描述符）没有限制（链表存储）</p>
+<h1 id="Epoll"><a href="#Epoll" class="headerlink" title="Epoll"></a>Epoll</h1><p>!!!大名鼎鼎，我们播放器就是用epoll来调的</p>
+<h2 id="Epoll的构造"><a href="#Epoll的构造" class="headerlink" title="Epoll的构造"></a>Epoll的构造</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">int epoll_create(int size);</span><br><span class="line">创建一个epoll的句柄，size表示监听数目的大小。创建完句柄它会自动占用一个fd值，使用完epoll一定要记得close，不然fd会被消耗完。</span><br><span class="line"></span><br><span class="line">int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);</span><br><span class="line">是epoll的事件注册函数，和select不同的是select在监听的时候会告诉内核监听什么样的事件，而epoll必须在epoll_ctl先注册要监听的事件类型。</span><br><span class="line">它的第一个参数返回epoll_creat的执行结果</span><br><span class="line">第二个参数表示动作，用下面几个宏表示</span><br><span class="line">EPOLL_CTL_ADD：注册新的fd到epfd中；</span><br><span class="line">EPOLL_CTL_MOD：修改已经注册的fd的监听事件；</span><br><span class="line">EPOLL_CTL_DEL：从epfd中删除一个fd；</span><br><span class="line">第三参数为监听的fd,第四个参数是告诉内核要监听什么事</span><br><span class="line"></span><br><span class="line">int epoll_wait(int epfd, struct epoll_event * events, int maxevents, int timeout);</span><br><span class="line">等待事件的发生，类似于select的调用</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">epoll是Linux内核为处理大批量文件描述符而作了改进的poll，是Linux下多路复用IO接口select/poll的增强版本，它能显著提高程序在大量并发连接中只有少量活跃的情况下的系统CPU利用率。原因就是获取事件的时候，它无须遍历整个被侦听的描述符集，只要遍历那些被内核IO事件异步唤醒而加入Ready队列的描述符集合就行了。</span><br><span class="line"></span><br><span class="line">作者：似水牛年</span><br><span class="line">链接：https://www.jianshu.com/p/397449cadc9a</span><br><span class="line">来源：简书</span><br><span class="line">著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</span><br></pre></td></tr></table></figure>
+
+<h2 id="Epoll的机制"><a href="#Epoll的机制" class="headerlink" title="Epoll的机制"></a>Epoll的机制</h2><p>epoll的机制描述起来较为复杂</p>
+<p>1、调用epoll_create()建立一个epoll对象(在epoll文件系统中为这个句柄对象分配资源)</p>
+<p>2、调用epoll_ctl向epoll对象中添加这个套接字</p>
+<p>3、调用epoll_wait收集发生的事件的连接</p>
+<p>同时epoll提供了边缘触发行为，可以使得一个事件仅仅通知一次</p>
+<h2 id="Epoll的优点"><a href="#Epoll的优点" class="headerlink" title="Epoll的优点"></a>Epoll的优点</h2><p>1、创建对象的时候使用了mmap，而不需要频繁的拷贝</p>
+<p>2、无句柄上限</p>
+<p>3、复杂度O(1)，事件驱动，避免了傻瓜式的轮训</p>
+<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><p>每次创建一个监听句柄，如果用poll的话就不需要创建了，而是在poll_fd中增加</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><table>
+<thead>
+<tr>
+<th></th>
+<th>Select</th>
+<th>poll</th>
+<th>epoll</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>操作方式</td>
+<td>遍历</td>
+<td>遍历</td>
+<td>回调</td>
+</tr>
+<tr>
+<td>底层实现</td>
+<td>数组</td>
+<td>链表</td>
+<td>哈希表</td>
+</tr>
+<tr>
+<td>IO效率</td>
+<td>每次调用都进行线性遍历，时间复杂度为O(n)</td>
+<td>每次调用都进行线性遍历，时间复杂度为O(n)</td>
+<td>事件通知方式，每当fd就绪，系统注册的回调函数就会被调用，将就绪fd放到readyList里面，时间复杂度O(1)</td>
+</tr>
+<tr>
+<td>最大连接数</td>
+<td>1024（x86）或2048（x64）</td>
+<td>无上限</td>
+<td>无上限</td>
+</tr>
+<tr>
+<td>fd拷贝</td>
+<td>每次调用select，都需要把fd集合从用户态拷贝到内核态</td>
+<td>每次调用poll，都需要把fd集合从用户态拷贝到内核态</td>
+<td>调用epoll_ctl时拷贝进内核并保存，之后每次epoll_wait不拷贝</td>
+</tr>
+</tbody></table>
+<h1 id="kqueue"><a href="#kqueue" class="headerlink" title="kqueue"></a>kqueue</h1>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/io/" rel="tag"># io</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/02/23/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93-20200223/" rel="prev" title="工作小结-2020年二月">
+                  <i class="fa fa-chevron-left"></i> 工作小结-2020年二月
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/04/27/java%E5%9F%BA%E7%A1%80-%E7%BC%96%E8%AF%91-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3javap/" rel="next" title="java基础-深入理解javap">
+                  java基础-深入理解javap <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

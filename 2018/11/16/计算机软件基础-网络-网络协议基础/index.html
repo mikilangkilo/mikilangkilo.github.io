@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="学习简单选择排序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络协议基础">
+<meta property="og:url" content="http://example.com/2018/11/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%BD%AF%E4%BB%B6%E5%9F%BA%E7%A1%80-%E7%BD%91%E7%BB%9C-%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="学习简单选择排序">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/TCP%E5%A4%B4%E9%83%A8%E5%9B%BE.png">
+<meta property="article:published_time" content="2018-11-16T03:22:09.000Z">
+<meta property="article:modified_time" content="2021-07-11T11:39:49.238Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="排序">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/TCP%E5%A4%B4%E9%83%A8%E5%9B%BE.png">
+
+
+<link rel="canonical" href="http://example.com/2018/11/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%BD%AF%E4%BB%B6%E5%9F%BA%E7%A1%80-%E7%BD%91%E7%BB%9C-%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2018/11/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%BD%AF%E4%BB%B6%E5%9F%BA%E7%A1%80-%E7%BD%91%E7%BB%9C-%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/","path":"2018/11/16/计算机软件基础-网络-网络协议基础/","title":"网络协议基础"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>网络协议基础 | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">29</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">104</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OSI%E7%BD%91%E7%BB%9C%E5%88%86%E5%B1%82"><span class="nav-number">1.</span> <span class="nav-text">OSI网络分层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%B1%82"><span class="nav-number">1.1.</span> <span class="nav-text">物理层</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%B1%82%E4%BC%A0%E8%BE%93%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.1.</span> <span class="nav-text">物理层传输原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%B1%82%E6%80%BB%E7%BB%93"><span class="nav-number">1.1.2.</span> <span class="nav-text">物理层总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="nav-number">1.2.</span> <span class="nav-text">数据链路层</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E8%AE%BE%E5%A4%87"><span class="nav-number">1.2.1.</span> <span class="nav-text">数据链路层设备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-number">1.2.2.</span> <span class="nav-text">数据链路层基础知识</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%B1%82"><span class="nav-number">1.3.</span> <span class="nav-text">网络层</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ARP-address-resolution-protocol"><span class="nav-number">1.3.1.</span> <span class="nav-text">ARP (address resolution protocol)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ICMP-internet-control-message-protocol"><span class="nav-number">1.3.2.</span> <span class="nav-text">ICMP (internet control message protocol)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IGMP-internet-group-management-protocol"><span class="nav-number">1.3.3.</span> <span class="nav-text">IGMP (internet group management protocol)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E5%B1%82"><span class="nav-number">1.4.</span> <span class="nav-text">传输层</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UDP-user-datagram-protocol-%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.4.1.</span> <span class="nav-text">UDP(user datagram protocol) 用户数据协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#UDP%E7%9A%84%E4%BC%98%E7%82%B9"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">UDP的优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UDP%E7%9A%84%E4%B8%BB%E8%A6%81%E9%97%AE%E9%A2%98"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">UDP的主要问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UDP%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E4%BC%A0%E8%BE%93%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.4.1.3.</span> <span class="nav-text">UDP如何解决传输的问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-transmission-control-protocol-%E4%BC%A0%E8%BE%93%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.4.2.</span> <span class="nav-text">TCP(transmission control protocol) 传输控制协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP%E5%A4%B4%E9%83%A8%E5%9B%BE"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">TCP头部图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">TCP连接管理机制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B"><span class="nav-number">1.4.2.2.1.</span> <span class="nav-text">三次握手</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B"><span class="nav-number">1.4.2.2.2.</span> <span class="nav-text">四次挥手</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AA%97%E5%8F%A3%E6%BB%91%E5%8A%A8"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">窗口滑动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AA%97%E5%8F%A3%E6%BB%91%E5%8A%A8%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.4.2.4.</span> <span class="nav-text">窗口滑动协议</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E5%B1%82%E5%85%B6%E4%BB%96%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.4.3.</span> <span class="nav-text">传输层其他协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%9A%E8%AF%9D%E5%B1%82"><span class="nav-number">1.5.</span> <span class="nav-text">会话层</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E5%8A%9F%E8%83%BD"><span class="nav-number">1.5.1.</span> <span class="nav-text">主要功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E7%90%86%E8%A7%A3"><span class="nav-number">1.5.2.</span> <span class="nav-text">具体理解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A8%E7%A4%BA%E5%B1%82"><span class="nav-number">1.6.</span> <span class="nav-text">表示层</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E5%8A%9F%E8%83%BD-1"><span class="nav-number">1.6.1.</span> <span class="nav-text">主要功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%B1%82"><span class="nav-number">1.7.</span> <span class="nav-text">应用层</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#https"><span class="nav-number">1.7.1.</span> <span class="nav-text">https</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#https-%E5%92%8Chttp%E4%B8%BB%E8%A6%81%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.7.1.1.</span> <span class="nav-text">https 和http主要的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8F%A1%E6%89%8B%E8%BF%87%E7%A8%8B"><span class="nav-number">1.7.1.2.</span> <span class="nav-text">握手过程</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mikilangkilo" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mikilangkilo" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:913925047@qq.com" title="E-Mail → mailto:913925047@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/mikilangkilo" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/11/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%BD%AF%E4%BB%B6%E5%9F%BA%E7%A1%80-%E7%BD%91%E7%BB%9C-%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          网络协议基础
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-11-16 11:22:09" itemprop="dateCreated datePublished" datetime="2018-11-16T11:22:09+08:00">2018-11-16</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-11 19:39:49" itemprop="dateModified" datetime="2021-07-11T19:39:49+08:00">2021-07-11</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">学习简单选择排序</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="OSI网络分层"><a href="#OSI网络分层" class="headerlink" title="OSI网络分层"></a>OSI网络分层</h1><p>网络分层就是OSI七层结构，另外还有个TCPIP五层结构，我从最底层开始总结</p>
+<h2 id="物理层"><a href="#物理层" class="headerlink" title="物理层"></a>物理层</h2><p>职责：建立、维护、断开物理连接</p>
+<p>物理层是一个点对点的数据直链，并不一定可靠，物理层是通过拓扑结构进行连接，但始终保障能够连通。</p>
+<h3 id="物理层传输原理"><a href="#物理层传输原理" class="headerlink" title="物理层传输原理"></a>物理层传输原理</h3><p>物理层主要功能是传输比特流。其传输原理是将需要传输的信息按照ASCII编码转化为二进制代码，然后将二进制代码通过数据信号编码器转换为一种电信号，最后信号由发送端的发送设备通过传输介质发送到接受端计算机。传输的信号分为模电和数电，解析方法是调制和解调</p>
+<h3 id="物理层总结"><a href="#物理层总结" class="headerlink" title="物理层总结"></a>物理层总结</h3><p>物理层的传输方式和解析方式大部分是本科阶段通信原理学习的内容，另外传输的协议比如说数电，模电，多路复用，时分复用，波分复用等等。对移动端来讲物理层可控太少，了解其职责和大致原理即可。</p>
+<h2 id="数据链路层"><a href="#数据链路层" class="headerlink" title="数据链路层"></a>数据链路层</h2><p>职责：建立逻辑连接，进行硬件地址寻址，差错校验等功能</p>
+<p>数据链路层是一个数据传输通道，位于物理层和网络层之间，是数据传输过程中比较重要的一层。物理层提供的的传输媒介、连接在通讯时只是暂时的，而数据链路的功能就是通过建立通信连接和拆除通信连接这种数据收发方式，而承担数据链路功能的设备就是数据链路层设备</p>
+<h3 id="数据链路层设备"><a href="#数据链路层设备" class="headerlink" title="数据链路层设备"></a>数据链路层设备</h3><ol>
+<li>网卡</li>
+</ol>
+<p>作用：网卡是连接计算机与网络的硬件设备，不仅能实现与局域网传输介质之间的物理连接和电信号连接，还涉及了帧的发送与接收、帧的封装与拆封、介质访问控制、数据的编码与解码以及数据缓存的功能</p>
+<ol start="2">
+<li>网桥</li>
+</ol>
+<p>作用：实现局域网互联的存储转发设备，网桥从一个局域网接收mac帧、拆封、校对、校验之后，按照另一个局域网的格式重新组装，发往它的物理层</p>
+<ol start="3">
+<li>交换机</li>
+</ol>
+<p>是一种用于电信号转发的网络设备，可以把传输的信息送到符合要求的设备上面</p>
+<h3 id="数据链路层基础知识"><a href="#数据链路层基础知识" class="headerlink" title="数据链路层基础知识"></a>数据链路层基础知识</h3><ol>
+<li>mac地址</li>
+</ol>
+<p>mac地址用来表示互联网上面每一个站点的标识符，采用十六进制，共6个字节<br>输入ipconfig/all 中的物理地址及是mac地址</p>
+<ol start="2">
+<li>数据帧</li>
+</ol>
+<p>数据帧是数据链路层的协议数据单元，它包括三部分：帧头，数据部分，帧尾。帧头帧尾是控制信息，数据部分包含了需要传输的数据</p>
+<ol start="3">
+<li>载波监听多路访问技术 CSMA/CD</li>
+</ol>
+<p>发送数据前监听信道是否空闲，若空闲就立即发送信道，否则就等待一段时间直至信道中的信息传输结束后再发送数据，若在上一段信息发送结束后，同时又两个或两个以上节点都提出发送请求，则判定为冲突，冲突会立即停止发送数据，等待一段时间之后再重新尝试</p>
+<h2 id="网络层"><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h2><p>职责：进行逻辑地址寻址，实现不同网络之间的路径选择</p>
+<p>网络层将多个通络通过路由器互连成一个互连网络，让网络中的多台计算机可以互相通信。网络层最重要的是ip协议，在网络层需要实现数据报文的分片与组装、同时需要提供路由选择。</p>
+<p>和网络层搭配使用的是ARP(地址解析协议)，ICMP(互联网控制报文协议)，IGMP(网际管理协议)</p>
+<h3 id="ARP-address-resolution-protocol"><a href="#ARP-address-resolution-protocol" class="headerlink" title="ARP (address resolution protocol)"></a>ARP (address resolution protocol)</h3><p>在实际过程中，知道一个主机或者路由器的ip地址，并不知道对应的mac地址，因此可以通过arp协议，用目的ip地址得到mac地址。</p>
+<p>原理：在每台安装tcpip协议的电脑路由器里都有一个arp缓存表，表里的ip地址与mac地址是一一对应的。当发送数据时，主机a会在自己的arp缓存表中寻找是否有目标ip地址，如果找到就知道目标对应的mac地址，直接将mac地址写入帧里面发送即可。如果没有找到，就会在网络上发送一个广播(ARP REQUEST)，这个request的目标mac地址是”FF.FF.FF.FF.FF.FF”，携带的信息是查询目标ip地址。网络上面不是这个ip地址的主机不会响应这个arp查询，只有ip地址为这个的目标主机才会响应，并且发送一个ARP RESPONSE, 携带的信息是目标ip的mac地址，这样就回复回来的时候就知道目标的mac地址了，并且会更新arp缓存表（arp缓存表使用的是老化机制，一段时间不使用就会删除，因此长度并不会特别长）</p>
+<h3 id="ICMP-internet-control-message-protocol"><a href="#ICMP-internet-control-message-protocol" class="headerlink" title="ICMP (internet control message protocol)"></a>ICMP (internet control message protocol)</h3><p>通信环境中可能存在各种问题，这些问题的反馈需要让开发者知道并且应对，因此就有了ICMP协议，该协议与传输协议不同，他一般并不用于两点间传输数据，而常常用于返回错误的信息或分析路由。</p>
+<p>ICMP主要功能：1、确认ip包是否成功到达目标地址 2、通知在发送过程中ip包被丢弃的原因 3、ICMP是基于ip协议制作的，但是并不是传输层的功能，因此仍然是网络层协议 4、ICMP只能用于IPV4, 能用于IPV6的icmp叫做ICMPV6</p>
+<p>常用的ICMP技术，像是 ping， traceroute命令</p>
+<h3 id="IGMP-internet-group-management-protocol"><a href="#IGMP-internet-group-management-protocol" class="headerlink" title="IGMP (internet group management protocol)"></a>IGMP (internet group management protocol)</h3><p>跨越多个网络的组播转发必须要依赖于路由器，路由器为建立转发路由必须要了解每个组员在internet中的分布，这要求主机将自己所在的组播组通知给本地路由器，这也是建立组播转发路由的基础。主机与本地路由器之间使用igmp来进行组播组成员信息的交互。</p>
+<p>IGMP提供了再转发组播数据包到达目的地的最后阶段所需要的信息，实现双向的功能：<br>1.主机通过igmp通知路由器希望接受或离开某个特定组播组的信息<br>2.路由器通过IGMP周期性的查询局域网内的组播组成员是否处于活动状态，实现所连网段组成员关系的手机与维护。</p>
+<h2 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h2><p>职责：在网络的各个节点之间可靠的分发数据包，实现应用进程间的端到端通信，同时向应用层提供通信服务</p>
+<p>原理：通过多路复用和解复用技术，发送方的不同的应用进程都可以使用同一个传输层协议传送数据，接收方的传输层剥去报文首部之后能把这些数据正确的传输的正确的应用进程之间。</p>
+<p>传输层就是知名协议UDP和TCP的所在。</p>
+<h3 id="UDP-user-datagram-protocol-用户数据协议"><a href="#UDP-user-datagram-protocol-用户数据协议" class="headerlink" title="UDP(user datagram protocol) 用户数据协议"></a>UDP(user datagram protocol) 用户数据协议</h3><p>UDP特性：一个数据包就能完成任务，不需要分段，不需要建立会话，不需要流量控制，是种不可靠的传输方式。</p>
+<h4 id="UDP的优点"><a href="#UDP的优点" class="headerlink" title="UDP的优点"></a>UDP的优点</h4><ol>
+<li>开销更小</li>
+</ol>
+<p>对比于tcp， udp的首部只有8个字节，而tcp有20个字节和40个字节的可选项</p>
+<ol start="2">
+<li>速度更快</li>
+</ol>
+<p>UDP发送数据之前没有TCP的连接建立过程，而TCP则提供了过多的保护，在及时性上面做了很多的妥协</p>
+<h4 id="UDP的主要问题"><a href="#UDP的主要问题" class="headerlink" title="UDP的主要问题"></a>UDP的主要问题</h4><ol>
+<li>丢失和乱序</li>
+</ol>
+<p>因为UDP不提供ACK、序列号等机制，所以是没有办法知道是否有报文丢失以及接收方到达等报文书序是否和发送方的报文数据一样</p>
+<ol start="2">
+<li>差错</li>
+</ol>
+<p>对于差错问题可以通过校验和等检测到，但是不提供差错纠正</p>
+<ol start="3">
+<li>数据完整性</li>
+</ol>
+<p>UDP协议头部虽然有16位的校验和，但是IPV4不强制执行，所以说UDP无法保证数据的完整性</p>
+<h4 id="UDP如何解决传输的问题"><a href="#UDP如何解决传输的问题" class="headerlink" title="UDP如何解决传输的问题"></a>UDP如何解决传输的问题</h4><p>1、 数据完整性</p>
+<p>加上一个16或者32位的CRC验证字段</p>
+<p>2、 乱序</p>
+<p>加上一个数据包序列号SEQ</p>
+<p>3、 丢包</p>
+<p>加上和TCP类似的ACK机制，进行确认和重传</p>
+<p>因此推荐使用RUDP（reliable udp）</p>
+<h3 id="TCP-transmission-control-protocol-传输控制协议"><a href="#TCP-transmission-control-protocol-传输控制协议" class="headerlink" title="TCP(transmission control protocol) 传输控制协议"></a>TCP(transmission control protocol) 传输控制协议</h3><h4 id="TCP头部图"><a href="#TCP头部图" class="headerlink" title="TCP头部图"></a>TCP头部图</h4><p><img src="/images/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/TCP%E5%A4%B4%E9%83%A8%E5%9B%BE.png" alt="tcp头部图"></p>
+<p>tcp头部添加了20个字节，总计160位来进行数据的控制</p>
+<p>其中选项还可以在多添加40个字节</p>
+<p>因此头部的必要信息比较多，也是确保数据可靠的基础</p>
+<h4 id="TCP连接管理机制"><a href="#TCP连接管理机制" class="headerlink" title="TCP连接管理机制"></a>TCP连接管理机制</h4><p>连接tcp需要三次握手，断开tcp需要四次挥手</p>
+<h5 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h5><p>第一次：</p>
+<p>客户端发送给服务器，通知服务器需要建立连接</p>
+<p>第二次：</p>
+<p>服务器发送给客户端，通知客户端服务器收到连接请求</p>
+<p>第三次：</p>
+<p>客户端发送给服务器，通知服务器客户端收到了服务器的回应</p>
+<p>详细解释：</p>
+<p>1, TCP服务器进程先创建传输控制块TCB, 时刻准备接受客户端进程的连接请求, 此时服务器就进入了 LISTEN（监听）状态<br>2, TCP客户端进程也是先创建传输控制块TCB, 然后向服务器发出连接请求报文，此时报文首部中的同步标志位SYN=1, 同时选择一个初始序列号 seq = x, 此时，TCP客户端进程进入了 SYN-SENT（同步已发送状态）状态。TCP规定, SYN报文段（SYN=1的报文段）不能携带数据，但需要消耗掉一个序号。<br>3, TCP服务器收到请求报文后, 如果同意连接, 则发出确认报文。确认报文中的 ACK=1, SYN=1, 确认序号是 x+1, 同时也要为自己初始化一个序列号 seq = y, 此时, TCP服务器进程进入了SYN-RCVD（同步收到）状态。这个报文也不能携带数据, 但是同样要消耗一个序号。<br>4, TCP客户端进程收到确认后还, 要向服务器给出确认。确认报文的ACK=1，确认序号是 y+1，自己的序列号是 x+1.<br>5, 此时，TCP连接建立，客户端进入ESTABLISHED（已建立连接）状态。当服务器收到客户端的确认后也进入ESTABLISHED状态，此后双方就可以开始通信了。</p>
+<ul>
+<li>为什么不用两次握手？</li>
+</ul>
+<p>主要是为了防止已经失效的连接请求报文突然又传回服务器，如果是已经失效的，第三次就无法成立，因此第三次是为了确保网络停滞时间不会导致连接失效</p>
+<ul>
+<li>为什么不用四次？</li>
+</ul>
+<p>四次的话其实就是服务器在通知一次客户端，其实没有必要了，多余了</p>
+<h5 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h5><p>第一次：客户端通知服务器端，要释放连接了，并且客户端进入终止等待1状态</p>
+<p>第二次：服务器收到客户端的释放连接的请求，通知客户端自己已经收到释放连接的请求</p>
+<p>第三次：客户端收到服务器的确认释放连接请求，客户端进入终止等待2状态，而服务器将最后的数据发送完毕后，就向客户端发送连接释放报文</p>
+<p>第四次：客户端收到连接释放报文，向服务端发出确认释放，之后就进入了时间等待状态，等到2个最长报文段寿命时间结束后，客户端就撤销相应的TCB，并且进入close状态，而服务端在接收到了这个确认信息后，不需要等待，而直接进入close状态。因此服务端结束的时间比客户端早一些</p>
+<ul>
+<li>为什么客户端在第四次挥手的时候需要等待两个最长报文寿命时间呢？</li>
+</ul>
+<p>第一：保证客户端发送的最后一个ACK报文能够到达服务器，因为这个ACK报文可能丢失，丢失的话服务端就无法知道收到回应，因此如果最后一个ACK报文丢失的话，服务端会再次发送，在两个最长报文寿命时间内，客户端有可能收到第二次请求确认的报文</p>
+<p>第二：防止已经失效的请求报文，客户端等待的两个最长报文寿命的时间中，可以确保本次tcp连接产生的所有报文段都从网络中消失，这样新的连接就不会出现旧连接的请求报文</p>
+<ul>
+<li>为什么建立连接需要三次，而释放连接需要四次？</li>
+</ul>
+<p>因为释放的时候不确定是否有数据没有发送完毕，因此需要确保数据全部发送完毕，这样多了一次，而如果释放的时候没有数据的话，其实可以看做三次，即第二次和第三次合并</p>
+<h4 id="窗口滑动"><a href="#窗口滑动" class="headerlink" title="窗口滑动"></a>窗口滑动</h4><p>TCP的滑动窗口以字节为单位，用三个指针进行表示，当窗口内连续报文段被确认收到后，可以将窗口向前滑动，窗口大小应等于缓存区大小</p>
+<h4 id="窗口滑动协议"><a href="#窗口滑动协议" class="headerlink" title="窗口滑动协议"></a>窗口滑动协议</h4><p>只有在接受窗口向前滑动时（与此同时也发送了确认），发送窗口才可能向前滑动，收发两端的窗口按照以上规律不断的向前滑动</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">当发送窗口和接受窗口的大小都等于1时，就是停止等待协议。</span><br><span class="line">当发送窗口大于1，而接收窗口小于1时，就是回退N步协议。</span><br><span class="line">当发送窗口和接受窗口的大小均大于1时，就是选择重发协议。</span><br></pre></td></tr></table></figure>
+
+<p>重发是对回退的补充，由于回退会导致从漏掉的帧到已接受的所有帧全部丢弃，浪费了带宽，而重发则是直接对漏掉的帧进行补充</p>
+<h3 id="传输层其他协议"><a href="#传输层其他协议" class="headerlink" title="传输层其他协议"></a>传输层其他协议</h3><p>传输层还有SPX, NetBIOS,NetBEUI等协议</p>
+<h2 id="会话层"><a href="#会话层" class="headerlink" title="会话层"></a>会话层</h2><p>职责：主机间通讯，管理应用程序之间的会话。建立在传输层之上，利用传输层提供的服务，使应用建立和维持会话，并能使会话得到同步。会话层使用校验点可使通信会话在通信失效时从校验点继续恢复通信。</p>
+<h3 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h3><p>1、为会话实体间建立连接</p>
+<p>2、进行数据传输</p>
+<p>3、连接释放</p>
+<h3 id="具体理解"><a href="#具体理解" class="headerlink" title="具体理解"></a>具体理解</h3><p>会话层主要是通过调用传输层来建立会话</p>
+<h2 id="表示层"><a href="#表示层" class="headerlink" title="表示层"></a>表示层</h2><p>职责：表示层向上对应用层服务，向下接受来自会话层的服务，表示层为在引用过程之间传送的信息提供表示方法的服务，只关心信息发出的语法和语义。</p>
+<h3 id="主要功能-1"><a href="#主要功能-1" class="headerlink" title="主要功能"></a>主要功能</h3><p>表示层早期是用来转换字符数据的编码，提供格式化的表示和转换数据服务，数据的压缩和解压缩，加密和解密等工作，但是现在应用层可以做表示层可以做的事情，所以一般根据TCPIP五层协议，表示层会话层和应用层都可以合为应用层</p>
+<h2 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h2><p>职责：应用层直接和应用程序接口并且提供常见的网络应用服务，应用层也会向表示层发出请求，应用层是开放系统的最高层，是直接为应用进程提供服务的。</p>
+<p>应用层协议较多，有FTP、SMTP、HTTP等</p>
+<p>着重学习一下HTTPS</p>
+<h3 id="https"><a href="#https" class="headerlink" title="https"></a>https</h3><p>https协议主要针对解决http协议以下不足：<br>1.通信使用明文（不加密），内容可能会被窃听<br>2.不验证通信方身份，应此可能遭遇伪装<br>3.无法证明报文的完整性（即准确性），所以可能已遭篡改<br>http+加密+认证+完整性保护=https</p>
+<h4 id="https-和http主要的区别"><a href="#https-和http主要的区别" class="headerlink" title="https 和http主要的区别"></a>https 和http主要的区别</h4><ol>
+<li>https需要ca证书</li>
+<li>https是具有安全性的ssl加密传输协议，http是明文传输</li>
+<li>http和https使用完全不同的连接方式，用的端口也不一样，http是80端口，https是443端口</li>
+<li>http是无状态的，而https是有ssl+http协议构建的可进行加密传输、身份认证的网络协议，比http协议安全</li>
+</ol>
+<h4 id="握手过程"><a href="#握手过程" class="headerlink" title="握手过程"></a>握手过程</h4><ol>
+<li>客户端向服务器传送客户端ssl协议的版本号，加密算法的种类，产生的随机数、以及其他服务器和客户端之间通讯需要的各种信息</li>
+<li>服务器向客户端传送ssl协议的版本号、加密算法的种类、随机数以及其他相关信息，同时服务器还向客户端传送自己的证书</li>
+<li>客户端利用服务器传过来的信息验证服务器的合法性，服务器的合法性包括：证书是否过期，ca证书是否可靠，证书的公钥能否解开服务器证书的发行者数字签名，证书上面的域名是否和服务器的实际域名相匹配。如果不合法，通讯将断开，否则将继续进行下面的步骤</li>
+<li>客户端随机产生一个用于后面通讯的“对称密码”，然后服务器的公钥对其加密，然后将加密后的“预主密码“传给服务器</li>
+<li>如果服务器要求客户的身份认证，用户可以建立一个随机数然后对其数据签名，然后将这个含有签名的随机数和客户自己的证书以及加密过的”预主密码“一起传给服务器</li>
+<li>如果服务器要求客户的身份认证，服务器必须检验客户证书和签名随机数的合法性，具体的合法性检验过程包括：客户的证书使用日期是否有效，提供的ca是否可靠，ca的公钥能否正确解开客户端证书的发行ca签名，检查客户的证书是否在证书废止列表中。如果不合法，通讯立即终端，否则服务器将用自己的私钥解药加密的预主密码，然后执行一系列步骤产生主通讯密码。客户端也同样的步骤产生主通讯密码</li>
+<li>服务器和客户端用相同的主密码。一个对称秘钥用于ssl协议的安全数据通讯的加解密通讯，同时在ssl通讯过程中还要完成数据通讯的完整性，防止数据通讯中的任何变化</li>
+<li>客户端向服务器发出信息，指明后续通讯将使用主密码为堆成密码，同时通知服务器本次握手过程结束</li>
+<li>服务器向客户端发出信息，指明后续通讯将使用主密码为对称密码，同时通知客户端本次握手过程结束</li>
+<li>ssl的握手部分结束，安全通道的通讯开始，客户端和服务端开始使用相同的对称秘钥进行数据通讯，同时检查通讯完整性</li>
+</ol>
+<p>概括，https在客户端生成秘钥并传递给服务端的时候，采取的是非对称加密，而秘钥在服务端手里的时候，之后采取的就是对称加密。单向验证是指客户端对服务端进行身份验证，验证是否可靠，而双向验证则是服务端也同时验证客户端，双向验证常见于企业应用</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%8E%92%E5%BA%8F/" rel="tag"># 排序</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/11/16/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93-20181121/" rel="prev" title="工作小结-2018十一月">
+                  <i class="fa fa-chevron-left"></i> 工作小结-2018十一月
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/11/25/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93-20181125/" rel="next" title="工作小结-2018十一月">
+                  工作小结-2018十一月 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

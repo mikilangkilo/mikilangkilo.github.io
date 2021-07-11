@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="本文主要是对Rxjava的通用方法进行学习和反思">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓基础-ARouter组件化框架学习笔记">
+<meta property="og:url" content="http://example.com/2018/03/14/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-%E6%A1%86%E6%9E%B6-ARouter%E7%BB%84%E4%BB%B6%E5%8C%96%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本文主要是对Rxjava的通用方法进行学习和反思">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-03-14T08:29:53.000Z">
+<meta property="article:modified_time" content="2021-07-11T10:39:28.890Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Rxjava">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2018/03/14/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-%E6%A1%86%E6%9E%B6-ARouter%E7%BB%84%E4%BB%B6%E5%8C%96%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2018/03/14/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-%E6%A1%86%E6%9E%B6-ARouter%E7%BB%84%E4%BB%B6%E5%8C%96%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/","path":"2018/03/14/安卓基础-框架-ARouter组件化框架学习笔记/","title":"安卓基础-ARouter组件化框架学习笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>安卓基础-ARouter组件化框架学习笔记 | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">29</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">104</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">基本使用方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">进阶使用方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90"><span class="nav-number">3.</span> <span class="nav-text">原理解析</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mikilangkilo" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mikilangkilo" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:913925047@qq.com" title="E-Mail → mailto:913925047@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/mikilangkilo" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/03/14/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-%E6%A1%86%E6%9E%B6-ARouter%E7%BB%84%E4%BB%B6%E5%8C%96%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          安卓基础-ARouter组件化框架学习笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-03-14 16:29:53" itemprop="dateCreated datePublished" datetime="2018-03-14T16:29:53+08:00">2018-03-14</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-11 18:39:28" itemprop="dateModified" datetime="2021-07-11T18:39:28+08:00">2021-07-11</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">安卓基础</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">本文主要是对Rxjava的通用方法进行学习和反思</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>ARouter是用于组件化的比较好的一个方案，不过性能方面肯定不如直接跳转。</p>
+<h1 id="基本使用方法"><a href="#基本使用方法" class="headerlink" title="基本使用方法"></a>基本使用方法</h1><ul>
+<li>添加依赖</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">	...</span><br><span class="line">	javaCompileOptions &#123;</span><br><span class="line">	    annotationProcessorOptions &#123;</span><br><span class="line">		arguments = [ moduleName : project.getName() ]</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">    // 替换成最新版本, 需要注意的是api</span><br><span class="line">    // 要与compiler匹配使用，均使用最新版可以保证兼容</span><br><span class="line">    compile &#x27;com.alibaba:arouter-api:x.x.x&#x27;</span><br><span class="line">    annotationProcessor &#x27;com.alibaba:arouter-compiler:x.x.x&#x27;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line">// 旧版本gradle插件(&lt; 2.2)，可以使用apt插件，配置方法见文末&#x27;其他#4&#x27;</span><br><span class="line">// Kotlin配置参考文末&#x27;其他#5&#x27;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>添加注解</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@Route(path = &quot;/test/activity&quot;)</span><br><span class="line">public class YourActivity extend Activity &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>初始化sdk</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if (isDebug()) &#123;           // 这两行必须写在init之前，否则这些配置在init过程中将无效</span><br><span class="line">    ARouter.openLog();     // 打印日志</span><br><span class="line">    ARouter.openDebug();   // 开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)</span><br><span class="line">&#125;</span><br><span class="line">ARouter.init(mApplication); // 尽可能早，推荐在Application中初始化</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>进行路由操作</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// 1. 应用内简单的跳转(通过URL跳转在&#x27;进阶用法&#x27;中)</span><br><span class="line">ARouter.getInstance().build(&quot;/test/activity&quot;).navigation();</span><br><span class="line"></span><br><span class="line">// 2. 跳转并携带参数</span><br><span class="line">ARouter.getInstance().build(&quot;/test/1&quot;)</span><br><span class="line">			.withLong(&quot;key1&quot;, 666L)</span><br><span class="line">			.withString(&quot;key3&quot;, &quot;888&quot;)</span><br><span class="line">			.withObject(&quot;key4&quot;, new Test(&quot;Jack&quot;, &quot;Rose&quot;))</span><br><span class="line">			.navigation();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>混淆</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-keep public class com.alibaba.android.arouter.routes.**&#123;*;&#125;</span><br><span class="line">-keep class * implements com.alibaba.android.arouter.facade.template.ISyringe&#123;*;&#125;</span><br><span class="line"></span><br><span class="line"># 如果使用了 byType 的方式获取 Service，需添加下面规则，保护接口</span><br><span class="line">-keep interface * implements com.alibaba.android.arouter.facade.template.IProvider</span><br><span class="line"></span><br><span class="line"># 如果使用了 单类注入，即不定义接口实现 IProvider，需添加下面规则，保护实现</span><br><span class="line">-keep class * implements com.alibaba.android.arouter.facade.template.IProvider</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用gradle进行路由表的自动加载</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: &#x27;com.alibaba.arouter&#x27;</span><br><span class="line"></span><br><span class="line">buildscript &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    dependencies &#123;</span><br><span class="line">        classpath &quot;com.alibaba:arouter-register:1.0.0&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="进阶使用方法"><a href="#进阶使用方法" class="headerlink" title="进阶使用方法"></a>进阶使用方法</h1><ul>
+<li>通过url跳转<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 新建一个Activity用于监听Schame事件,之后直接把url传递给ARouter即可</span><br><span class="line">public class SchameFilterActivity extends Activity &#123;</span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">	super.onCreate(savedInstanceState);</span><br><span class="line"></span><br><span class="line">	Uri uri = getIntent().getData();</span><br><span class="line">	ARouter.getInstance().build(uri).navigation();</span><br><span class="line">	finish();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>mainfest</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;activity android:name=&quot;.activity.SchameFilterActivity&quot;&gt;</span><br><span class="line">	&lt;!-- Schame --&gt;</span><br><span class="line">	&lt;intent-filter&gt;</span><br><span class="line">	    &lt;data</span><br><span class="line">		android:host=&quot;m.aliyun.com&quot;</span><br><span class="line">		android:scheme=&quot;arouter&quot;/&gt;</span><br><span class="line"></span><br><span class="line">	    &lt;action android:name=&quot;android.intent.action.VIEW&quot;/&gt;</span><br><span class="line"></span><br><span class="line">	    &lt;category android:name=&quot;android.intent.category.DEFAULT&quot;/&gt;</span><br><span class="line">	    &lt;category android:name=&quot;android.intent.category.BROWSABLE&quot;/&gt;</span><br><span class="line">	&lt;/intent-filter&gt;</span><br><span class="line">&lt;/activity&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>解析url中的参数</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">// 为每一个参数声明一个字段，并使用 @Autowired 标注</span><br><span class="line">// URL中不能传递Parcelable类型数据，通过ARouter api可以传递Parcelable对象</span><br><span class="line">@Route(path = &quot;/test/activity&quot;)</span><br><span class="line">public class Test1Activity extends Activity &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    public String name;</span><br><span class="line">    @Autowired</span><br><span class="line">    int age;</span><br><span class="line">    @Autowired(name = &quot;girl&quot;) // 通过name来映射URL中的不同参数</span><br><span class="line">    boolean boy;</span><br><span class="line">    @Autowired</span><br><span class="line">    TestObj obj;    // 支持解析自定义对象，URL中使用json传递</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">	super.onCreate(savedInstanceState);</span><br><span class="line">	ARouter.getInstance().inject(this);</span><br><span class="line"></span><br><span class="line">	// ARouter会自动对字段进行赋值，无需主动获取</span><br><span class="line">	Log.d(&quot;param&quot;, name + age + boy);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 如果需要传递自定义对象，需要实现 SerializationService,并使用@Route注解标注(方便用户自行选择序列化方式)，例如：</span><br><span class="line">@Route(path = &quot;/service/json&quot;)</span><br><span class="line">public class JsonServiceImpl implements SerializationService &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void init(Context context) &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public &lt;T&gt; T json2Object(String text, Class&lt;T&gt; clazz) &#123;</span><br><span class="line">        return JSON.parseObject(text, clazz);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String object2Json(Object instance) &#123;</span><br><span class="line">        return JSON.toJSONString(instance);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>声明拦截器</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// 比较经典的应用就是在跳转过程中处理登陆事件，这样就不需要在目标页重复做登陆检查</span><br><span class="line">// 拦截器会在跳转之间执行，多个拦截器会按优先级顺序依次执行</span><br><span class="line">@Interceptor(priority = 8, name = &quot;测试用拦截器&quot;)</span><br><span class="line">public class TestInterceptor implements IInterceptor &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void process(Postcard postcard, InterceptorCallback callback) &#123;</span><br><span class="line">	...</span><br><span class="line">	callback.onContinue(postcard);  // 处理完成，交还控制权</span><br><span class="line">	// callback.onInterrupt(new RuntimeException(&quot;我觉得有点异常&quot;));      // 觉得有问题，中断路由流程</span><br><span class="line"></span><br><span class="line">	// 以上两种至少需要调用其中一种，否则不会继续路由</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void init(Context context) &#123;</span><br><span class="line">	// 拦截器的初始化，会在sdk初始化的时候调用该方法，仅会调用一次</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>处理跳转结果</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 使用两个参数的navigation方法，可以获取单次跳转的结果</span><br><span class="line">ARouter.getInstance().build(&quot;/test/1&quot;).navigation(this, new NavigationCallback() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void onFound(Postcard postcard) &#123;</span><br><span class="line">      ...</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onLost(Postcard postcard) &#123;</span><br><span class="line">	...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>自定义全局降级策略</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 实现DegradeService接口，并加上一个Path内容任意的注解即可</span><br><span class="line">@Route(path = &quot;/xxx/xxx&quot;)</span><br><span class="line">public class DegradeServiceImpl implements DegradeService &#123;</span><br><span class="line">  @Override</span><br><span class="line">  public void onLost(Context context, Postcard postcard) &#123;</span><br><span class="line">	// do something.</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @Override</span><br><span class="line">  public void init(Context context) &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>为目标页面声明更多信息</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 我们经常需要在目标页面中配置一些属性，比方说&quot;是否需要登陆&quot;之类的</span><br><span class="line">// 可以通过 Route 注解中的 extras 属性进行扩展，这个属性是一个 int值，换句话说，单个int有4字节，也就是32位，可以配置32个开关</span><br><span class="line">// 剩下的可以自行发挥，通过字节操作可以标识32个开关，通过开关标记目标页面的一些属性，在拦截器中可以拿到这个标记进行业务逻辑判断</span><br><span class="line">@Route(path = &quot;/test/activity&quot;, extras = Consts.XXXX)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>通过依赖注入解耦:服务管理(一) 暴露服务</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// 声明接口,其他组件通过接口来调用服务</span><br><span class="line">public interface HelloService extends IProvider &#123;</span><br><span class="line">    String sayHello(String name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 实现接口</span><br><span class="line">@Route(path = &quot;/service/hello&quot;, name = &quot;测试服务&quot;)</span><br><span class="line">public class HelloServiceImpl implements HelloService &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String sayHello(String name) &#123;</span><br><span class="line">	return &quot;hello, &quot; + name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void init(Context context) &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>通过依赖注入解耦:服务管理(二) 发现服务</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    HelloService helloService;</span><br><span class="line"></span><br><span class="line">    @Autowired(name = &quot;/service/hello&quot;)</span><br><span class="line">    HelloService helloService2;</span><br><span class="line"></span><br><span class="line">    HelloService helloService3;</span><br><span class="line"></span><br><span class="line">    HelloService helloService4;</span><br><span class="line"></span><br><span class="line">    public Test() &#123;</span><br><span class="line">	ARouter.getInstance().inject(this);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void testService() &#123;</span><br><span class="line">	 // 1. (推荐)使用依赖注入的方式发现服务,通过注解标注字段,即可使用，无需主动获取</span><br><span class="line">	 // Autowired注解中标注name之后，将会使用byName的方式注入对应的字段，不设置name属性，会默认使用byType的方式发现服务(当同一接口有多个实现的时候，必须使用byName的方式发现服务)</span><br><span class="line">	helloService.sayHello(&quot;Vergil&quot;);</span><br><span class="line">	helloService2.sayHello(&quot;Vergil&quot;);</span><br><span class="line"></span><br><span class="line">	// 2. 使用依赖查找的方式发现服务，主动去发现服务并使用，下面两种方式分别是byName和byType</span><br><span class="line">	helloService3 = ARouter.getInstance().navigation(HelloService.class);</span><br><span class="line">	helloService4 = (HelloService) ARouter.getInstance().build(&quot;/service/hello&quot;).navigation();</span><br><span class="line">	helloService3.sayHello(&quot;Vergil&quot;);</span><br><span class="line">	helloService4.sayHello(&quot;Vergil&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="原理解析"><a href="#原理解析" class="headerlink" title="原理解析"></a>原理解析</h1>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Rxjava/" rel="tag"># Rxjava</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/03/12/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93-20180312/" rel="prev" title="工作小结-2018三月(2)">
+                  <i class="fa fa-chevron-left"></i> 工作小结-2018三月(2)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/03/19/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93-20180319/" rel="next" title="工作小结-2018三月(3)">
+                  工作小结-2018三月(3) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="本文是学习Android持久化存储的笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓基础-Android文件存储注意点">
+<meta property="og:url" content="http://example.com/2020/07/07/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-activity-Android%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E6%B3%A8%E6%84%8F%E7%82%B9/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本文是学习Android持久化存储的笔记">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-07-07T00:42:30.000Z">
+<meta property="article:modified_time" content="2021-07-11T11:39:49.244Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="存储">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/07/07/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-activity-Android%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E6%B3%A8%E6%84%8F%E7%82%B9/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2020/07/07/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-activity-Android%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E6%B3%A8%E6%84%8F%E7%82%B9/","path":"2020/07/07/安卓基础-activity-Android文件存储注意点/","title":"安卓基础-Android文件存储注意点"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>安卓基础-Android文件存储注意点 | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">29</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">104</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E9%83%A8%E5%AD%98%E5%82%A8%E7%A9%BA%E9%97%B4%E6%9C%89%E9%99%90"><span class="nav-number">1.</span> <span class="nav-text">内部存储空间有限</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E9%83%A8%E5%AD%98%E5%82%A8%E6%96%B9%E6%B3%95api"><span class="nav-number">2.</span> <span class="nav-text">内部存储方法api</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Environment-getDataDirectory"><span class="nav-number">2.1.</span> <span class="nav-text">Environment.getDataDirectory()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#context-getFilesDir-getAbsolutePath"><span class="nav-number">2.2.</span> <span class="nav-text">context.getFilesDir().getAbsolutePath()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#context-getCacheDir-getAbsolutePath"><span class="nav-number">2.3.</span> <span class="nav-text">context.getCacheDir().getAbsolutePath()</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E5%A4%A7%E5%B0%8F"><span class="nav-number">3.</span> <span class="nav-text">设置中的存储大小</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E8%AE%A1"><span class="nav-number">3.1.</span> <span class="nav-text">总计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-number">3.2.</span> <span class="nav-text">应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE"><span class="nav-number">3.3.</span> <span class="nav-text">数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%AD%98"><span class="nav-number">3.4.</span> <span class="nav-text">缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%85%E7%A9%BA%E7%BC%93%E5%AD%98"><span class="nav-number">3.5.</span> <span class="nav-text">清空缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%85%E7%A9%BA%E5%85%A8%E9%83%A8%E6%95%B0%E6%8D%AE"><span class="nav-number">3.6.</span> <span class="nav-text">清空全部数据</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mikilangkilo" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mikilangkilo" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:913925047@qq.com" title="E-Mail → mailto:913925047@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/mikilangkilo" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/07/07/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-activity-Android%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E6%B3%A8%E6%84%8F%E7%82%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          安卓基础-Android文件存储注意点
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-07-07 08:42:30" itemprop="dateCreated datePublished" datetime="2020-07-07T08:42:30+08:00">2020-07-07</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-11 19:39:49" itemprop="dateModified" datetime="2021-07-11T19:39:49+08:00">2021-07-11</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">安卓基础</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">本文是学习Android持久化存储的笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>文件存储主要是用到的内部存储，外部存储需要读写权限，大多数时候应用的缓存，图片之类的，最好还是放到内部存储中。</p>
+<p>把内部存储的细节捋一下</p>
+<h1 id="内部存储空间有限"><a href="#内部存储空间有限" class="headerlink" title="内部存储空间有限"></a>内部存储空间有限</h1><p>使用内部存储占用的空间会被记录到应用的占用存储之中，而手机内部存储的空间是有限的，超过了阙值之后就无法存储。<br>比较好识别的是，内部存储就是在data/data/包名/下面的内容</p>
+<h1 id="内部存储方法api"><a href="#内部存储方法api" class="headerlink" title="内部存储方法api"></a>内部存储方法api</h1><h2 id="Environment-getDataDirectory"><a href="#Environment-getDataDirectory" class="headerlink" title="Environment.getDataDirectory()"></a>Environment.getDataDirectory()</h2><p>Vivo:/data<br>Huawei:/data<br>Xiaomi:/data</p>
+<p>这个目录下存放了lib，shared_pref，files,cache,总而言之这是内部存储的总目录，创建文件的时候可以在里面创建目录存放，但是不能乱删</p>
+<h2 id="context-getFilesDir-getAbsolutePath"><a href="#context-getFilesDir-getAbsolutePath" class="headerlink" title="context.getFilesDir().getAbsolutePath()"></a>context.getFilesDir().getAbsolutePath()</h2><p>Vivo:/data/user/0/com.ximalaya.ting.Android.car/files<br>Huawei:/data/user/0/com.ximalaya.ting.Android.car/files<br>Xiaomi:/data/user/0/com.ximalaya.ting.Android.car/files</p>
+<p>这个目录也是存放一些文件的，官方推荐是使用这个目录存放一些不想删除的文件，或者只能应用自己删除的文件。像MMKV就是放在里面，Xlog也是</p>
+<p>这个里面放的是一些三方框架的</p>
+<h2 id="context-getCacheDir-getAbsolutePath"><a href="#context-getCacheDir-getAbsolutePath" class="headerlink" title="context.getCacheDir().getAbsolutePath()"></a>context.getCacheDir().getAbsolutePath()</h2><p>Vivo:/data/user/0/com.ximalaya.ting.Android.car/cache<br>Huawei:/data/user/0/com.ximalaya.ting.Android.car/cache<br>Xiaomi:/data/user/0/com.ximalaya.ting.Android.car/cache</p>
+<p>这个起名就是缓存目录，这个就是官方推荐的缓存目录，放在缓存目录的文件一般应该是临时存放的，同时APP需要给出提示缓存有多少，以及清除缓存的方式。<br>cache目录是系统自动创建的，但是系统不会自动回收，开发者理应做好内存临界时旧文件的删除操作。</p>
+<h1 id="设置中的存储大小"><a href="#设置中的存储大小" class="headerlink" title="设置中的存储大小"></a>设置中的存储大小</h1><p>设置中的APP存储，普遍分为总计/应用/数据/缓存</p>
+<h2 id="总计"><a href="#总计" class="headerlink" title="总计"></a>总计</h2><p>在app安装并启动之后</p>
+<p>小米的总计是59.92m，华为是19.2M，VIVO是30.69M</p>
+<p>这个总计的计算规则不懂，应该每家都不一样</p>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>应用应该是APP安装后占用的大小，这个华为和VIVO是一样，都是安卓10的平台，app安装都是18.62m，而小米是8.0的，就大很多，打到了33.31M。</p>
+<h2 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h2><p>同样是才打开，VIVO的数据是最小的，只有600K，而华为是7M，小米是26.6M</p>
+<p>数据这个在小米称作用户数据，应该是算上了用户的账户信息。</p>
+<h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><p>缓存基本都是相同的，6.9M的样子</p>
+<h2 id="清空缓存"><a href="#清空缓存" class="headerlink" title="清空缓存"></a>清空缓存</h2><p>清空缓存之后，cache目录里面的东西会消失</p>
+<h2 id="清空全部数据"><a href="#清空全部数据" class="headerlink" title="清空全部数据"></a>清空全部数据</h2><p>清空全部数据之后，整个包文件夹下面会被删的还剩lib，这样子等于重装了。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>存文件存到cache里面，才是清除缓存的唯一功效啊！</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%AD%98%E5%82%A8/" rel="tag"># 存储</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/04/27/java%E5%9F%BA%E7%A1%80-%E7%BC%96%E8%AF%91-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3javap/" rel="prev" title="java基础-深入理解javap">
+                  <i class="fa fa-chevron-left"></i> java基础-深入理解javap
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/07/14/%E8%BF%9B%E9%98%B6%E6%8A%80%E6%9C%AF-%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E5%90%8C%E6%AD%A5%E6%9C%BA%E5%88%B6/" rel="next" title="同步机制的实现">
+                  同步机制的实现 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

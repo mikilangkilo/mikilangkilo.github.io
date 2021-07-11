@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="好搭项目卡顿问题优化专题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="好搭项目卡顿问题优化专题">
+<meta property="og:url" content="http://example.com/2018/11/28/%E5%A5%BD%E4%B9%B0%E8%A1%A3-%E9%A1%B9%E7%9B%AE%E5%8D%A1%E9%A1%BF%E9%97%AE%E9%A2%98%E4%BC%98%E5%8C%96%E4%B8%93%E9%A2%98/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="好搭项目卡顿问题优化专题">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-11-28T03:07:03.000Z">
+<meta property="article:modified_time" content="2021-07-10T17:33:25.674Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="好买衣">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2018/11/28/%E5%A5%BD%E4%B9%B0%E8%A1%A3-%E9%A1%B9%E7%9B%AE%E5%8D%A1%E9%A1%BF%E9%97%AE%E9%A2%98%E4%BC%98%E5%8C%96%E4%B8%93%E9%A2%98/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2018/11/28/%E5%A5%BD%E4%B9%B0%E8%A1%A3-%E9%A1%B9%E7%9B%AE%E5%8D%A1%E9%A1%BF%E9%97%AE%E9%A2%98%E4%BC%98%E5%8C%96%E4%B8%93%E9%A2%98/","path":"2018/11/28/好买衣-项目卡顿问题优化专题/","title":"好搭项目卡顿问题优化专题"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>好搭项目卡顿问题优化专题 | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">29</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">104</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%95%86%E5%93%81%E8%AF%A6%E6%83%85"><span class="nav-number">1.</span> <span class="nav-text">商品详情</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E9%99%90%E8%B7%B3%E8%BD%AC%E4%BC%98%E5%8C%96"><span class="nav-number">1.1.</span> <span class="nav-text">无限跳转优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%A6%E6%83%85%E9%A1%B5%E9%9D%A2%E6%B3%84%E9%9C%B2%E9%97%AE%E9%A2%98"><span class="nav-number">1.2.</span> <span class="nav-text">详情页面泄露问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%A6%E6%83%85%E9%A1%B5%E9%9D%A2%E5%90%AF%E5%8A%A8%E9%80%9F%E5%BA%A6%E6%85%A2%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.3.</span> <span class="nav-text">详情页面启动速度慢的问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%A2%E5%8D%95%E5%8F%91%E8%B5%B7%E9%A1%B5%E9%9D%A2"><span class="nav-number">2.</span> <span class="nav-text">订单发起页面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#splash%E9%A1%B5%E4%BC%98%E5%8C%96"><span class="nav-number">3.</span> <span class="nav-text">splash页优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E5%AF%BC%E9%A1%B5%E9%9D%A2"><span class="nav-number">3.1.</span> <span class="nav-text">引导页面</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vipZoon%E9%A1%B5%E9%9D%A2"><span class="nav-number">4.</span> <span class="nav-text">vipZoon页面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%97%E8%A1%A8%E9%A1%B5cpu%E5%8D%A0%E7%94%A8%E7%8E%87%E8%BF%87%E9%AB%98%E9%97%AE%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text">列表页cpu占用率过高问题</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mikilangkilo" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mikilangkilo" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:913925047@qq.com" title="E-Mail → mailto:913925047@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/mikilangkilo" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/11/28/%E5%A5%BD%E4%B9%B0%E8%A1%A3-%E9%A1%B9%E7%9B%AE%E5%8D%A1%E9%A1%BF%E9%97%AE%E9%A2%98%E4%BC%98%E5%8C%96%E4%B8%93%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          好搭项目卡顿问题优化专题
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-11-28 11:07:03" itemprop="dateCreated datePublished" datetime="2018-11-28T11:07:03+08:00">2018-11-28</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-11 01:33:25" itemprop="dateModified" datetime="2021-07-11T01:33:25+08:00">2021-07-11</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E4%BC%98%E5%8C%96/" itemprop="url" rel="index"><span itemprop="name">优化</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">好搭项目卡顿问题优化专题</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>公司做了一波推广，卡顿问题比较明显的显示了出来。华为荣耀系列的卡顿问题尤其明显，很多用户反映在看上新的时候卡顿比较严重，还有用户说在使用时间较长之后，就比较卡顿。</p>
+<p>刚好这周把需求做完并且全部提测通过了，因此有三天的时间来做轻度优化。不过这个专题需要常驻，因为app需要优化的地方实在是太多了。</p>
+<h1 id="商品详情"><a href="#商品详情" class="headerlink" title="商品详情"></a>商品详情</h1><p>商品详情页面是所有spu最终展示的地方，这个地方是所有用户必然经过的地方，商品详情页不是所有页面的终点，不是唯一的，所以商品详情页面有很多可以优化的地方。</p>
+<h2 id="无限跳转优化"><a href="#无限跳转优化" class="headerlink" title="无限跳转优化"></a>无限跳转优化</h2><p>商品详情页面作为展示spu的地方，其中却又展示了很多不同的spu，另外相同spu之间也是支持跳转的。</p>
+<p>我对比了淘宝和微博，淘宝只支持保留三个spu，但是相同spu是可以跳转的，而微博支持无限跳转，我试了超过10个都可以返回，但是微博不支持在一个人主页里面仍然跳进这个人主页，也就是不支持相同spu的跳转。</p>
+<p>和产品讨论了一下，这个地方相同spu仍然支持跳转，但是最多保留5个。</p>
+<p>我设计这地方的方案是在application里面持有activity的引用，在activity启动的时候，进行判断，如果是详情页面，就放入数组里面，否则就不管。放进数组里面之后会判断是否数组长度是否超过4个，超过的话就会进行移除的操作，手动执行finish。</p>
+<p>另外在destroy的时候，也这样判断，决定是否直接移除。</p>
+<p>操作的入口比较好找，直接套用application的registerActivityLifecycleCallbacks即可。</p>
+<p>在这个地方有一个问题，关于对activity的持有是否需要使用weakreference。</p>
+<p>registerActivityLifecycleCallbacks的源码在application里面，主要的操作通过collectActivityLifecycleCallbacks来反馈</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">private Object[] collectActivityLifecycleCallbacks() &#123;</span><br><span class="line">        Object[] callbacks = null;</span><br><span class="line">        synchronized (mActivityLifecycleCallbacks) &#123;</span><br><span class="line">            if (mActivityLifecycleCallbacks.size() &gt; 0) &#123;</span><br><span class="line">                callbacks = mActivityLifecycleCallbacks.toArray();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return callbacks;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>这个方法主要是在各activity生命周期开始的时候进行执行</p>
+<p>启动的时候如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/* package */ void dispatchActivityCreated(Activity activity, Bundle savedInstanceState) &#123;</span><br><span class="line">       Object[] callbacks = collectActivityLifecycleCallbacks();</span><br><span class="line">       if (callbacks != null) &#123;</span><br><span class="line">           for (int i=0; i&lt;callbacks.length; i++) &#123;</span><br><span class="line">               ((ActivityLifecycleCallbacks)callbacks[i]).onActivityCreated(activity,</span><br><span class="line">                       savedInstanceState);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>关闭的时候如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/* package */ void dispatchActivityDestroyed(Activity activity) &#123;</span><br><span class="line">        Object[] callbacks = collectActivityLifecycleCallbacks();</span><br><span class="line">        if (callbacks != null) &#123;</span><br><span class="line">            for (int i=0; i&lt;callbacks.length; i++) &#123;</span><br><span class="line">                ((ActivityLifecycleCallbacks)callbacks[i]).onActivityDestroyed(activity);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>问题就在actvity是在走destroy之前执行该方法，还是走完之后执行的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">protected void onDestroy() &#123;</span><br><span class="line">       if (DEBUG_LIFECYCLE) Slog.v(TAG, &quot;onDestroy &quot; + this);</span><br><span class="line">       mCalled = true;</span><br><span class="line"></span><br><span class="line">       // dismiss any dialogs we are managing.</span><br><span class="line">       if (mManagedDialogs != null) &#123;</span><br><span class="line">           final int numDialogs = mManagedDialogs.size();</span><br><span class="line">           for (int i = 0; i &lt; numDialogs; i++) &#123;</span><br><span class="line">               final ManagedDialog md = mManagedDialogs.valueAt(i);</span><br><span class="line">               if (md.mDialog.isShowing()) &#123;</span><br><span class="line">                   md.mDialog.dismiss();</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">           mManagedDialogs = null;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       // close any cursors we are managing.</span><br><span class="line">       synchronized (mManagedCursors) &#123;</span><br><span class="line">           int numCursors = mManagedCursors.size();</span><br><span class="line">           for (int i = 0; i &lt; numCursors; i++) &#123;</span><br><span class="line">               ManagedCursor c = mManagedCursors.get(i);</span><br><span class="line">               if (c != null) &#123;</span><br><span class="line">                   c.mCursor.close();</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">           mManagedCursors.clear();</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       // Close any open search dialog</span><br><span class="line">       if (mSearchManager != null) &#123;</span><br><span class="line">           mSearchManager.stopSearch();</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       if (mActionBar != null) &#123;</span><br><span class="line">           mActionBar.onDestroy();</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       getApplication().dispatchActivityDestroyed(this);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>因此就证明了，destroy是在分发之前执行的，此时使用弱引用其实并不碍事，即使destroy的时候发生了gc，也没有太大的问题，只要之后的过程中将被回收的值对应的key清除即可。</p>
+<p>weakreference在这边如果使用的话，需要考虑到contain的写法，需要判断的比较多，经过尝试，其实效率和直接强引用差不多。</p>
+<h2 id="详情页面泄露问题"><a href="#详情页面泄露问题" class="headerlink" title="详情页面泄露问题"></a>详情页面泄露问题</h2><h2 id="详情页面启动速度慢的问题"><a href="#详情页面启动速度慢的问题" class="headerlink" title="详情页面启动速度慢的问题"></a>详情页面启动速度慢的问题</h2><p>详情页面启动速度慢的问题其实并不在详情页。经过排查，发现在有很多medel页面正在加载的地方，会出现启动速度过慢的问题。尤其是主页瀑布流尤为严重。通过一步一步的debug，发现当很多medel的bitmap在绘制时，cpu会爆满。<br>因为一直在分配线程，导致cpu调度过慢，甚至有时候会会在点击详情页的时候出现ANR问题。</p>
+<p>排查出这个问题就好了，解决方法是将绘制由需要多少线程给多少线程改为固定数量线程池即可。这样cpu不至于说调度不来的问题。</p>
+<p>这个问题给我一个想法，如果线程池结合observable，做出一个栈型线程池，但是在这个场景中其实不适合。</p>
+<p>因此解决了启动速度慢的问题</p>
+<h1 id="订单发起页面"><a href="#订单发起页面" class="headerlink" title="订单发起页面"></a>订单发起页面</h1><p>订单发起页面和普通页面不同，主要差别在于订单发起页面在很多地方都可以发起，但是其作用是唯一的，就是发起这个订单，并且继续后续的流程。但是由于在很多地方都可以发起订单，且订单页面又可以发起去很多地方。所以订单发起页面事实上也是无限的页面。</p>
+<p>但是订单发起页面不需要保留用户的返回路径，仅仅只需要一个活着的页面反复调用即可。</p>
+<p>因此我的做法是，在订单发起页面的start函数中，添加flag为FLAG_ACTIVITY_REORDER_TO_FRONT</p>
+<p>因为试了一下发现FLAG_ACTIVITY_BROUGHT_TO_FRONT并无效，所以只可以尝试FLAG_ACTIVITY_REORDER_TO_FRONT</p>
+<p>详细代码为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public static void start(Activity activity)&#123;</span><br><span class="line">        Intent intent = new Intent(activity, OrderConfirmActivity.class);</span><br><span class="line">        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);</span><br><span class="line">        activity.startActivity(intent);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="splash页优化"><a href="#splash页优化" class="headerlink" title="splash页优化"></a>splash页优化</h1><p>splash页面是app的进入时必走的页面，从leaks上面看，也有泄露的问题，检查发现泄露在lambda表达式中，而所有的lambda都是rxjava写的回调表达式，因此所做的是将这个页面所有的observable与该splashactivity的lifecycle绑定，另外eventbus也加了一些强判断（其实没啥必要），为了保险。</p>
+<h2 id="引导页面"><a href="#引导页面" class="headerlink" title="引导页面"></a>引导页面</h2><p>2.8.0版本增加了引导页面，引导用户去设置medel，最近出现oom的现象，排查发现整个设置流程都没有进入destroy。因此在登录成功之后，启动了新的task来load，这样可以强制删除这些无用的流程。</p>
+<h1 id="vipZoon页面"><a href="#vipZoon页面" class="headerlink" title="vipZoon页面"></a>vipZoon页面</h1><p>vipzone是会员专区，这个页面是滑动式，每个请求发现都没有捆绑住lifecycle，进行了捆绑处理</p>
+<h1 id="列表页cpu占用率过高问题"><a href="#列表页cpu占用率过高问题" class="headerlink" title="列表页cpu占用率过高问题"></a>列表页cpu占用率过高问题</h1><p>凡是展示medel的列表页，以前都是通过简单粗暴的方式，直接使用rxjava开一个线程来处理，这个在往期并没有发现什么问题，事实上在业务不复杂的时候，这样做是首选。</p>
+<p>后来问题来了，在快速滑动的时候，cpu负荷占满100%，此时点击进入详情页面，会等待超过5S然后产生ANR，说实话这是我第一次接受由于CPU负荷太高而导致的ANR。</p>
+<p>针对此问题的解决方法为，限制线程数量，当快速滑动的线程数量被限制，这样无论如何都不会使得CPU负荷占满，这样也就可以完全满足这个问题了。</p>
+<p>但是固定线程池带来了一个问题，就是假如任务队列中积压了上百个任务，此时我限制的最大为4个的线程池，基本上会使得最后一个的加载时间指数倍上升。</p>
+<p>而最后一个却是目前用户视线的焦点，这就很矛盾了，为了降低CPU的负载，而使得用户看到想看的过于慢了，这也绝对不是开发者想要看到的。</p>
+<p>因此此处需要兼得，开始想的方式是，通过仿照NIO的样例，一个线程用于接收请求，四个线程处理请求，但是仔细思考之后发现这样也不是解决办法，而是之前方法的一个变体。</p>
+<p>之后决定使用优先队列，这下子思路就清晰了，后来的先处理。通过使用priorityBlockingQueue处理。这样在有限的资源下，仍然可以通过优先加载可见区域的内容，来增加加载的速度。</p>
+<p>Ps：rxjava对优先队列的支持并不好，在rx1中jkwarton做过commit，但是并没有被merge，貌似还是对这个有些意见的，因此最好只是自己实现 </p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%A5%BD%E4%B9%B0%E8%A1%A3/" rel="tag"># 好买衣</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/11/25/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93-20181125/" rel="prev" title="工作小结-2018十一月">
+                  <i class="fa fa-chevron-left"></i> 工作小结-2018十一月
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/12/06/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93-20181206/" rel="next" title="工作小结-2018十二月">
+                  工作小结-2018十二月 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="本文是学习jvm内存模型相关">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jvm内存模型">
+<meta property="og:url" content="http://example.com/2019/01/02/java%E5%9F%BA%E7%A1%80-jvm-jvm%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本文是学习jvm内存模型相关">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/android/jvm%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B.jpg">
+<meta property="article:published_time" content="2019-01-02T15:48:21.000Z">
+<meta property="article:modified_time" content="2021-07-11T11:39:49.229Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="jvm">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/android/jvm%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B.jpg">
+
+
+<link rel="canonical" href="http://example.com/2019/01/02/java%E5%9F%BA%E7%A1%80-jvm-jvm%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2019/01/02/java%E5%9F%BA%E7%A1%80-jvm-jvm%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/","path":"2019/01/02/java基础-jvm-jvm内存模型/","title":"jvm内存模型"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>jvm内存模型 | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">29</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">104</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E8%AE%A1%E6%95%B0%E5%99%A8%EF%BC%88PC%E5%AF%84%E5%AD%98%E5%99%A8%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">内存计数器（PC寄存器）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#java-%E6%A0%88"><span class="nav-number">2.</span> <span class="nav-text">java 栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88"><span class="nav-number">3.</span> <span class="nav-text">本地方法栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#java-%E5%A0%86"><span class="nav-number">4.</span> <span class="nav-text">java 堆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E5%8C%BA"><span class="nav-number">5.</span> <span class="nav-text">方法区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%8C%BA"><span class="nav-number">6.</span> <span class="nav-text">静态区</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mikilangkilo" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mikilangkilo" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:913925047@qq.com" title="E-Mail → mailto:913925047@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/mikilangkilo" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/01/02/java%E5%9F%BA%E7%A1%80-jvm-jvm%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          jvm内存模型
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-01-02 23:48:21" itemprop="dateCreated datePublished" datetime="2019-01-02T23:48:21+08:00">2019-01-02</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-11 19:39:49" itemprop="dateModified" datetime="2021-07-11T19:39:49+08:00">2021-07-11</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java基础</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">本文是学习jvm内存模型相关</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="/images/android/jvm%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B.jpg" alt="JVM内存模型示意图"></p>
+<h2 id="内存计数器（PC寄存器）"><a href="#内存计数器（PC寄存器）" class="headerlink" title="内存计数器（PC寄存器）"></a>内存计数器（PC寄存器）</h2><p>由于在JVM中，多线程是通过线程轮流切换来获得CPU执行时间的，因此，在任一具体时刻，一个CPU的内核只会执行一条线程中的指令，</p>
+<p>因此，为了能够使得每个线程都在线程切换后能够恢复在切　换　之前的程序执行位置，每个线程都需要有自己独立的程序计数器，并且不能互相被干扰，</p>
+<p>否则就会影响到程序的正常执行次序。因此，可以这么说，程序计数器是每个线程所私有的。由于程序计数器中存储的数据所占空间的大小不会随程序的执行而发生改变，</p>
+<p>因此，对于程序计数器是不会发生内存溢出现象(OutOfMemory)的。</p>
+<p>内存计数器是context的一部分</p>
+<h2 id="java-栈"><a href="#java-栈" class="headerlink" title="java 栈"></a>java 栈</h2><p>Java栈中存放的是一个个的栈帧，每个栈帧对应一个被调用的方法，在栈帧中包括局部变量表(Local Variables)、操作数栈(Operand Stack)、</p>
+<p>指向当前方法所属的类的运行时常量池（运行时常量池的概念在方法区部分会谈到）的引用(Reference to runtime constant pool)、</p>
+<p>方法返回地址(Return Address)和一些额外的附加信息。当线程执行一个方法时，就会随之创建一个对应的栈帧，并将建立的栈帧压栈。当方法执行完毕之后，便会将栈帧出栈。　</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">经常有人把Java 内存区分为堆内存（Heap）和栈内存（Stack），这种分法比较粗</span><br><span class="line"></span><br><span class="line">糙，Java 内存区域的划分实际上远比这复杂。这种划分方式的流行只能说明大多数程序</span><br><span class="line"></span><br><span class="line">员最关注的、与对象内存分配关系最密切的内存区域是这两块。其中所指的“堆”在后</span><br><span class="line"></span><br><span class="line">面会专门讲述，而所指的“栈”就是现在讲的虚拟机栈，或者说是虚拟机栈中的局部变</span><br><span class="line"></span><br><span class="line">量表部分。</span><br><span class="line"></span><br><span class="line">局部变量表存放了编译期可知的各种基本数据类型（boolean、byte、char、short、int、</span><br><span class="line"></span><br><span class="line">float、long、double）、对象引用（reference 类型，它不等同于对象本身，根据不同的虚拟</span><br><span class="line"></span><br><span class="line">机实现，它可能是一个指向对象起始地址的引用指针，也可能指向一个代表对象的句柄或</span><br><span class="line"></span><br><span class="line">者其他与此对象相关的位置）和returnAddress 类型（指向了一条字节码指令的地址）。</span><br><span class="line"></span><br><span class="line">其中64 位长度的long 和double 类型的数据会占用2 个局部变量空间（Slot），其余</span><br><span class="line"></span><br><span class="line">的数据类型只占用1 个。局部变量表所需的内存空间在编译期间完成分配，当进入一个</span><br><span class="line"></span><br><span class="line">方法时，这个方法需要在帧中分配多大的局部变量空间是完全确定的，在方法运行期间</span><br><span class="line"></span><br><span class="line">不会改变局部变量表的大小。</span><br></pre></td></tr></table></figure>
+
+<h2 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h2><p>本地方法栈与Java栈的作用和原理非常相似。区别只不过是Java栈是为执行Java方法服务的，而本地方法栈则是为执行本地方法（Native Method）服务的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">本地方法栈（Native Method Stacks）与虚拟机栈所发挥的作用是非常相似的，其</span><br><span class="line"></span><br><span class="line">区别不过是虚拟机栈为虚拟机执行Java 方法（也就是字节码）服务，而本地方法栈则</span><br><span class="line"></span><br><span class="line">是为虚拟机使用到的Native 方法服务。虚拟机规范中对本地方法栈中的方法使用的语</span><br><span class="line"></span><br><span class="line">言、使用方式与数据结构并没有强制规定，因此具体的虚拟机可以自由实现它。甚至</span><br><span class="line"></span><br><span class="line">有的虚拟机（譬如Sun HotSpot 虚拟机）直接就把本地方法栈和虚拟机栈合二为一。</span><br><span class="line"></span><br><span class="line">与虚拟机栈一样，本地方法栈区域也会抛出StackOverflowError 和OutOfMemoryError</span><br><span class="line"></span><br><span class="line">异常。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="java-堆"><a href="#java-堆" class="headerlink" title="java 堆"></a>java 堆</h2><p>Java中的堆是用来存储对象本身的以及数组（数组引用是存放在Java栈中的）。堆是被所有线程共享的，在JVM中只有一个堆。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">对于大多数应用来说，Java 堆（Java Heap）是Java 虚拟机所管理的内存中最大的</span><br><span class="line"></span><br><span class="line">一块。Java 堆是被所有线程共享的一块内存区域，在虚拟机启动时创建。此内存区域的</span><br><span class="line"></span><br><span class="line">唯一目的就是存放对象实例，几乎所有的对象实例都在这里分配内存。这一点在Java 虚</span><br><span class="line"></span><br><span class="line">拟机规范中的描述是：所有的对象实例以及数组都要在堆上分配①，但是随着JIT 编译器</span><br><span class="line"></span><br><span class="line">的发展与逃逸分析技术的逐渐成熟，栈上分配、标量替换②优化技术将会导致一些微妙</span><br><span class="line"></span><br><span class="line">的变化发生，所有的对象都分配在堆上也渐渐变得不是那么“绝对”了。</span><br><span class="line"></span><br><span class="line">Java 堆是垃圾收集器管理的主要区域，因此很多时候也被称做“GC 堆”（Garbage</span><br><span class="line"></span><br><span class="line">Collected Heap，幸好国内没翻译成“垃圾堆”）。如果从内存回收的角度看，由于现在</span><br><span class="line"></span><br><span class="line">收集器基本都是采用的分代收集算法，所以Java 堆中还可以细分为：新生代和老年代；</span><br><span class="line"></span><br><span class="line">再细致一点的有Eden 空间、From Survivor 空间、To Survivor 空间等。如果从内存分配</span><br><span class="line"></span><br><span class="line">的角度看，线程共享的Java 堆中可能划分出多个线程私有的分配缓冲区（Thread Local</span><br><span class="line"></span><br><span class="line">Allocation Buffer，TLAB）。不过，无论如何划分，都与存放内容无关，无论哪个区域，</span><br><span class="line"></span><br><span class="line">存储的都仍然是对象实例，进一步划分的目的是为了更好地回收内存，或者更快地分配</span><br><span class="line"></span><br><span class="line">内存。在本章中，我们仅仅针对内存区域的作用进行讨论，Java 堆中的上述各个区域的</span><br><span class="line"></span><br><span class="line">分配和回收等细节将会是下一章的主题。</span><br><span class="line"></span><br><span class="line">根据Java 虚拟机规范的规定，Java 堆可以处于物理上不连续的内存空间中，只要</span><br><span class="line"></span><br><span class="line">逻辑上是连续的即可，就像我们的磁盘空间一样。在实现时，既可以实现成固定大小</span><br><span class="line"></span><br><span class="line">的，也可以是可扩展的，不过当前主流的虚拟机都是按照可扩展来实现的（通过-Xmx</span><br><span class="line"></span><br><span class="line">和-Xms 控制）。如果在堆中没有内存完成实例分配，并且堆也无法再扩展时，将会抛出</span><br><span class="line"></span><br><span class="line">OutOfMemoryError 异常。</span><br></pre></td></tr></table></figure>
+
+<h2 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h2><p>与堆一样，是被线程共享的区域。在方法区中，存储了每个类的信息（包括类的名称、方法信息、字段信息）、静态变量、常量以及编译器编译后的代码等。</p>
+<p>在Class文件中除了类的字段、方法、接口等描述信息外，还有一项信息是常量池，用来存储编译期间生成的字面量和符号引用。</p>
+<p>在方法区中有一个非常重要的部分就是运行时常量池，它是每一个类或接口的常量池的运行时表示形式，在类和接口被加载到JVM后，</p>
+<p>对应的运行时常量池就被创建出来。当然并非Class文件常量池中的内容才能进入运行时常量池，在运行期间也可将新的常量放入运行时常量池中，比如String的intern方法。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">方法区（Method Area）与Java 堆一样，是各个线程共享的内存区域，它用于存</span><br><span class="line"></span><br><span class="line">储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。虽</span><br><span class="line"></span><br><span class="line">然Java 虚拟机规范把方法区描述为堆的一个逻辑部分，但是它却有一个别名叫做Non-</span><br><span class="line"></span><br><span class="line">Heap（非堆），目的应该是与Java 堆区分开来。</span><br><span class="line"></span><br><span class="line">对于习惯在HotSpot 虚拟机上开发和部署程序的开发者来说，很多人愿意把方法区</span><br><span class="line"></span><br><span class="line">称为“永久代”（Permanent Generation），本质上两者并不等价，仅仅是因为HotSpot 虚</span><br><span class="line"></span><br><span class="line">拟机的设计团队选择把GC 分代收集扩展至方法区，或者说使用永久代来实现方法区而</span><br><span class="line"></span><br><span class="line">已。对于其他虚拟机（如BEA JRockit、IBM J9 等）来说是不存在永久代的概念的。即</span><br><span class="line"></span><br><span class="line">使是HotSpot 虚拟机本身，根据官方发布的路线图信息，现在也有放弃永久代并“搬家”</span><br><span class="line"></span><br><span class="line">至Native Memory 来实现方法区的规划了。</span><br><span class="line"></span><br><span class="line">Java 虚拟机规范对这个区域的限制非常宽松，除了和Java 堆一样不需要连续的内</span><br><span class="line"></span><br><span class="line">存和可以选择固定大小或者可扩展外，还可以选择不实现垃圾收集。相对而言，垃圾</span><br><span class="line"></span><br><span class="line">收集行为在这个区域是比较少出现的，但并非数据进入了方法区就如永久代的名字一</span><br><span class="line"></span><br><span class="line">样“永久”存在了。这个区域的内存回收目标主要是针对常量池的回收和对类型的卸</span><br><span class="line"></span><br><span class="line">载，一般来说这个区域的回收“成绩”比较难以令人满意，尤其是类型的卸载，条件</span><br><span class="line"></span><br><span class="line">相当苛刻，但是这部分区域的回收确实是有必要的。在Sun 公司的BUG 列表中，曾出</span><br><span class="line"></span><br><span class="line">现过的若干个严重的BUG 就是由于低版本的HotSpot 虚拟机对此区域未完全回收而导</span><br><span class="line"></span><br><span class="line">致内存泄漏。</span><br><span class="line"></span><br><span class="line">根据Java 虚拟机规范的规定，当方法区无法满足内存分配需求时，将抛出</span><br><span class="line"></span><br><span class="line">OutOfMemoryError 异常。</span><br></pre></td></tr></table></figure>
+
+<h2 id="静态区"><a href="#静态区" class="headerlink" title="静态区"></a>静态区</h2><p>静态区也称为运行常量池，static出来的对象都是静态的。该区域存放类和接口的常量，</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/jvm/" rel="tag"># jvm</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/12/30/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93-20181230/" rel="prev" title="工作小结-好搭产品死亡笔记">
+                  <i class="fa fa-chevron-left"></i> 工作小结-好搭产品死亡笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/01/07/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-thread-threadlocal%E5%AD%A6%E4%B9%A0/" rel="next" title="threadlocal学习">
+                  threadlocal学习 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="本文主要是对binder进行学习和反思">
+<meta property="og:type" content="article">
+<meta property="og:title" content="binder机制学习">
+<meta property="og:url" content="http://example.com/2018/10/18/%E5%AE%89%E5%8D%93%E8%BF%9B%E9%98%B6-binder-binder%E6%9C%BA%E5%88%B6%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本文主要是对binder进行学习和反思">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-10-18T14:42:23.000Z">
+<meta property="article:modified_time" content="2021-07-11T11:39:49.253Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="binder">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2018/10/18/%E5%AE%89%E5%8D%93%E8%BF%9B%E9%98%B6-binder-binder%E6%9C%BA%E5%88%B6%E5%AD%A6%E4%B9%A0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2018/10/18/%E5%AE%89%E5%8D%93%E8%BF%9B%E9%98%B6-binder-binder%E6%9C%BA%E5%88%B6%E5%AD%A6%E4%B9%A0/","path":"2018/10/18/安卓进阶-binder-binder机制学习/","title":"binder机制学习"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>binder机制学习 | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">29</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">104</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#binder%E4%BD%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">binder位置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ipc"><span class="nav-number">2.</span> <span class="nav-text">ipc</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#socket"><span class="nav-number">2.1.</span> <span class="nav-text">socket</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98"><span class="nav-number">2.2.</span> <span class="nav-text">共享内存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="nav-number">2.3.</span> <span class="nav-text">消息队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%A1%E9%81%93"><span class="nav-number">2.4.</span> <span class="nav-text">管道</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Binder"><span class="nav-number">3.</span> <span class="nav-text">Binder</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E7%8E%AF%E8%8A%82"><span class="nav-number">4.</span> <span class="nav-text">实现环节</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mikilangkilo" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mikilangkilo" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:913925047@qq.com" title="E-Mail → mailto:913925047@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/mikilangkilo" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/10/18/%E5%AE%89%E5%8D%93%E8%BF%9B%E9%98%B6-binder-binder%E6%9C%BA%E5%88%B6%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          binder机制学习
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-10-18 22:42:23" itemprop="dateCreated datePublished" datetime="2018-10-18T22:42:23+08:00">2018-10-18</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-11 19:39:49" itemprop="dateModified" datetime="2021-07-11T19:39:49+08:00">2021-07-11</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AE%89%E5%8D%93%E8%BF%9B%E9%98%B6/" itemprop="url" rel="index"><span itemprop="name">安卓进阶</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">本文主要是对binder进行学习和反思</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>binder平时总听过，但是原理只知道是ipc，也就是进程间通信。但是真正的原理其实还是不理解。</p>
+<h1 id="binder位置"><a href="#binder位置" class="headerlink" title="binder位置"></a>binder位置</h1><p>binder介于framework和systemservice之间，属于让开发者来调用系统层接口的方法。</p>
+<h1 id="ipc"><a href="#ipc" class="headerlink" title="ipc"></a>ipc</h1><p>ipc全称是inter-process communication,进程间通讯</p>
+<p>ipc的方式有很多种，socket，共享内存，管道，消息队列</p>
+<h2 id="socket"><a href="#socket" class="headerlink" title="socket"></a>socket</h2><p>socket实现进程间通讯，是基于tcpip协议来实现的，一般实现tcp，如果是udp也是可以的，udp是两个socket但是无连接。<br>通过tcp实现ipc的原理</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">客户端程序通过socket发送一系列信息到传输层的tcp，然后往下传，通过网络层，网络接口层，然后在往上传到网络层，然后传到服务端的传输层tcp，然后由服务器的socket接收到，之后回传也是相同的</span><br></pre></td></tr></table></figure>
+
+<p>缺点是需传输效率较低，一般只用在不同机器，或者跨网络的通行</p>
+<h2 id="共享内存"><a href="#共享内存" class="headerlink" title="共享内存"></a>共享内存</h2><p>共享内存的ipc，传输的对象一般都是可描述的，所以都用序列化，创建共享内存就使用memoryfile即可</p>
+<p>这样构建的内存可以让其他进程共享</p>
+<p>共享内存的优点在于无需复制，速度快，共享缓冲区直接附加到进程虚拟地址空间。缺点在于同步问题不好解决</p>
+<h2 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h2><p>消息队列就是messagequeue<br>实现的思路</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">在进程a中创建一个message，讲这个message对象通过imessenger.send(message)方法传递到进程b中</span><br><span class="line">send(message)会使用一个parcel对象对message对象编集，再将parcel对象传递到进程b中，然后解编集，得到一个和进程a中message对象内容一样的对象，在将message对象加入到b的消息队列里面，handler会处理它</span><br></pre></td></tr></table></figure>
+<p>消息队列的好处是比较方便，缺点是信息复制2次，有额外的cpu消耗，不是很适合频繁或者信息量大的通信</p>
+<h2 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h2><p>管道是比较古老的通信方式，包括无名管道和有名管道，前者是父子进程间的通信，后者用于运行同一机器上的任意两个进程间的通信。实现方式是pipe，利用管道的有handler（此处需要研究一下handler的实现原理）</p>
+<p>管道创建时分配了一个page大小的内存（page？）缓存区大小比较有限</p>
+<h1 id="Binder"><a href="#Binder" class="headerlink" title="Binder"></a>Binder</h1><p>binder ipc属于c/s结构，client部分是用户代码，最终会调用binder driver的transact接口，binder driver会调用server</p>
+<p>client:用户需要实现的代码，如aidl自动生成的接口类<br>binder driver：在内核层实现的driver<br>server：这个server就是service中onbind返回的ibinder对象</p>
+<p>binder driver这块并不需要用户知道，server中会开启一个线程池（防止任务积压，也需要做好同步措施）去处理客户端调用</p>
+<p>对于调用binder driver中的transact接口，客户端可以手动调用，也可以通过aidl的方式生成的代理类来调用，服务端可以继承binder对象，也可以继承aidl生成的接口类的stub对象</p>
+<h1 id="实现环节"><a href="#实现环节" class="headerlink" title="实现环节"></a>实现环节</h1><p>//todo</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/binder/" rel="tag"># binder</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/10/10/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93-20181010/" rel="prev" title="工作小结-2018十月">
+                  <i class="fa fa-chevron-left"></i> 工作小结-2018十月
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/10/20/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-activity-Android%E6%B8%A0%E9%81%93%E5%8C%85%E6%89%93%E5%8C%85%E5%8F%96%E8%88%8D%E4%BB%A5%E5%8F%8A%E6%89%93%E5%8C%85%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/" rel="next" title="安卓基础-Android渠道包打包取舍以及打包流程分析">
+                  安卓基础-Android渠道包打包取舍以及打包流程分析 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

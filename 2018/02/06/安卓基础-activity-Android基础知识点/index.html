@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="本文主要是对Activity与Activity调用栈进行学习和反思">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android基础知识点">
+<meta property="og:url" content="http://example.com/2018/02/06/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-activity-Android%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%82%B9/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本文主要是对Activity与Activity调用栈进行学习和反思">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-02-06T10:49:15.000Z">
+<meta property="article:modified_time" content="2021-07-11T10:31:35.480Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="activity">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2018/02/06/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-activity-Android%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%82%B9/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2018/02/06/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-activity-Android%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%82%B9/","path":"2018/02/06/安卓基础-activity-Android基础知识点/","title":"Android基础知识点"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Android基础知识点 | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">29</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">104</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mikilangkilo" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mikilangkilo" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:913925047@qq.com" title="E-Mail → mailto:913925047@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/mikilangkilo" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/02/06/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-activity-Android%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%82%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android基础知识点
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-02-06 18:49:15" itemprop="dateCreated datePublished" datetime="2018-02-06T18:49:15+08:00">2018-02-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-11 18:31:35" itemprop="dateModified" datetime="2021-07-11T18:31:35+08:00">2021-07-11</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">安卓基础</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">本文主要是对Activity与Activity调用栈进行学习和反思</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li>为什么建议只使用默认的构造方法来创建 Fragment？</li>
+</ul>
+<p>之所以建议只使用默认的构造方式来创建fragment，是为了避免构造的过程中进行数据的设置。我们在oncreate和oncreateview的过程中可以获取bundle，这个bundle在存储fragment的时候同样可以被存储，而假如构造的模式进行设置参数的话，这些值就不会被系统存储。并且fragment的创建，其实是由fragmentmanager来初始化的，其初始化过程依靠了反射，并且是无参数反射，因此若不使用默认的构造的话会直接编译报错。</p>
+<ul>
+<li>为什么 Bundle 被用来传递数据，为什么不能使用简单的 Map 数据结构？</li>
+</ul>
+<p>Bundle内部是由ArrayMap实现的，ArrayMap的内部实现是两个数组，一个int数组是存储对象数据对应下标，一个对象数组保存key和value，内部使用二分法对key进行排序，所以在添加、删除、查找数据的时候，都会使用二分法查找，只适合于小数据量操作，如果在数据量比较大的情况下，那么它的性能将退化。而HashMap内部则是数组+链表结构，所以在数据量较少的时候，HashMap的Entry Array比ArrayMap占用更多的内存。因为使用Bundle的场景大多数为小数据量，我没见过在两个Activity之间传递10个以上数据的场景，所以相比之下，在这种情况下使用ArrayMap保存数据，在操作速度和内存占用上都具有优势，因此使用Bundle来传递数据，可以保证更快的速度和更少的内存占用。<br>另外一个原因，则是在Android中如果使用Intent来携带数据的话，需要数据是基本类型或者是可序列化类型，HashMap使用Serializable进行序列化，而Bundle则是使用Parcelable进行序列化。而在Android平台中，更推荐使用Parcelable实现序列化，虽然写法复杂，但是开销更小，所以为了更加快速的进行数据的序列化和反序列化，系统封装了Bundle类，方便我们进行数据的传输。</p>
+<ul>
+<li>什么是 JobScheduler ？</li>
+</ul>
+<p>jobscheduler提供了一种不同于alarmmanager的唤醒app的方式，其主要工作场景：应用具有您可以推迟的非面向用户的工作。/应用具有当插入设备时您希望优先执行的工作。/应用具有需要访问网络或 Wi-Fi 连接的任务。/应用具有您希望作为一个批次定期运行的许多任务。</p>
+<ul>
+<li>什么是 ANR ？如何避免发生 ANR ？</li>
+</ul>
+<p>ANR = application not response</p>
+<p>anr一般有三种类型：<br>KeyDispatchTimeout(5 seconds) –主要类型按键或触摸事件在特定时间内无响应；<br>BroadcastTimeout(10 seconds) –BroadcastReceiver在特定时间内无法处理完成；<br>ServiceTimeout(20 seconds) –小概率类型 Service在特定的时间内无法处理完成</p>
+<p>避免的方法：</p>
+<p>UI线程尽量只做跟UI相关的工作<br>耗时的工作（比如数据库操作，I/O，连接网络或者别的有可能阻碍UI线程的操作）把它放入单独的线程处理<br>尽量用Handler来处理UIthread和别的thread之间的交互</p>
+<p>措施：</p>
+<p>首先分析log<br>从trace.txt文件查看调用stack.<br>看代码<br>仔细查看ANR的成因（iowait?block?memoryleak?）</p>
+<ul>
+<li>解释一下 broadcast 和 intent 在 app 内传递消息的工作流程。</li>
+</ul>
+<p>广播的注册过程 ：最终在ActivityManagerService中将远程的InnerInnerReceiver以及Intent－filter对象存储起来。<br>广播的发送以及接受：内部会首先根据传入的Intent－filter 查找出匹配的广播接受者，并将改接受者放到BroadcastQueue中，紧接着系统会遍历ArrayList中的广播，并将其发送给它们对应的广播接受者，最后调用到广播接受者的onReceiver方法。</p>
+<p>Intent传递消息过程：intent在putextra的过程中将消息放入bundle中，bundle由于实现了parcel接口，故可以进行ipc通信，最后通过目标activity从parcel中恢复状态信息，这里面的parcel完成了数据的序列化传输。</p>
+<ul>
+<li>当 Bitmap 占用较多内存时，你是怎么处理的？</li>
+</ul>
+<p>由于内存管理上将外部内存完全当成了当前堆的一部分，也就是说Bitmap对象通过栈上的引用来指向堆上的Bitmap对象，而堆上的Bitmap对象又对应了一个使用了外部存储的native图像，也就是实际上使用的字节数组byte[]来存储的位图信息，因此解码之后的Bitmap的总大小就不能超过8M了。</p>
+<p>设置系统的最小堆大小：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int newSize = 4 * 1024 * 1024 ; //设置最小堆内存大小为4MB  </span><br><span class="line">VMRuntime.getRuntime().setMinimumHeapSize(newSize);  </span><br><span class="line">VMRuntime.getRuntime().setTargetHeapUtilization(0.75); // 设置堆内存的利用率为75%  </span><br></pre></td></tr></table></figure>
+
+<p>对图片的大小进行控制:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BitmapFactory.Options options = new BitmapFactory.Options();  </span><br><span class="line">options.inSampleSize = 2; //图片宽高都为原来的二分之一，即图片为原来的四分之一  </span><br><span class="line">Bitmap bitmap = BitmapFactory.decodeFile(&quot;/mnt/sdcard/a.jpg&quot;,options);  </span><br></pre></td></tr></table></figure>
+
+<p>对bitmapfactory解码的参数进行设置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BitmapFactory.Options options = new BitmapFactory.Options();  </span><br><span class="line">options.inTempStorage = new byte[1024*1024*5]; //5MB的临时存储空间  </span><br><span class="line">Bitmap bm = BitmapFactory.decodeFile(&quot;/mnt/sdcard/a.jpg&quot;,options);  </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>什么是 Dalvik 虚拟机？</li>
+</ul>
+<p>每一个Android应用在底层都会对应一个独立的Dalvik虚拟机实例，其代码在虚拟机的解释下得以执行。<br>dalvik虚拟机使用dex文件的java文件格式，class文件中会附带着不少额外信息，dex文件对其进行精简，将所有的class文件整合一起，减少了文件尺寸和io操作的同时也提高了类的加载速度。</p>
+<p>每一个应用都运行在一个dalvik虚拟机里面，而每一个虚拟机都有一个独立的进程空间</p>
+<ul>
+<li>什么是 Sticky Intent？</li>
+</ul>
+<p>在MainActivity里面会有sendBroadcast和sendStickyBroacat.在ReceverActivity里面通 过BroadcastReceiver来接收这两个消息，在ReceiverActivity里是通过代码来注册Recevier而不是在 Manifest里面注册的。所以通过sendBroadcast中发出的intent在ReceverActivity不处于onResume状态是无 法接受到的，即使后面再次使其处于该状态也无法接受到。而sendStickyBroadcast发出的Intent当ReceverActivity重 新处于onResume状态之后就能重新接受到其Intent.这就是the Intent will be held to be re-broadcast to future receivers这句话的表现。就是说sendStickyBroadcast发出的最后一个Intent会被保留，下次当Recevier处于活跃的 时候，又会接受到它。</p>
+<ul>
+<li>Android 的权限有多少个不同的保护等级？</li>
+</ul>
+<p>四种，normal，dangerous，signature，signatureOrSystem</p>
+<p>普通权限 会在App安装期间被默认赋予。这类权限不需要开发人员进行额外操作。</p>
+<p>危险权限是在开发6.0程序时，必须要注意的。这些权限处理不好，程序可能会直接被系统干掉。危险权限以组进行划分，对该组内的一个权限授权视为对整个组进行授权，但是对开发来讲，仍然需要正对每个需要的权限进行获取，否则后期版本的变更会导致权限组划分更改。</p>
+<p>签名级别权限和系统签名级别权限需要拥有platform级别的认证才能申请。</p>
+<ul>
+<li>在转屏时你如何保存 Activity 的状态？</li>
+</ul>
+<p>不设置Activity的Android:configChanges时，切屏会重新调用各个生命周期，切横屏时会执行一次，切竖屏时会执行两次</p>
+<p>设置Activity的Android:configChanges=”orientation”时，切屏还是会重新调用各个生命周期，切横、竖屏时只会执行一次</p>
+<p>设置Activity的Android:configChanges=”orientation|keyboardHidden”时，切屏不会重新调用各个生命周期，只会执行onConfigurationChanged方法</p>
+<p>但是，自从Android 3.2（API 13），在设置Activity的Android:configChanges=”orientation|keyboardHidden”后，还是一样会重新调用各个生命周期的。因为screen size也开始跟着设备的横竖切换而改变。所以，在AndroidManifest.xml里设置的MiniSdkVersion和 TargetSdkVersion属性大于等于13的情况下，如果你想阻止程序在运行时重新加载Activity，除了设置”orientation”，你还必须设置”ScreenSize”。<br>解决方法：</p>
+<p>AndroidManifest.xml中设置Android:configChanges=”orientation|screenSize”</p>
+<ul>
+<li>如何实现 XML 命名空间？</li>
+</ul>
+<p>常见命名空间<br>Android：xmlns:Android=”<a target="_blank" rel="noopener" href="http://schemas.android.com/apk/res/Android%E2%80%9D">http://schemas.Android.com/apk/res/Android”</a><br>解析：xmlns:即xml namespace，声明我们要开始定义一个命名空间了<br>Android：称作namespace-prefix，它是命名空间的名字<br><a target="_blank" rel="noopener" href="http://schemas.android.com/apk/res/Android%EF%BC%9A%E8%BF%99%E7%9C%8B%E8%B5%B7%E6%9D%A5%E6%98%AF%E4%B8%80%E4%B8%AAURL%EF%BC%8C%E4%BD%86%E6%98%AF%E8%BF%99%E4%B8%AA%E5%9C%B0%E5%9D%80%E6%98%AF%E4%B8%8D%E5%8F%AF%E8%AE%BF%E9%97%AE%E7%9A%84%E3%80%82%E5%AE%9E%E9%99%85%E4%B8%8A%E8%BF%99%E6%98%AF%E4%B8%80%E4%B8%AAURI(%E7%BB%9F%E4%B8%80%E8%B5%84%E6%BA%90%E6%A0%87%E8%AF%86%E7%AC%A6),%E6%89%80%E4%BB%A5%E5%AE%83%E7%9A%84%E5%80%BC%E6%98%AF%E5%9B%BA%E5%AE%9A%E4%B8%8D%E5%8F%98%E7%9A%84,%E7%9B%B8%E5%BD%93%E4%BA%8E%E4%B8%80%E4%B8%AA%E5%B8%B8%E9%87%8F)%E3%80%82">http://schemas.Android.com/apk/res/Android：这看起来是一个URL，但是这个地址是不可访问的。实际上这是一个URI(统一资源标识符),所以它的值是固定不变的,相当于一个常量)。</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;LinearLayout xmlns:Android=&quot;http://schemas.Android.com/apk/res/Android&quot;</span><br><span class="line">   Android:layout_width=&quot;match_parent&quot;</span><br><span class="line">   Android:layout_height=&quot;match_parent&quot;&gt;</span><br><span class="line">   &lt;TextView</span><br><span class="line">       Android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">       Android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">       Android:layout_gravity=&quot;center&quot;</span><br><span class="line">       Android:text=&quot;New Text&quot;</span><br><span class="line">       Android:id=&quot;@+id/textView&quot; /&gt;</span><br><span class="line">&lt;/LinearLayout&gt;</span><br></pre></td></tr></table></figure>
+
+<p>亦可以写成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;LinearLayout xmlns:myns=&quot;http://schemas.Android.com/apk/res/Android&quot;</span><br><span class="line">   myns:layout_width=&quot;match_parent&quot;</span><br><span class="line">   myns:layout_height=&quot;match_parent&quot; &gt;</span><br><span class="line">   &lt;TextView</span><br><span class="line">       myns:layout_width=&quot;wrap_content&quot;</span><br><span class="line">       myns:layout_height=&quot;wrap_content&quot;</span><br><span class="line">       myns:layout_gravity=&quot;center&quot;</span><br><span class="line">       myns:text=&quot;New Text&quot;</span><br><span class="line">       myns:id=&quot;@+id/textView&quot; /&gt;</span><br><span class="line">&lt;/LinearLayout&gt;</span><br></pre></td></tr></table></figure>
+
+
+<p>tools:xmlns:tools=”<a target="_blank" rel="noopener" href="http://schemas.android.com/tools%E2%80%9D">http://schemas.Android.com/tools”</a></p>
+<p>tools只作用于开发阶段<br>我们可以把他理解为一个工具(tools)的命名空间,它的只作用于开发阶段,当app被打包时,所有关于tools属性将都会被摒弃掉！</p>
+<p>tools:context开发中查看Activity布局效果<br>context的用法，在后面跟一个Activtiy的完整包名,它有什么作用呢?</p>
+<p>当我们设置一个Activity主题时,是在AndroidManifest.xml中设置中,而主题的效果又只能在运行后在Activtiy中显示</p>
+<p>使用context属性, 可以在开发阶段中看到设置在Activity中的主题效果</p>
+<p>tools:context=”com.littlehan.myapplication.MainActivity”</p>
+<p>在布局中加入这行代码,就可以在design视图中看到与MainActivity绑定主题的效果。</p>
+<p>tools:layout开发中查看fragment布局效果<br>当我们在Activity上加载一个fragment时，是需要在运行后才可以看到加载后的效果,有没有方法在测试阶段就在布局预览窗口上显示呢?</p>
+<p>答案是有的,借助layout属性,例如,在布局中加入这样一行代码:<br>tools:layout=@layout/yourfragmentlayoutname<br>这样你的编写的fragment布局就会预览在指定主布局上了</p>
+<p>app:xmlns:app=”<a target="_blank" rel="noopener" href="http://schemas.android.com/apk/res-auto%E2%80%9D">http://schemas.Android.com/apk/res-auto”</a></p>
+<p>app命名空间为用户自定义，通过attrs进行设置，然后通过自定义view进行解析。</p>
+<ul>
+<li>Application 和 Activity 的 Context 对象的区别</li>
+</ul>
+<p>这是两种不同的context，也是最常见的两种.第一种中context的生命周期与Application的生命周期相关的，context随着Application的销毁而销毁，伴随application的一生，与activity的生命周期无关.第二种中的context跟Activity的生命周期是相关的，但是对一个Application来说，Activity可以销毁几次，那么属于Activity的context就会销毁多次.至于用哪种context，得看应用场景，个人感觉用Activity的context好一点，不过也有的时候必须使用Application的context.application context可以通过<br>Context.getApplicationContext或者Activity.getApplication方法获取.</p>
+<p>还有就是，在使用context的时候，小心内存泄露，防止内存泄露，注意一下几个方面：</p>
+<p>　1. 不要让生命周期长的对象引用activity context，即保证引用activity的对象要与activity本身生命周期是一样的</p>
+<p>　2. 对于生命周期长的对象，可以使用application context</p>
+<p>　3. 避免非静态的内部类，尽量使用静态类，避免生命周期问题，注意内部类对外部对象引用导致的生命周期变化</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/activity/" rel="tag"># activity</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/01/28/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93-20180128/" rel="prev" title="工作小结-2018一月(4)">
+                  <i class="fa fa-chevron-left"></i> 工作小结-2018一月(4)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/02/06/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93-20180206/" rel="next" title="工作小结-2018二月(1)">
+                  工作小结-2018二月(1) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

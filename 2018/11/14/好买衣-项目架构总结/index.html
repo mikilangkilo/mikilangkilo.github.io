@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="好买衣项目架构总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="好搭项目架构总结">
+<meta property="og:url" content="http://example.com/2018/11/14/%E5%A5%BD%E4%B9%B0%E8%A1%A3-%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="好买衣项目架构总结">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/%E6%9E%B6%E6%9E%84/clean%E6%9E%B6%E6%9E%84%E5%9B%BE.png">
+<meta property="article:published_time" content="2018-11-14T03:29:32.000Z">
+<meta property="article:modified_time" content="2021-07-11T03:17:16.666Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="好买衣">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/%E6%9E%B6%E6%9E%84/clean%E6%9E%B6%E6%9E%84%E5%9B%BE.png">
+
+
+<link rel="canonical" href="http://example.com/2018/11/14/%E5%A5%BD%E4%B9%B0%E8%A1%A3-%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%E6%80%BB%E7%BB%93/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2018/11/14/%E5%A5%BD%E4%B9%B0%E8%A1%A3-%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%E6%80%BB%E7%BB%93/","path":"2018/11/14/好买衣-项目架构总结/","title":"好搭项目架构总结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>好搭项目架构总结 | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">29</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">104</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">架构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#clean%E7%BB%93%E6%9E%84"><span class="nav-number">2.1.</span> <span class="nav-text">clean结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#domain%E5%B1%82"><span class="nav-number">2.1.1.</span> <span class="nav-text">domain层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#data%E5%B1%82"><span class="nav-number">2.1.2.</span> <span class="nav-text">data层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#baselibrary%E5%B1%82"><span class="nav-number">2.1.3.</span> <span class="nav-text">baselibrary层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#app%E5%B1%82"><span class="nav-number">2.1.4.</span> <span class="nav-text">app层</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mikilangkilo" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mikilangkilo" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:913925047@qq.com" title="E-Mail → mailto:913925047@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/mikilangkilo" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/11/14/%E5%A5%BD%E4%B9%B0%E8%A1%A3-%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          好搭项目架构总结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-11-14 11:29:32" itemprop="dateCreated datePublished" datetime="2018-11-14T11:29:32+08:00">2018-11-14</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-11 11:17:16" itemprop="dateModified" datetime="2021-07-11T11:17:16+08:00">2021-07-11</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9E%B6%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">架构</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">好买衣项目架构总结</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>该篇文章主要是分析一下目前项目的架构。</p>
+<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>好搭作为一个较为成熟的软件，从2016年我刚毕业的那年开始进行设计架构，到现在过了整整2年了。经手该项目的有大约20人了，我算是第四代接手这个项目的人。</p>
+<h1 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h1><h2 id="clean结构"><a href="#clean结构" class="headerlink" title="clean结构"></a>clean结构</h2><p><img src="/images/%E6%9E%B6%E6%9E%84/clean%E6%9E%B6%E6%9E%84%E5%9B%BE.png" alt="clean结构示意图"></p>
+<p>一开始看到这个架构是挺懵逼的，以前听说的时候知道这个架构是谷歌的，主要是用于项目架构，目的是为了解耦。</p>
+<p>项目中依托clean架构搭建了一套完整的解耦系统。</p>
+<h3 id="domain层"><a href="#domain层" class="headerlink" title="domain层"></a>domain层</h3><p>domian层是最内层，提供了项目的基础架构，包括了接口，util方法类（可以被视为实体类），model（完整的实体对象），event（消息通知的实体对象），exception（所有的自定义异常实体对象）</p>
+<p>另外提供了精华处，针对网络的封装实体对象，interactor</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public interface InteractorExecutor extends Executor &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是一个内部写的interactorexcutor，其实就是继承了executor，作为处理runnable的方式。</p>
+<p>另外还写了一个PostInteractionThread，作为获取线程的方式。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public interface PostInteractionThread &#123;</span><br><span class="line">    Scheduler getScheduler();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>仅提供了很简单的方法</p>
+<p>interactor类：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br></pre></td><td class="code"><pre><span class="line">public abstract class Interactor&lt;T&gt; &#123;</span><br><span class="line"></span><br><span class="line">    private static final boolean isDelay3Second = false;</span><br><span class="line">    protected PostInteractionThread postInteractionThread;</span><br><span class="line">    protected InteractorExecutor interactorExecutor;</span><br><span class="line">    private EventBus mEventBus;</span><br><span class="line">    private Disposable subscription = Disposables.empty();</span><br><span class="line"></span><br><span class="line">    public Interactor(InteractorExecutor interactorExecutor, PostInteractionThread postInteractionThread) &#123;</span><br><span class="line">        this.postInteractionThread = postInteractionThread;</span><br><span class="line">        this.interactorExecutor = interactorExecutor;</span><br><span class="line"></span><br><span class="line">        mEventBus = EventBus.getDefault();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected abstract Observable&lt;T&gt; buildObservable();</span><br><span class="line"></span><br><span class="line">    protected void checkConditions() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public T executeSync() &#123;</span><br><span class="line">        return buildObservable().blockingFirst();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void execute(Consumer&lt;? super T&gt; onNext) &#123;</span><br><span class="line">        execute(onNext, null, null);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void execute(Consumer&lt;? super T&gt; onNext, Consumer&lt;Throwable&gt; onError) &#123;</span><br><span class="line">        execute(onNext, onError, null);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void execute(Consumer&lt;? super T&gt; onNext, Consumer&lt;Throwable&gt; onError, Action onComplete) &#123;</span><br><span class="line"></span><br><span class="line">        execute(</span><br><span class="line">                new Observer&lt;T&gt;() &#123;</span><br><span class="line">                    @Override</span><br><span class="line">                    public void onError(Throwable e) &#123;</span><br><span class="line">                        Throwable t = new Exception();</span><br><span class="line">                        if (e instanceof HttpException) &#123;</span><br><span class="line">                            if (((HttpException) e).code() == 401) &#123;</span><br><span class="line">                                HttpException s = (HttpException) e;</span><br><span class="line">                                if (s != null &amp;&amp; s.response() != null &amp;&amp; s.response().errorBody() != null) &#123;</span><br><span class="line">                                    try &#123;</span><br><span class="line">                                        HttpErrorBody body = new Gson().fromJson(s.response().errorBody().string(), HttpErrorBody.class);</span><br><span class="line">                                        if (body != null &amp;&amp; body.getError_reason() != null &amp;&amp; body.getError_reason().startsWith(&quot;AuthenticationFailed&quot;)) &#123;</span><br><span class="line">                                            //todo</span><br><span class="line">                                        &#125; else &#123;</span><br><span class="line">                                            mEventBus.post(new OnAuthExpiredEvent());</span><br><span class="line">                                        &#125;</span><br><span class="line">                                    &#125; catch (IOException e1) &#123;</span><br><span class="line">                                        e1.printStackTrace();</span><br><span class="line">                                        mEventBus.post(new OnAuthExpiredEvent());</span><br><span class="line">                                    &#125;</span><br><span class="line">                                &#125; else &#123;</span><br><span class="line">                                    mEventBus.post(new OnAuthExpiredEvent());</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125; else if (((HttpException) e).code() == 400 || ((HttpException) e).code() == 403 || ((HttpException) e).code() == 500) &#123;</span><br><span class="line">                                try &#123;</span><br><span class="line">                                    if (((HttpException) e).response() != null &amp;&amp; ((HttpException) e).response().errorBody() != null) &#123;</span><br><span class="line">                                        String json = ((HttpException) e).response().errorBody().string();</span><br><span class="line">                                        HttpErrorBody body = new Gson().fromJson(json, HttpErrorBody.class);</span><br><span class="line">                                        HttpErrorMessageBody messageBody = new Gson().fromJson(json, HttpErrorMessageBody.class);</span><br><span class="line">                                        if (body != null &amp;&amp; body.getError_reason() != null) &#123;</span><br><span class="line">//                                            mEventBus.post(new OnHttpErrorEvent(body.getError_reason()));</span><br><span class="line">                                        &#125; else if (messageBody != null &amp;&amp; messageBody.getMessage() != null) &#123;</span><br><span class="line">                                            mEventBus.post(new OnHttpErrorEvent(messageBody.getCode(), messageBody.getMessage()));</span><br><span class="line">                                        &#125; else &#123;</span><br><span class="line">                                            mEventBus.post(new OnHttpErrorEvent(&quot;网络异常，请稍后再试&quot;));</span><br><span class="line">                                        &#125;</span><br><span class="line">                                        t = new Exception(messageBody.getMessage());</span><br><span class="line">                                    &#125;</span><br><span class="line"></span><br><span class="line">                                &#125; catch (Exception e1) &#123;</span><br><span class="line">                                    e1.printStackTrace();</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                        if (onError == null || subscription.isDisposed()) &#123;</span><br><span class="line">                            e.printStackTrace();</span><br><span class="line">                        &#125; else &#123;</span><br><span class="line">                            try &#123;</span><br><span class="line">                                onError.accept(t);</span><br><span class="line">                            &#125; catch (Exception e1) &#123;</span><br><span class="line">                                e1.printStackTrace();</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                        handleHttpError(e);</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    @Override</span><br><span class="line">                    public void onComplete() &#123;</span><br><span class="line">                        if (onComplete != null &amp;&amp; !subscription.isDisposed()) &#123;</span><br><span class="line">                            try &#123;</span><br><span class="line">                                onComplete.run();</span><br><span class="line">                            &#125; catch (Exception e) &#123;</span><br><span class="line">                                onError(e);</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    @Override</span><br><span class="line">                    public void onSubscribe(Disposable d) &#123;</span><br><span class="line">                        subscription = d;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    @Override</span><br><span class="line">                    public void onNext(T t) &#123;</span><br><span class="line">                        if (onNext != null &amp;&amp; !subscription.isDisposed()) &#123;</span><br><span class="line">                            try &#123;</span><br><span class="line">                                onNext.accept(t);</span><br><span class="line">                            &#125; catch (Exception e) &#123;</span><br><span class="line">                                onError(e);</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private void execute(Observer&lt;T&gt; observer) &#123;</span><br><span class="line">        Observable&lt;T&gt; observable;</span><br><span class="line">        try &#123;</span><br><span class="line">            checkConditions();</span><br><span class="line">            observable = buildObservable();</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            observable = Observable.create(observableEmitter -&gt; observableEmitter.onError(e));</span><br><span class="line">        &#125;</span><br><span class="line">        // cancel latest execution</span><br><span class="line">        cancel();</span><br><span class="line">        if (isDelay3Second) &#123;</span><br><span class="line">            observable.subscribeOn(Schedulers.io())</span><br><span class="line">                    .delay(3, TimeUnit.SECONDS)</span><br><span class="line">                    .observeOn(postInteractionThread.getScheduler())</span><br><span class="line">                    .subscribe(observer);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            observable.subscribeOn(Schedulers.io())</span><br><span class="line">                    .observeOn(AndroidSchedulers.mainThread())</span><br><span class="line">                    .subscribe(observer);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void cancel() &#123;</span><br><span class="line">        if (!subscription.isDisposed()) &#123;</span><br><span class="line">            subscription.dispose();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public boolean isCancel() &#123;</span><br><span class="line">        return subscription == null || subscription.isDisposed();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Observable&lt;T&gt; getObservable() &#123;</span><br><span class="line">        return buildObservable();</span><br><span class="line">    &#125;</span><br><span class="line">    private void handleHttpError(Throwable e) &#123;</span><br><span class="line">        if (e instanceof RuntimeException) &#123;</span><br><span class="line">            if (e.getCause() instanceof ConnectException) &#123;</span><br><span class="line">                mEventBus.post(new OnHttpErrorEvent(&quot;连接失败，请检查网络后再试&quot;));</span><br><span class="line">            &#125;</span><br><span class="line">            if (e.getCause() instanceof SocketTimeoutException) &#123;</span><br><span class="line">                mEventBus.post(new OnHttpErrorEvent(&quot;请求超时，请检查网络后再试&quot;));</span><br><span class="line">            &#125;</span><br><span class="line">            if (e.getCause() instanceof UnknownHostException) &#123;</span><br><span class="line">                mEventBus.post(new OnHttpErrorEvent(&quot;域名连接失败，请检查网络后再试&quot;));</span><br><span class="line">            &#125;</span><br><span class="line">            if (e.getCause() instanceof NetworkErrorException) &#123;</span><br><span class="line">                mEventBus.post(new OnHttpErrorEvent(&quot;网络异常，请检查网络后再试&quot;));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (e instanceof ConnectException) &#123;</span><br><span class="line">            mEventBus.post(new OnHttpErrorEvent(&quot;连接失败，请检查网络后再试&quot;));</span><br><span class="line">        &#125;</span><br><span class="line">        if (e instanceof SocketTimeoutException) &#123;</span><br><span class="line">            mEventBus.post(new OnHttpErrorEvent(&quot;请求超时，请检查网络后再试&quot;));</span><br><span class="line">        &#125;</span><br><span class="line">        if (e instanceof UnknownHostException) &#123;</span><br><span class="line">            mEventBus.post(new OnHttpErrorEvent(&quot;域名连接失败，请检查网络后再试&quot;));</span><br><span class="line">        &#125;</span><br><span class="line">        if (e instanceof NetworkErrorException) &#123;</span><br><span class="line">            mEventBus.post(new OnHttpErrorEvent(&quot;网络异常，请检查网络后再试&quot;));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>interactor可以说是整个domain的精华，首先包装了observable，然后在执行部分统一处理了异常等。并且切换线程也提供了统一的处理方式，这样完善的避免了OKhttp无法统一的问题。从上层提供了处理的机制。而且此处需要的是observable，刚好可以通过retrofit2进行提供。这样就形成了一个闭环，只需要对接interactor，然后接上retrofit提供的接口即可完整的处理网络请求。</p>
+<p>domain中除了基类interactor，另外还提供了一系列基于基类interactor衍生的网络请求实体类，虽然此处这些实体类的存在仅仅使用到了接口来实现。接口的具体实现还需要更上一层来完成。但是巧妙的是此处通过dagger的注入，将上层提供的实现方法注入到了下层，这样实现的底层可以直接拿来用。</p>
+<h3 id="data层"><a href="#data层" class="headerlink" title="data层"></a>data层</h3><p>domain层是独立的，无任何模块依赖，而data层就是domain层更上一层的，仅仅只依赖于domain模块。</p>
+<p>data层是数据层，此处主要是处理或者说提供数据。domain层需要的接口实现就是在data层实现好了通过dagger注入到底层。</p>
+<p>data层除了数据提供者这一个身份外，还有一个数据缓存者这个身份。整个data在关键的地方，比如说userbody，usercache等地方设置了三级缓存。这样完整的实现了一个数据层的功能。</p>
+<p>data层对于数据的处理方面集中在获取，提供，以及保存。将数据隔离的效果很明显能够大幅度解耦。</p>
+<p>如果data层不隔离，那么获取的数据，存储的数据，提供者，三者会混乱，在A区域获取的数据可能和B区域获取的数据不同。当处于不同模块的代码进行相同的缓存，又会导致缓存不同步，而相同的代码进行不同的缓存，更是乱七八糟。因此这一层做隔离，哪怕是仅仅只有数据区域做隔离，总好过数据区域掺杂在不同的区域而导致相同的数据采用了过多缓存步骤。</p>
+<p>另外项目中提供的缓存方法，主要是ACache和Lrucache这两个老牌的库,</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public interface CacheStore &#123;</span><br><span class="line">    int NONE_TIME = 0;</span><br><span class="line">    int DURATION_ONE_MINUTE = 60;</span><br><span class="line">    int DURATION_ONE_HOUR = DURATION_ONE_MINUTE * 60;</span><br><span class="line">    int DURATION_THREE_HOUR = DURATION_ONE_HOUR * 3;</span><br><span class="line">    int DURATION_ONE_DAY = DURATION_ONE_HOUR * 24;</span><br><span class="line">    int DURATION_FIVE_MINUTE = DURATION_ONE_MINUTE * 5;</span><br><span class="line"></span><br><span class="line">    void put(String key, byte[] data);</span><br><span class="line">    void put(String key, byte[] data, int duration);</span><br><span class="line">    byte[] get(String key);</span><br><span class="line">    void put(String key, Serializable obj);</span><br><span class="line">    void put(String key, Serializable obj, int duration);</span><br><span class="line">    Object getAsObject(String key);</span><br><span class="line">    void put(String key, boolean value);</span><br><span class="line">    boolean getAsBoolean(String key);</span><br><span class="line">    void clear();</span><br><span class="line">    void remove(String key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实现缓存使用的就是这个模板，这个模板演化为两个，一个memstore，一个DiskcatchStore。memstore就是内存缓存，仿照的是Lrucache，主要是规避gc的清除，实现的原理看一下就懂了。diskcatchstore就是文件缓存，使用的是Acache来实现的，甚至可以说是一个封装而已。</p>
+<p>实现缓存有个方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void put(String key, Serializable obj, int duration);</span><br></pre></td></tr></table></figure>
+<p>其中有保存时长，这个保留的时长会转化为当前时间+时长的时间戳，将和data一起包装起来存储，在取出保存的data时会进行判断，如果携带了时间信息，就对时间进行判断，如果时间过期，那么在memcache里面就是移除这个key，在Acache里面也是相同的原理</p>
+<h3 id="baselibrary层"><a href="#baselibrary层" class="headerlink" title="baselibrary层"></a>baselibrary层</h3><p>baselibrary是data层之上的一层。如果说domain是心脏，data是血液的话，那么baselibrary就是骨架。</p>
+<p>baselibrary将所有用到的库进行综合，自我封装，以及改写，然后通过暴露api的方式让上层可以直接使用暴露出来的api</p>
+<p>到baselibrary这一层截止，整个项目的脚手架就已经都搭建ok，也就是到这一层为止，整个项目的核心基本上就已经完成。如果需要热插拔，使用我们的项目另外新建一个新的项目的话，那么只需要将baselibrary这一层以下的进行迁移，然后复写逻辑即可。</p>
+<p>baselibrary在后期逐渐演化为和app混合了。</p>
+<h3 id="app层"><a href="#app层" class="headerlink" title="app层"></a>app层</h3><p>app是整个项目的逻辑层，当然也做了很多初始化的工作，最重要的比如说dagger的初始化工作，app层就像是肌肉，在肌肉填充满了之后，才会成为一个正常的人。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%A5%BD%E4%B9%B0%E8%A1%A3/" rel="tag"># 好买衣</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/11/06/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-activity-Android%E8%87%AA%E5%8A%A8%E5%8C%96%E6%89%93%E5%8C%85%E8%84%9A%E6%9C%AC%E6%90%AD%E5%BB%BA/" rel="prev" title="安卓基础-Android自动化打包脚本搭建">
+                  <i class="fa fa-chevron-left"></i> 安卓基础-Android自动化打包脚本搭建
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/11/16/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93-20181121/" rel="next" title="工作小结-2018十一月">
+                  工作小结-2018十一月 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

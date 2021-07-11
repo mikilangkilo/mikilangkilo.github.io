@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="本文主要是Apktools原理分析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Apktools原理分析">
+<meta property="og:url" content="http://example.com/2019/05/25/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-rom-apktools%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本文主要是Apktools原理分析">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-05-25T06:12:59.000Z">
+<meta property="article:modified_time" content="2021-07-11T11:42:19.459Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Rom">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2019/05/25/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-rom-apktools%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2019/05/25/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-rom-apktools%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/","path":"2019/05/25/安卓基础-rom-apktools原理分析/","title":"Apktools原理分析"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Apktools原理分析 | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">29</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">104</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#apktools%E6%BA%90%E7%A0%81"><span class="nav-number">1.</span> <span class="nav-text">apktools源码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%98%85%E8%AF%BB%E9%A1%BA%E5%BA%8F"><span class="nav-number">2.</span> <span class="nav-text">阅读顺序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B"><span class="nav-number">2.1.</span> <span class="nav-text">反编译过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#apkDecoder-decode"><span class="nav-number">2.1.1.</span> <span class="nav-text">apkDecoder.decode()</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mAndrolib-decodeSourcesSmali-mApkFile-outDir-mDebug-mBakDeb"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">mAndrolib.decodeSourcesSmali(mApkFile, outDir, mDebug, mBakDeb)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mAndrolib-decodeSourcesJava-mApkFile-outDir-mDebug"><span class="nav-number">2.1.1.2.</span> <span class="nav-text">mAndrolib.decodeSourcesJava(mApkFile, outDir, mDebug);</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9E%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B"><span class="nav-number">2.2.</span> <span class="nav-text">回编译过程</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mikilangkilo" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mikilangkilo" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:913925047@qq.com" title="E-Mail → mailto:913925047@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/mikilangkilo" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/05/25/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-rom-apktools%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Apktools原理分析
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-05-25 14:12:59" itemprop="dateCreated datePublished" datetime="2019-05-25T14:12:59+08:00">2019-05-25</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-11 19:42:19" itemprop="dateModified" datetime="2021-07-11T19:42:19+08:00">2021-07-11</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">安卓基础</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">本文主要是Apktools原理分析</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="apktools源码"><a href="#apktools源码" class="headerlink" title="apktools源码"></a>apktools源码</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/brutall/brut.apktool.git</span><br></pre></td></tr></table></figure>
+
+<h1 id="阅读顺序"><a href="#阅读顺序" class="headerlink" title="阅读顺序"></a>阅读顺序</h1><p>最基础的入口就是没有任何后缀的brut.apktool中的入口函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) throws IOException,</span><br><span class="line">			InterruptedException, BrutException &#123;</span><br><span class="line">		try &#123;</span><br><span class="line">			Verbosity verbosity = Verbosity.NORMAL;</span><br><span class="line">			int i;</span><br><span class="line">			for (i = 0; i &lt; args.length; i++) &#123;</span><br><span class="line">				String opt = args[i];</span><br><span class="line"></span><br><span class="line">				if (opt.startsWith(&quot;--version&quot;) || (opt.startsWith(&quot;-version&quot;))) &#123;</span><br><span class="line">					version_print();</span><br><span class="line">					System.exit(1);</span><br><span class="line">				&#125;</span><br><span class="line">				if (!opt.startsWith(&quot;-&quot;)) &#123;</span><br><span class="line">					break;</span><br><span class="line">				&#125;</span><br><span class="line">				if (&quot;-v&quot;.equals(opt) || &quot;--verbose&quot;.equals(opt)) &#123;</span><br><span class="line">					if (verbosity != Verbosity.NORMAL) &#123;</span><br><span class="line">						throw new InvalidArgsError();</span><br><span class="line">					&#125;</span><br><span class="line">					verbosity = Verbosity.VERBOSE;</span><br><span class="line">				&#125; else if (&quot;-q&quot;.equals(opt) || &quot;--quiet&quot;.equals(opt)) &#123;</span><br><span class="line">					if (verbosity != Verbosity.NORMAL) &#123;</span><br><span class="line">						throw new InvalidArgsError();</span><br><span class="line">					&#125;</span><br><span class="line">					verbosity = Verbosity.QUIET;</span><br><span class="line">				&#125; else &#123;</span><br><span class="line">					throw new InvalidArgsError();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			setupLogging(verbosity);</span><br><span class="line"></span><br><span class="line">			if (args.length &lt;= i) &#123;</span><br><span class="line">				throw new InvalidArgsError();</span><br><span class="line">			&#125;</span><br><span class="line">			String cmd = args[i];</span><br><span class="line">			args = Arrays.copyOfRange(args, i + 1, args.length);</span><br><span class="line"></span><br><span class="line">			if (&quot;d&quot;.equals(cmd) || &quot;decode&quot;.equals(cmd)) &#123;</span><br><span class="line">				cmdDecode(args);</span><br><span class="line">			&#125; else if (&quot;b&quot;.equals(cmd) || &quot;build&quot;.equals(cmd)) &#123;</span><br><span class="line">				cmdBuild(args);</span><br><span class="line">			&#125; else if (&quot;if&quot;.equals(cmd) || &quot;install-framework&quot;.equals(cmd)) &#123;</span><br><span class="line">				cmdInstallFramework(args);</span><br><span class="line">			&#125; else if (&quot;publicize-resources&quot;.equals(cmd)) &#123;</span><br><span class="line">				cmdPublicizeResources(args);</span><br><span class="line">			&#125; else &#123;</span><br><span class="line">				throw new InvalidArgsError();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; catch (InvalidArgsError ex) &#123;</span><br><span class="line">			usage();</span><br><span class="line">			System.exit(1);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从这一段代码中可以看出apktools的一些命令</p>
+<blockquote>
+<p>-d 反编译</p>
+</blockquote>
+<blockquote>
+<p>-b 回编译</p>
+</blockquote>
+<blockquote>
+<p>-if 安装框架</p>
+</blockquote>
+<blockquote>
+<p>-publicize-resources 处理arsc文件</p>
+</blockquote>
+<h2 id="反编译过程"><a href="#反编译过程" class="headerlink" title="反编译过程"></a>反编译过程</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">private static void cmdDecode(String[] args) throws InvalidArgsError,</span><br><span class="line">			AndrolibException &#123;</span><br><span class="line">		ApkDecoder decoder = new ApkDecoder();</span><br><span class="line"></span><br><span class="line">		int i;</span><br><span class="line">		for (i = 0; i &lt; args.length; i++) &#123;</span><br><span class="line">			String opt = args[i];</span><br><span class="line">			if (!opt.startsWith(&quot;-&quot;)) &#123;</span><br><span class="line">				break;</span><br><span class="line">			&#125;</span><br><span class="line">			if (&quot;-s&quot;.equals(opt) || &quot;--no-src&quot;.equals(opt)) &#123;</span><br><span class="line">				decoder.setDecodeSources(ApkDecoder.DECODE_SOURCES_NONE);</span><br><span class="line">			&#125; else if (&quot;-d&quot;.equals(opt) || &quot;--debug&quot;.equals(opt)) &#123;</span><br><span class="line">				decoder.setDebugMode(true);</span><br><span class="line">			&#125; else if (&quot;-b&quot;.equals(opt) || &quot;--no-debug-info&quot;.equals(opt)) &#123;</span><br><span class="line">				decoder.setBaksmaliDebugMode(false);</span><br><span class="line">			&#125; else if (&quot;-t&quot;.equals(opt) || &quot;--frame-tag&quot;.equals(opt)) &#123;</span><br><span class="line">				i++;</span><br><span class="line">				if (i &gt;= args.length) &#123;</span><br><span class="line">					throw new InvalidArgsError();</span><br><span class="line">				&#125;</span><br><span class="line">				decoder.setFrameworkTag(args[i]);</span><br><span class="line">			&#125; else if (&quot;-f&quot;.equals(opt) || &quot;--force&quot;.equals(opt)) &#123;</span><br><span class="line">				decoder.setForceDelete(true);</span><br><span class="line">			&#125; else if (&quot;-r&quot;.equals(opt) || &quot;--no-res&quot;.equals(opt)) &#123;</span><br><span class="line">				decoder.setDecodeResources(ApkDecoder.DECODE_RESOURCES_NONE);</span><br><span class="line">			&#125; else if (&quot;--keep-broken-res&quot;.equals(opt)) &#123;</span><br><span class="line">				decoder.setKeepBrokenResources(true);</span><br><span class="line">			&#125; else if (&quot;--frame-path&quot;.equals(opt)) &#123;</span><br><span class="line">				i++;</span><br><span class="line">        if (i &gt;= args.length) &#123;</span><br><span class="line">          throw new InvalidArgsError();</span><br><span class="line">        &#125;</span><br><span class="line">				decoder.setFrameworkDir(args[i]);</span><br><span class="line">			&#125; else &#123;</span><br><span class="line">				throw new InvalidArgsError();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		String outName = null;</span><br><span class="line">		if (args.length == i + 2) &#123;</span><br><span class="line">			outName = args[i + 1];</span><br><span class="line">		&#125; else if (args.length == i + 1) &#123;</span><br><span class="line">			outName = args[i];</span><br><span class="line">			outName = outName.endsWith(&quot;.apk&quot;) ? outName.substring(0,</span><br><span class="line">					outName.length() - 4) : outName + &quot;.out&quot;;</span><br><span class="line">			outName = new File(outName).getName();</span><br><span class="line">		&#125; else &#123;</span><br><span class="line">			throw new InvalidArgsError();</span><br><span class="line">		&#125;</span><br><span class="line">		File outDir = new File(outName);</span><br><span class="line">		decoder.setOutDir(outDir);</span><br><span class="line">		decoder.setApkFile(new File(args[i]));</span><br><span class="line"></span><br><span class="line">		try &#123;</span><br><span class="line">			decoder.decode();</span><br><span class="line">		&#125; catch (OutDirExistsException ex) &#123;</span><br><span class="line">			System.out</span><br><span class="line">					.println(&quot;Destination directory (&quot;</span><br><span class="line">							+ outDir.getAbsolutePath()</span><br><span class="line">							+ &quot;) &quot;</span><br><span class="line">							+ &quot;already exists. Use -f switch if you want to overwrite it.&quot;);</span><br><span class="line">			System.exit(1);</span><br><span class="line">		&#125; catch (InFileNotFoundException ex) &#123;</span><br><span class="line">			System.out.println(&quot;Input file (&quot; + args[i] + &quot;) &quot;</span><br><span class="line">					+ &quot;was not found or was not readable.&quot;);</span><br><span class="line">			System.exit(1);</span><br><span class="line">		&#125; catch (CantFindFrameworkResException ex) &#123;</span><br><span class="line">			System.out</span><br><span class="line">					.println(&quot;Can&#x27;t find framework resources for package of id: &quot;</span><br><span class="line">							+ String.valueOf(ex.getPkgId())</span><br><span class="line">							+ &quot;. You must install proper &quot;</span><br><span class="line">							+ &quot;framework files, see project website for more info.&quot;);</span><br><span class="line">			System.exit(1);</span><br><span class="line">		&#125; catch (IOException ex) &#123;</span><br><span class="line">			System.out</span><br><span class="line">					.println(&quot;Could not modify file. Please ensure you have permission.&quot;);</span><br><span class="line">			System.exit(1);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>反编译的过程操纵了一个叫做apkdecoder的类，通过传入的参数进行了一些配置项的更改，之后核心在于</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">      decoder.setApkFile(new File(args[i]));</span><br><span class="line">try &#123;</span><br><span class="line">	decoder.decode();</span><br><span class="line">&#125; catch (OutDirExistsException ex) &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="apkDecoder-decode"><a href="#apkDecoder-decode" class="headerlink" title="apkDecoder.decode()"></a>apkDecoder.decode()</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">public void decode() throws AndrolibException, IOException &#123;</span><br><span class="line">		File outDir = getOutDir();</span><br><span class="line"></span><br><span class="line">		if (!mForceDelete &amp;&amp; outDir.exists()) &#123;</span><br><span class="line">			throw new OutDirExistsException();</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		if (!mApkFile.isFile() || !mApkFile.canRead()) &#123;</span><br><span class="line">			throw new InFileNotFoundException();</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		try &#123;</span><br><span class="line">			OS.rmdir(outDir);</span><br><span class="line">		&#125; catch (BrutException ex) &#123;</span><br><span class="line">			throw new AndrolibException(ex);</span><br><span class="line">		&#125;</span><br><span class="line">		outDir.mkdirs();</span><br><span class="line"></span><br><span class="line">		if (hasSources()) &#123;</span><br><span class="line">			switch (mDecodeSources) &#123;</span><br><span class="line">			case DECODE_SOURCES_NONE:</span><br><span class="line">				mAndrolib.decodeSourcesRaw(mApkFile, outDir, mDebug);</span><br><span class="line">				break;</span><br><span class="line">			case DECODE_SOURCES_SMALI:</span><br><span class="line">				mAndrolib.decodeSourcesSmali(mApkFile, outDir, mDebug, mBakDeb);</span><br><span class="line">				break;</span><br><span class="line">			case DECODE_SOURCES_JAVA:</span><br><span class="line">				mAndrolib.decodeSourcesJava(mApkFile, outDir, mDebug);</span><br><span class="line">				break;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		if (hasResources()) &#123;</span><br><span class="line"></span><br><span class="line">			// read the resources.arsc checking for STORED vs DEFLATE</span><br><span class="line">			// compression</span><br><span class="line">			// this will determine whether we compress on rebuild or not.</span><br><span class="line">			JarFile jf = new JarFile(mApkFile.getAbsoluteFile());</span><br><span class="line">			JarEntry je = jf.getJarEntry(&quot;resources.arsc&quot;);</span><br><span class="line">			if (je != null) &#123;</span><br><span class="line">				int compression = je.getMethod();</span><br><span class="line">				mCompressResources = (compression != ZipEntry.STORED)</span><br><span class="line">						&amp;&amp; (compression == ZipEntry.DEFLATED);</span><br><span class="line">			&#125;</span><br><span class="line">			jf.close();</span><br><span class="line"></span><br><span class="line">			switch (mDecodeResources) &#123;</span><br><span class="line">			case DECODE_RESOURCES_NONE:</span><br><span class="line">				mAndrolib.decodeResourcesRaw(mApkFile, outDir);</span><br><span class="line">				break;</span><br><span class="line">			case DECODE_RESOURCES_FULL:</span><br><span class="line">				mAndrolib.decodeResourcesFull(mApkFile, outDir, getResTable());</span><br><span class="line">				break;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; else &#123;</span><br><span class="line">			// if there&#x27;s no resources.asrc, decode the manifest without looking</span><br><span class="line">			// up attribute references</span><br><span class="line">			if (hasManifest()) &#123;</span><br><span class="line">				switch (mDecodeResources) &#123;</span><br><span class="line">				case DECODE_RESOURCES_NONE:</span><br><span class="line">					mAndrolib.decodeManifestRaw(mApkFile, outDir);</span><br><span class="line">					break;</span><br><span class="line">				case DECODE_RESOURCES_FULL:</span><br><span class="line">					mAndrolib.decodeManifestFull(mApkFile, outDir,</span><br><span class="line">							getResTable());</span><br><span class="line">					break;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		mAndrolib.decodeRawFiles(mApkFile, outDir);</span><br><span class="line">		writeMetaFile();</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里写的其实蛮清楚的</p>
+<p>创建存储的文件夹-&gt;解码dex文件到存储的文件夹-&gt;处理资源文件-&gt;拷贝manifest到存储的文件夹-&gt;拷贝raw文件（asset，lib）到存储文件夹-&gt;整合metainfo文件到存储的文件夹</p>
+<p>也就是解码其实只用到了一处，其余部分都是拷贝或者整合。</p>
+<p>其中decode又分为decode为raw文件，decode为smali文件，和decode为java文件三种</p>
+<p>默认是decode为smali文件。</p>
+<p>raw文件的decode就是直接复制，不解码的意思。</p>
+<p>因此我们需要看一下decode为smali和decode为java2种。</p>
+<h4 id="mAndrolib-decodeSourcesSmali-mApkFile-outDir-mDebug-mBakDeb"><a href="#mAndrolib-decodeSourcesSmali-mApkFile-outDir-mDebug-mBakDeb" class="headerlink" title="mAndrolib.decodeSourcesSmali(mApkFile, outDir, mDebug, mBakDeb)"></a>mAndrolib.decodeSourcesSmali(mApkFile, outDir, mDebug, mBakDeb)</h4><p>这个参数第四个是指控制debug输出，和第三个一样</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public void decodeSourcesSmali(File apkFile, File outDir, boolean debug,</span><br><span class="line">		boolean bakdeb) throws AndrolibException &#123;</span><br><span class="line">	try &#123;</span><br><span class="line">		File smaliDir = new File(outDir, SMALI_DIRNAME);</span><br><span class="line">		OS.rmdir(smaliDir);</span><br><span class="line">		smaliDir.mkdirs();</span><br><span class="line">		LOGGER.info(&quot;Baksmaling...&quot;);</span><br><span class="line">		SmaliDecoder.decode(apkFile, smaliDir, debug, bakdeb);</span><br><span class="line">	&#125; catch (BrutException ex) &#123;</span><br><span class="line">		throw new AndrolibException(ex);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这里也就是创建了文件夹，然后调用了SmaliDecoder的decode方式</p>
+<p>而smalidecoder又是调用了baksmali.disassembleDexFile</p>
+<p>baksmali的这个api虽然写的长，但是可以分析的，具体源码如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br></pre></td><td class="code"><pre><span class="line">public static void disassembleDexFile(String dexFilePath, DexFile dexFile, boolean deodex, String outputDirectory,</span><br><span class="line">                                          String[] classPathDirs, String bootClassPath, String extraBootClassPath,</span><br><span class="line">                                          boolean noParameterRegisters, boolean useLocalsDirective,</span><br><span class="line">                                          boolean useSequentialLabels, boolean outputDebugInfo, boolean addCodeOffsets,</span><br><span class="line">                                          boolean noAccessorComments, int registerInfo, boolean verify,</span><br><span class="line">                                          boolean ignoreErrors, String inlineTable, boolean checkPackagePrivateAccess)</span><br><span class="line">    &#123;</span><br><span class="line">        baksmali.noParameterRegisters = noParameterRegisters;</span><br><span class="line">        baksmali.useLocalsDirective = useLocalsDirective;</span><br><span class="line">        baksmali.useSequentialLabels = useSequentialLabels;</span><br><span class="line">        baksmali.outputDebugInfo = outputDebugInfo;</span><br><span class="line">        baksmali.addCodeOffsets = addCodeOffsets;</span><br><span class="line">        baksmali.noAccessorComments = noAccessorComments;</span><br><span class="line">        baksmali.deodex = deodex;</span><br><span class="line">        baksmali.registerInfo = registerInfo;</span><br><span class="line">        baksmali.bootClassPath = bootClassPath;</span><br><span class="line">        baksmali.verify = verify;</span><br><span class="line"></span><br><span class="line">        if (registerInfo != 0 || deodex || verify) &#123;//0 || false || false</span><br><span class="line">            try &#123;</span><br><span class="line">                String[] extraBootClassPathArray = null;</span><br><span class="line">                if (extraBootClassPath != null &amp;&amp; extraBootClassPath.length() &gt; 0) &#123;</span><br><span class="line">                    assert extraBootClassPath.charAt(0) == &#x27;:&#x27;;</span><br><span class="line">                    extraBootClassPathArray = extraBootClassPath.substring(1).split(&quot;:&quot;);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                if (dexFile.isOdex() &amp;&amp; bootClassPath == null) &#123;</span><br><span class="line">                    //ext.jar is a special case - it is typically the 2nd jar in the boot class path, but it also</span><br><span class="line">                    //depends on classes in framework.jar (typically the 3rd jar in the BCP). If the user didn&#x27;t</span><br><span class="line">                    //specify a -c option, we should add framework.jar to the boot class path by default, so that it</span><br><span class="line">                    //&quot;just works&quot;</span><br><span class="line">                    if (extraBootClassPathArray == null &amp;&amp; isExtJar(dexFilePath)) &#123;</span><br><span class="line">                        extraBootClassPathArray = new String[] &#123;&quot;framework.jar&quot;&#125;;</span><br><span class="line">                    &#125;</span><br><span class="line">                    ClassPath.InitializeClassPathFromOdex(classPathDirs, extraBootClassPathArray, dexFilePath, dexFile,</span><br><span class="line">                            checkPackagePrivateAccess);</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    String[] bootClassPathArray = null;</span><br><span class="line">                    if (bootClassPath != null) &#123;</span><br><span class="line">                        bootClassPathArray = bootClassPath.split(&quot;:&quot;);</span><br><span class="line">                    &#125;</span><br><span class="line">                    ClassPath.InitializeClassPath(classPathDirs, bootClassPathArray, extraBootClassPathArray,</span><br><span class="line">                            dexFilePath, dexFile, checkPackagePrivateAccess);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                if (inlineTable != null) &#123;</span><br><span class="line">                    inlineResolver = new CustomInlineMethodResolver(inlineTable);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; catch (Exception ex) &#123;</span><br><span class="line">                System.err.println(&quot;\n\nError occured while loading boot class path files. Aborting.&quot;);</span><br><span class="line">                ex.printStackTrace(System.err);</span><br><span class="line">                System.exit(1);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        File outputDirectoryFile = new File(outputDirectory);</span><br><span class="line">        if (!outputDirectoryFile.exists()) &#123;</span><br><span class="line">            if (!outputDirectoryFile.mkdirs()) &#123;</span><br><span class="line">                System.err.println(&quot;Can&#x27;t create the output directory &quot; + outputDirectory);</span><br><span class="line">                System.exit(1);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (!noAccessorComments) &#123;//!false</span><br><span class="line">            syntheticAccessorResolver = new SyntheticAccessorResolver(dexFile);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //sort the classes, so that if we&#x27;re on a case-insensitive file system and need to handle classes with file</span><br><span class="line">        //name collisions, then we&#x27;ll use the same name for each class, if the dex file goes through multiple</span><br><span class="line">        //baksmali/smali cycles for some reason. If a class with a colliding name is added or removed, the filenames</span><br><span class="line">        //may still change of course</span><br><span class="line">        ArrayList&lt;ClassDefItem&gt; classDefItems = new ArrayList&lt;ClassDefItem&gt;(dexFile.ClassDefsSection.getItems());</span><br><span class="line">        Collections.sort(classDefItems, new Comparator&lt;ClassDefItem&gt;() &#123;</span><br><span class="line">            public int compare(ClassDefItem classDefItem1, ClassDefItem classDefItem2) &#123;</span><br><span class="line">                return classDefItem1.getClassType().getTypeDescriptor().compareTo(classDefItem1.getClassType().getTypeDescriptor());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        ClassFileNameHandler fileNameHandler = new ClassFileNameHandler(outputDirectoryFile, &quot;.smali&quot;);</span><br><span class="line"></span><br><span class="line">        for (ClassDefItem classDefItem: classDefItems) &#123;</span><br><span class="line">            /**</span><br><span class="line">             * The path for the disassembly file is based on the package name</span><br><span class="line">             * The class descriptor will look something like:</span><br><span class="line">             * Ljava/lang/Object;</span><br><span class="line">             * Where the there is leading &#x27;L&#x27; and a trailing &#x27;;&#x27;, and the parts of the</span><br><span class="line">             * package name are separated by &#x27;/&#x27;</span><br><span class="line">             */</span><br><span class="line"></span><br><span class="line">            String classDescriptor = classDefItem.getClassType().getTypeDescriptor();</span><br><span class="line"></span><br><span class="line">            //validate that the descriptor is formatted like we expect</span><br><span class="line">            if (classDescriptor.charAt(0) != &#x27;L&#x27; ||</span><br><span class="line">                classDescriptor.charAt(classDescriptor.length()-1) != &#x27;;&#x27;) &#123;</span><br><span class="line">                System.err.println(&quot;Unrecognized class descriptor - &quot; + classDescriptor + &quot; - skipping class&quot;);</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            File smaliFile = fileNameHandler.getUniqueFilenameForClass(classDescriptor);</span><br><span class="line"></span><br><span class="line">            //create and initialize the top level string template</span><br><span class="line">            ClassDefinition classDefinition = new ClassDefinition(classDefItem);</span><br><span class="line"></span><br><span class="line">            //write the disassembly</span><br><span class="line">            Writer writer = null;</span><br><span class="line">            try</span><br><span class="line">            &#123;</span><br><span class="line">                File smaliParent = smaliFile.getParentFile();</span><br><span class="line">                if (!smaliParent.exists()) &#123;</span><br><span class="line">                    if (!smaliParent.mkdirs()) &#123;</span><br><span class="line">                        System.err.println(&quot;Unable to create directory &quot; + smaliParent.toString() + &quot; - skipping class&quot;);</span><br><span class="line">                        continue;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                if (!smaliFile.exists())&#123;</span><br><span class="line">                    if (!smaliFile.createNewFile()) &#123;</span><br><span class="line">                        System.err.println(&quot;Unable to create file &quot; + smaliFile.toString() + &quot; - skipping class&quot;);</span><br><span class="line">                        continue;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                BufferedWriter bufWriter = new BufferedWriter(new OutputStreamWriter(</span><br><span class="line">                        new FileOutputStream(smaliFile), &quot;UTF8&quot;));</span><br><span class="line"></span><br><span class="line">                writer = new IndentingWriter(bufWriter);</span><br><span class="line">                classDefinition.writeTo((IndentingWriter)writer);</span><br><span class="line">            &#125; catch (Exception ex) &#123;</span><br><span class="line">                System.err.println(&quot;\n\nError occured while disassembling class &quot; + classDescriptor.replace(&#x27;/&#x27;, &#x27;.&#x27;) + &quot; - skipping class&quot;);</span><br><span class="line">                ex.printStackTrace();</span><br><span class="line">                smaliFile.delete();</span><br><span class="line">            &#125;</span><br><span class="line">            finally</span><br><span class="line">            &#123;</span><br><span class="line">                if (writer != null) &#123;</span><br><span class="line">                    try &#123;</span><br><span class="line">                        writer.close();</span><br><span class="line">                    &#125; catch (Throwable ex) &#123;</span><br><span class="line">                        System.err.println(&quot;\n\nError occured while closing file &quot; + smaliFile.toString());</span><br><span class="line">                        ex.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            if (!ignoreErrors &amp;&amp; classDefinition.hadValidationErrors()) &#123;</span><br><span class="line">                System.exit(1);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>流程精简如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">从dex文件中拿出class到集合类中</span><br><span class="line"></span><br><span class="line">根据typedescriptor对class进行排序</span><br><span class="line"></span><br><span class="line">对描述符为object的class文件进行处理，将处理的结果写入根据class名新建的smali文件中</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>上面所说的处理过程如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public void writeTo(IndentingWriter writer) throws IOException &#123;</span><br><span class="line">        writeClass(writer);</span><br><span class="line">        writeSuper(writer);</span><br><span class="line">        writeSourceFile(writer);</span><br><span class="line">        writeInterfaces(writer);</span><br><span class="line">        writeAnnotations(writer);</span><br><span class="line">        writeStaticFields(writer);</span><br><span class="line">        writeInstanceFields(writer);</span><br><span class="line">        writeDirectMethods(writer);</span><br><span class="line">        writeVirtualMethods(writer);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里看的很仔细了，无论是类信息，父类，源文件等等，全都写入了smali</p>
+<p>到这里就完成了dex文件转为smali文件的decode过程</p>
+<h4 id="mAndrolib-decodeSourcesJava-mApkFile-outDir-mDebug"><a href="#mAndrolib-decodeSourcesJava-mApkFile-outDir-mDebug" class="headerlink" title="mAndrolib.decodeSourcesJava(mApkFile, outDir, mDebug);"></a>mAndrolib.decodeSourcesJava(mApkFile, outDir, mDebug);</h4><p>好，让我们来学习以下怎么decode为java文件的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public void decodeSourcesJava(ExtFile apkFile, File outDir, boolean debug)</span><br><span class="line">			throws AndrolibException &#123;</span><br><span class="line">		LOGGER.info(&quot;Decoding Java sources...&quot;);</span><br><span class="line">		new AndrolibJava().decode(apkFile, outDir);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>嗯。。。调用了androidlibjava的decode，这个decode写了什么呢？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public void decode(ExtFile apkFile, File outDir) &#123;</span><br><span class="line">		throw new UnsupportedOperationException(&quot;Not yet implemented&quot;);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>坑爹啊，原来没实现！！！</p>
+<p>所以其实只有两种方式，一种是直接拷贝，二是将dex转为smali，而将dex转为java的还没有写出来！</p>
+<h2 id="回编译过程"><a href="#回编译过程" class="headerlink" title="回编译过程"></a>回编译过程</h2><p>//TODO ：19。6。2</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Rom/" rel="tag"># Rom</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/05/13/java%E5%9F%BA%E7%A1%80-%E7%BC%96%E8%AF%91-%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%BC%96%E8%AF%91%E7%AD%96%E7%95%A5/" rel="prev" title="虚拟机编译策略">
+                  <i class="fa fa-chevron-left"></i> 虚拟机编译策略
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/06/11/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-array-SparseArray%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/" rel="next" title="SparseArray代码分析">
+                  SparseArray代码分析 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

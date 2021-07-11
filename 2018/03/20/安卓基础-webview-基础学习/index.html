@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="本文主要是学习webview的一些内容">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓基础-webview学习">
+<meta property="og:url" content="http://example.com/2018/03/20/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-webview-%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本文主要是学习webview的一些内容">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-03-20T02:36:19.000Z">
+<meta property="article:modified_time" content="2021-07-11T10:31:35.531Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="webview">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2018/03/20/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-webview-%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2018/03/20/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-webview-%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/","path":"2018/03/20/安卓基础-webview-基础学习/","title":"安卓基础-webview学习"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>安卓基础-webview学习 | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">29</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">104</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#js%E4%B8%8Enative%E4%BA%A4%E4%BA%92"><span class="nav-number">1.</span> <span class="nav-text">js与native交互</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JavascriptInterface"><span class="nav-number">1.1.</span> <span class="nav-text">JavascriptInterface</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WebViewClient-shouldOverrideUrlLoading"><span class="nav-number">1.2.</span> <span class="nav-text">WebViewClient.shouldOverrideUrlLoading()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WebChromeClient-onConsoleMessage"><span class="nav-number">1.3.</span> <span class="nav-text">WebChromeClient.onConsoleMessage()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WebChromeClient-onJsPrompt"><span class="nav-number">1.4.</span> <span class="nav-text">WebChromeClient.onJsPrompt()</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JsBridge"><span class="nav-number">2.</span> <span class="nav-text">JsBridge</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mikilangkilo" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mikilangkilo" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:913925047@qq.com" title="E-Mail → mailto:913925047@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/mikilangkilo" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/03/20/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-webview-%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          安卓基础-webview学习
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-03-20 10:36:19" itemprop="dateCreated datePublished" datetime="2018-03-20T10:36:19+08:00">2018-03-20</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-11 18:31:35" itemprop="dateModified" datetime="2021-07-11T18:31:35+08:00">2021-07-11</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">安卓基础</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">本文主要是学习webview的一些内容</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>项目中用到了js连调的技术，之前有使用过，但是没有全面的了解过，这次做个复习和深入学习。</p>
+<h1 id="js与native交互"><a href="#js与native交互" class="headerlink" title="js与native交互"></a>js与native交互</h1><p>js与native交互总共有四种方式</p>
+<h2 id="JavascriptInterface"><a href="#JavascriptInterface" class="headerlink" title="JavascriptInterface"></a>JavascriptInterface</h2><p>首先Java代码要实现这么一个类，它的作用是提供给Javascript调用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class JavascriptInterface &#123;</span><br><span class="line"></span><br><span class="line">    @JavascriptInterface</span><br><span class="line">    public void showToast(String toast) &#123;</span><br><span class="line">        Toast.makeText(MainActivity.this, toast, Toast.LENGTH_SHORT).show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后把这个类添加到WebView的JavascriptInterface中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">webView.addJavascriptInterface(new JavascriptInterface(), &quot;javascriptInterface&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>在Javascript代码中就能直接通过“javascriptInterface”直接调用了该Native的类的方法。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function showToast(toast) &#123;</span><br><span class="line">    javascript:javascriptInterface.showToast(toast);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>但是这个官方提供的解决方案在Android4.2之前存在安全漏洞。在Android4.2之后，加入了@JavascriptInterface才得到解决。所以考虑到兼容低版本的系统，JavascriptInterface并不适合。</p>
+<h2 id="WebViewClient-shouldOverrideUrlLoading"><a href="#WebViewClient-shouldOverrideUrlLoading" class="headerlink" title="WebViewClient.shouldOverrideUrlLoading()"></a>WebViewClient.shouldOverrideUrlLoading()</h2><p>这个方法的作用是拦截所有WebView的Url跳转。页面可以构造一个特殊格式的Url跳转，shouldOverrideUrlLoading拦截Url后判断其格式，然后Native就能执行自身的逻辑了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class CustomWebViewClient extends WebViewClient &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public boolean shouldOverrideUrlLoading(WebView view, String url) &#123;</span><br><span class="line">        if (isJsBridgeUrl(url)) &#123;</span><br><span class="line">            // JSbridge的处理逻辑</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">        return super.shouldOverrideUrlLoading(view, url);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="WebChromeClient-onConsoleMessage"><a href="#WebChromeClient-onConsoleMessage" class="headerlink" title="WebChromeClient.onConsoleMessage()"></a>WebChromeClient.onConsoleMessage()</h2><p>这是Android提供给Javascript调试在Native代码里面打印日志信息的API，同时这也成了其中一种Javascript与Native代码通信的方法。</p>
+<p>在Javascript代码中调用console.log(‘xxx’)方法。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(&#x27;log message that is going to native code&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>就会在Native代码的WebChromeClient.consoleMessage()中得到回调。</p>
+<p>consoleMessage.message()获得的正是Javascript代码console.log(‘xxx’)的内容.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class CustomWebChromeClient extends WebChromeClient &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public boolean onConsoleMessage(ConsoleMessage consoleMessage) &#123;</span><br><span class="line">        super.onConsoleMessage(consoleMessage);</span><br><span class="line">        String msg = consoleMessage.message();//Javascript输入的Log内容</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="WebChromeClient-onJsPrompt"><a href="#WebChromeClient-onJsPrompt" class="headerlink" title="WebChromeClient.onJsPrompt()"></a>WebChromeClient.onJsPrompt()</h2><p>其实除了WebChromeClient.onJsPrompt()，还有WebChromeClient.onJsAlert()和WebChromeClient.onJsConfirm()。顾名思义，这三个Javascript给Native代码的回调接口的作用分别是提示展示提示信息，展示警告信息和展示确认信息。鉴于，alert和confirm在Javascript的使用率很高，所以JSBridge的解决方案中都倾向于选用onJsPrompt()。</p>
+<p>Javascript中调用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">window.prompt(message, value)</span><br></pre></td></tr></table></figure>
+
+<p>WebChromeClient.onJsPrompt()就会受到回调。</p>
+<p>onJsPrompt()方法的message参数的值正是Javascript的方法window.prompt()的message的值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class CustomWebChromeClient extends WebChromeClient &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) &#123;</span><br><span class="line">        // 处理JS 的调用逻辑</span><br><span class="line">        result.confirm();</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="JsBridge"><a href="#JsBridge" class="headerlink" title="JsBridge"></a>JsBridge</h1><p>java 通信js只有这一种方式</p>
+<ul>
+<li>WebView加载html页面</li>
+</ul>
+<p>webView.registerHandler(“submitFromWeb”,…);这是Java层注册了一个叫”submitFromWeb”的接口方法，目的是提供给Javascript来调用。这个”submitFromWeb”的接口方法的回调就是BridgeHandler.handler()。</p>
+<p>webView.callHandler(“functionInJs”, …, new CallBackFunction());<br>这是Java层主动调用Javascript的”functionInJs”方法。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">public class MainActivity extends Activity implements OnClickListener &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        webView = (BridgeWebView) findViewById(R.id.webView);</span><br><span class="line">        webView.loadUrl(&quot;file:///Android_asset/demo.html&quot;);</span><br><span class="line">        webView.registerHandler(&quot;submitFromWeb&quot;, new BridgeHandler() &#123;</span><br><span class="line"></span><br><span class="line">            @Override</span><br><span class="line">            public void handler(String data, CallBackFunction function) &#123;</span><br><span class="line">                Log.i(TAG, &quot;handler = submitFromWeb, data from web = &quot; + data);</span><br><span class="line">                function.onCallBack(&quot;submitFromWeb exe, response data 中文 from Java&quot;);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        webView.callHandler(&quot;functionInJs&quot;, new Gson().toJson(user), new CallBackFunction() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void onCallBack(String data) &#123;</span><br><span class="line">                </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们一层层深入callHandler()方法的实现。这其中会调用到doSend()方法，这里想解释下callbackId。</p>
+<p>callbackId生成后不仅仅会被传到Javascript，而且会以key-value对的形式和responseCallback配对保存到responseCallbacks这个Map里面。</p>
+<p>它的目的，就是为了等Javascript把处理结果回调给Java层后，Java层能根据callbackId找到对应的responseCallback，做后续的回调处理。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">private void doSend(String handlerName, String data, CallBackFunction responseCallback) &#123;</span><br><span class="line">        Message m = new Message();</span><br><span class="line">        if (!TextUtils.isEmpty(data)) &#123;</span><br><span class="line">            m.setData(data);</span><br><span class="line">        &#125;</span><br><span class="line">        if (responseCallback != null) &#123;</span><br><span class="line">            String callbackStr = String.format(BridgeUtil.CALLBACK_ID_FORMAT, ++uniqueId + (BridgeUtil.UNDERLINE_STR + SystemClock.currentThreadTimeMillis()));</span><br><span class="line">            responseCallbacks.put(callbackStr, responseCallback);</span><br><span class="line">            m.setCallbackId(callbackStr);</span><br><span class="line">        &#125;</span><br><span class="line">        if (!TextUtils.isEmpty(handlerName)) &#123;</span><br><span class="line">            m.setHandlerName(handlerName);</span><br><span class="line">        &#125;</span><br><span class="line">        queueMessage(m);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>最终可以看到是BridgeWebView.dispatchMessage(Message m)方法调用的是this.loadUrl()，调用了_handleMessageFromNative这个Javascript方法。那这个Javascript的方法是哪里来的呢？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">final static String JS_HANDLE_MESSAGE_FROM_JAVA = &quot;javascript:WebViewJavascriptBridge._handleMessageFromNative(&#x27;%s&#x27;);&quot;;</span><br><span class="line"></span><br><span class="line">void dispatchMessage(Message m) &#123;</span><br><span class="line">        String messageJson = m.toJson();</span><br><span class="line">        //escape special characters for json string</span><br><span class="line">        messageJson = messageJson.replaceAll(&quot;(\\\\)([^utrn])&quot;, &quot;\\\\\\\\$1$2&quot;);</span><br><span class="line">        messageJson = messageJson.replaceAll(&quot;(?&lt;=[^\\\\])(\&quot;)&quot;, &quot;\\\\\&quot;&quot;);</span><br><span class="line">        String javascriptCommand = String.format(BridgeUtil.JS_HANDLE_MESSAGE_FROM_JAVA, messageJson);</span><br><span class="line">        if (Thread.currentThread() == Looper.getMainLooper().getThread()) &#123;</span><br><span class="line">            this.loadUrl(javascriptCommand);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>页面加载完成后会加在一段Javascript。</li>
+</ul>
+<p>在WebViewClient.onPageFinished()里面的BridgeUtil.webViewLoadLocalJs(view, BridgeWebView.toLoadJs)。正是把保存在assert/WebViewJavascriptBridge.js加载到WebView中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class BridgeWebViewClient extends WebViewClient &#123;</span><br><span class="line">　　</span><br><span class="line">    @Override</span><br><span class="line">    public void onPageFinished(WebView view, String url) &#123;</span><br><span class="line">        super.onPageFinished(view, url);</span><br><span class="line"></span><br><span class="line">        if (BridgeWebView.toLoadJs != null) &#123;</span><br><span class="line">            BridgeUtil.webViewLoadLocalJs(view, BridgeWebView.toLoadJs);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //</span><br><span class="line">        if (webView.getStartupMessage() != null) &#123;</span><br><span class="line">            for (Message m : webView.getStartupMessage()) &#123;</span><br><span class="line">                webView.dispatchMessage(m);</span><br><span class="line">            &#125;</span><br><span class="line">            webView.setStartupMessage(null);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们看看WebViewJavascriptBridge.js的代码，就能找到function _handleMessageFromNative()这个Javascript方法了。</p>
+<ul>
+<li>WebViewJavascriptBridge.js</li>
+</ul>
+<p>_handleMessageFromNative()方法里面会调用_dispatchMessageFromNative()方法。</p>
+<p>当处理来自Java层的主动调用时候会走“直接发送”的else分支。</p>
+<p>message.callbackId会被取出来，实例化一个responseCallback，而它是用来Javascript处理完成后把结果数据回调给Java层代码的。</p>
+<p>接着会根据message.handleName（在这个分析例子中，handleName的值就是”functionInJs”）在messageHandlers这个Map去获取handler，最后交给handler去处理。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">function _dispatchMessageFromNative(messageJSON) &#123;</span><br><span class="line">    setTimeout(function() &#123;</span><br><span class="line">        var message = JSON.parse(messageJSON);</span><br><span class="line">        var responseCallback;</span><br><span class="line">        //java call finished, now need to call js callback function</span><br><span class="line">        if (message.responseId) &#123;</span><br><span class="line">            ...</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            //直接发送</span><br><span class="line">            if (message.callbackId) &#123;</span><br><span class="line">                var callbackResponseId = message.callbackId;</span><br><span class="line">                responseCallback = function(responseData) &#123;</span><br><span class="line">                    _doSend(&#123;</span><br><span class="line">                        responseId: callbackResponseId,</span><br><span class="line">                        responseData: responseData</span><br><span class="line">                    &#125;);</span><br><span class="line">                &#125;;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            var handler = WebViewJavascriptBridge._messageHandler;</span><br><span class="line">            if (message.handlerName) &#123;</span><br><span class="line">                handler = messageHandlers[message.handlerName];</span><br><span class="line">            &#125;</span><br><span class="line">            //查找指定handler</span><br><span class="line">            try &#123;</span><br><span class="line">                handler(message.data, responseCallback);</span><br><span class="line">            &#125; catch (exception) &#123;</span><br><span class="line">                if (typeof console != &#x27;undefined&#x27;) &#123;</span><br><span class="line">                    console.log(&quot;WebViewJavascriptBridge: WARNING: javascript handler threw.&quot;, message, exception);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>页面注册的”functionInJs”方法，提供给Java调用Javascript的。</li>
+</ul>
+<p>延续上面的分析，messageHandler是哪里设置的呢。答案就在当初webView.loadUrl(“file:///Android_asset/demo.html”);加载的这个demo.html中。</p>
+<p>bridge.registerHandler(“functionInJs”, …)这里注册了”functionInJs”。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">    &lt;head&gt;</span><br><span class="line">    ...</span><br><span class="line">    &lt;/head&gt;</span><br><span class="line">    &lt;body&gt;</span><br><span class="line">    ...</span><br><span class="line">    &lt;/body&gt;</span><br><span class="line">    &lt;script&gt;</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        connectWebViewJavascriptBridge(function(bridge) &#123;</span><br><span class="line">            bridge.init(function(message, responseCallback) &#123;</span><br><span class="line">                console.log(&#x27;JS got a message&#x27;, message);</span><br><span class="line">                var data = &#123;</span><br><span class="line">                    &#x27;Javascript Responds&#x27;: &#x27;测试中文!&#x27;</span><br><span class="line">                &#125;;</span><br><span class="line">                console.log(&#x27;JS responding with&#x27;, data);</span><br><span class="line">                responseCallback(data);</span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line">            bridge.registerHandler(&quot;functionInJs&quot;, function(data, responseCallback) &#123;</span><br><span class="line">                document.getElementById(&quot;show&quot;).innerHTML = (&quot;data from Java: = &quot; + data);</span><br><span class="line">                var responseData = &quot;Javascript Says Right back aka!&quot;;</span><br><span class="line">                responseCallback(responseData);</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;)</span><br><span class="line">    &lt;/script&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>“functionInJs”执行完毕把结果回传给Java</li>
+</ul>
+<p>“funciontInJs”执行完毕后调用的responseCallback正是_dispatchMessageFromNative()实例化的，而它实际会调用_doSend()方法。</p>
+<p>_doSend()方法会先把Message推送到sendMessageQueue中。</p>
+<p>然后修改messagingIframe.src，这里会出发Java层的WebViewClient.shouldOverrideUrlLoading()的回调。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function _doSend(message, responseCallback) &#123;</span><br><span class="line">    if (responseCallback) &#123;</span><br><span class="line">        var callbackId = &#x27;cb_&#x27; + (uniqueId++) + &#x27;_&#x27; + new Date().getTime();</span><br><span class="line">        responseCallbacks[callbackId] = responseCallback;</span><br><span class="line">        message.callbackId = callbackId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    sendMessageQueue.push(message);</span><br><span class="line">    messagingIframe.src = CUSTOM_PROTOCOL_SCHEME + &#x27;://&#x27; + QUEUE_HAS_MESSAGE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> 在BridgeWebViewClient.shouldOverrideUrlLoading()里面，会先执行webView.flushMessageQueue()的分支。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public boolean shouldOverrideUrlLoading(WebView view, String url) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        url = URLDecoder.decode(url, &quot;UTF-8&quot;);</span><br><span class="line">    &#125; catch (UnsupportedEncodingException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (url.startsWith(BridgeUtil.YY_RETURN_DATA)) &#123; // 如果是返回数据</span><br><span class="line">        webView.handlerReturnData(url);</span><br><span class="line">        return true;</span><br><span class="line">    &#125; else if (url.startsWith(BridgeUtil.YY_OVERRIDE_SCHEMA)) &#123; //</span><br><span class="line">        webView.flushMessageQueue();</span><br><span class="line">        return true;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        return super.shouldOverrideUrlLoading(view, url);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>webView.flushMessageQueue()首先去执行Javascript的_flushQueue()方法，并附带着CallBackFunction。</p>
+<p>Javascript的_flushQueue()方法会把sendMessageQueue中的所有message都回传给Java层。</p>
+<p>CallBackFunction就是把messageQueue解析出来后一个一个Message在for循环中处理，也正是在for循环中，”functionInJs”的Java层回调方法被执行了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">void flushMessageQueue() &#123;</span><br><span class="line">    if (Thread.currentThread() == Looper.getMainLooper().getThread()) &#123;</span><br><span class="line">        loadUrl(BridgeUtil.JS_FETCH_QUEUE_FROM_JAVA, new CallBackFunction() &#123;</span><br><span class="line"></span><br><span class="line">            @Override</span><br><span class="line">            public void onCallBack(String data) &#123;</span><br><span class="line">                // deserializeMessage</span><br><span class="line">                List&lt;Message&gt; list = null;</span><br><span class="line">                try &#123;</span><br><span class="line">                    list = Message.toArrayList(data);</span><br><span class="line">                &#125; catch (Exception e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                    return;</span><br><span class="line">                &#125;</span><br><span class="line">                if (list == null || list.size() == 0) &#123;</span><br><span class="line">                    return;</span><br><span class="line">                &#125;</span><br><span class="line">                for (int i = 0; i &lt; list.size(); i++) &#123;</span><br><span class="line">                    ...</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>到此，JsBridge的调用流程就分析完毕了。虽然JsBridge使用了MessageQueue后，分析起来有点绕，但原理是不变的。</p>
+<p>Javascript调用Java是通过WebViewClient.shouldOverrideUrlLoading()。当然，还有在文章开头介绍另外3种方式。</p>
+<p>Java调用Javascript是通过WebView.loadUrl(“javascript:xxxx”)。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/webview/" rel="tag"># webview</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/03/19/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93-20180319/" rel="prev" title="工作小结-2018三月(3)">
+                  <i class="fa fa-chevron-left"></i> 工作小结-2018三月(3)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/03/22/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-rom-android8%E7%89%88%E6%9C%ACfeature/" rel="next" title="安卓基础-Android8.0-feature一览">
+                  安卓基础-Android8.0-feature一览 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

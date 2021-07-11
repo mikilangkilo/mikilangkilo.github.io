@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="本文主要是lrucache的学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构-LruCache缓存源码解析">
+<meta property="og:url" content="http://example.com/2018/04/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-cache-LruCache%E7%BC%93%E5%AD%98%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本文主要是lrucache的学习">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-04-01T04:26:43.000Z">
+<meta property="article:modified_time" content="2021-07-11T11:04:52.186Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="lrucache">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2018/04/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-cache-LruCache%E7%BC%93%E5%AD%98%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2018/04/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-cache-LruCache%E7%BC%93%E5%AD%98%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/","path":"2018/04/01/数据结构-cache-LruCache缓存源码解析/","title":"数据结构-LruCache缓存源码解析"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>数据结构-LruCache缓存源码解析 | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">29</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">104</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B1%BB%E8%A7%A3%E9%87%8A"><span class="nav-number">1.</span> <span class="nav-text">类解释</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E6%8E%A2%E7%A9%B6"><span class="nav-number">2.</span> <span class="nav-text">源码探究</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97"><span class="nav-number">3.</span> <span class="nav-text">学习心得</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E7%82%B9"><span class="nav-number">4.</span> <span class="nav-text">注意点</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mikilangkilo" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mikilangkilo" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:913925047@qq.com" title="E-Mail → mailto:913925047@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/mikilangkilo" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-cache-LruCache%E7%BC%93%E5%AD%98%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据结构-LruCache缓存源码解析
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-04-01 12:26:43" itemprop="dateCreated datePublished" datetime="2018-04-01T12:26:43+08:00">2018-04-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-11 19:04:52" itemprop="dateModified" datetime="2021-07-11T19:04:52+08:00">2021-07-11</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">本文主要是lrucache的学习</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>以前曾经在volley中使用networkimageview的时候使用过lrucache，当时以为这只是一个第三方的开源框架。昨天在网上找安卓的缓存框架的时候看到了lrucache，居然是android.util包下面的。所以这次就着源码看看是个怎么缓存的原理。</p>
+<h1 id="类解释"><a href="#类解释" class="headerlink" title="类解释"></a>类解释</h1><p>首先看一下这个类官方的解释。</p>
+<ul>
+<li>A cache that holds strong references to a limited number of values. Each time</li>
+<li>a value is accessed, it is moved to the head of a queue. When a value is</li>
+<li>added to a full cache, the value at the end of that queue is evicted and may</li>
+<li>become eligible for garbage collection.</li>
+</ul>
+<p>这个类是一个用于对有限的值持有强引用的缓存类。</p>
+<p>每次一个值被获取了，它将被挪到队列的头部。</p>
+<p>每当一个值被加入完全缓存（full-cache,完全缓存模式，讲一个对象完全的加载到内存中，而非只加载其映射关系。对应的还有Partial Cache，部分缓存模式，部分缓存模式多数用于加载对象的部分，用于判断对象是否曾经加载过，或者是否需要再次加载），缓存队列末尾的值将会被驱逐，丢失了强引用的关系，就会变得可以被gc清除。</p>
+<ul>
+<li><p>If your cached values hold resources that need to be explicitly released,</li>
+<li>override {@link #entryRemoved}.</li>
+</ul>
+<p>如果希望避免部分资源被lrucache缓存，可以继承entryremoved</p>
+<ul>
+<li><p>If a cache miss should be computed on demand for the corresponding keys,</li>
+<li>override {@link #create}. This simplifies the calling code, allowing it to</li>
+<li>assume a value will always be returned, even when there’s a cache miss.</li>
+</ul>
+<p>如果需要对一个响应返回一个完整的缓存，但是这个缓存目前是缺失状态，可以继承create方法，这样可以使得针对这个响应总是可以有回应，即时目前是缓存缺失的状态，也可以构造一个回应。</p>
+<ul>
+<li><p>By default, the cache size is measured in the number of entries. Override</li>
+<li>{@link #sizeOf} to size the cache in different units. For example, this cache</li>
+<li>is limited to 4MiB of bitmaps:</li>
+<li><pre>   {@code</li>
+<li>  int cacheSize = 4 * 1024 * 1024; // 4MiB</li>
+<li>  LruCache&lt;String, Bitmap&gt; bitmapCache = new LruCache&lt;String, Bitmap&gt;(cacheSize) {</li>
+<li><pre><code>  protected int sizeOf(String key, Bitmap value) &#123;
+</code></pre>
+</li>
+<li><pre><code>      return value.getByteCount();
+</code></pre>
+</li>
+<li><pre><code>  &#125;
+</code></pre>
+</li>
+<li>  }}</pre></li>
+</ul>
+<p>缓存的数量是通过对象的数量来确定的。继承sizeOf方法可以使用不同的单位来计算缓存。（该方法提供的例子是用于限制缓存，那缓存不够怎么办？一张bitmap一般有8m啊？事实上它并不会精确计算占用的内存，只能说你说a有3m，总共给30m的缓存的话，他就会放最多10个a，事实上a并不一定只有3m，当然这也没必要关心，在不同的地方自己精确赋一下就好了）</p>
+<ul>
+<li><p>This class is thread-safe. Perform multiple cache operations atomically by</li>
+<li>synchronizing on the cache: <pre>   {@code</li>
+<li>  synchronized (cache) {</li>
+<li><pre><code>if (cache.get(key) == null) &#123;
+</code></pre>
+</li>
+<li><pre><code>    cache.put(key, value);
+</code></pre>
+</li>
+<li><pre><code>&#125;
+</code></pre>
+</li>
+<li>  }}</pre></li>
+</ul>
+<p>该类是线程安全的，主要是对缓存操作的部分都加了锁。</p>
+<ul>
+<li><p>This class does not allow null to be used as a key or value. A return</li>
+<li>value of null from {@link #get}, {@link #put} or {@link #remove} is</li>
+<li>unambiguous: the key was not in the cache.</li>
+</ul>
+<p>该类不允许空指针被使用作为key或者value。</p>
+<ul>
+<li><p>This class appeared in Android 3.1 (Honeycomb MR1); it's available as part</li>
+<li>of <a target="_blank" rel="noopener" href="http://developer.android.com/sdk/compatibility-library.html">Android’s</li>
+<li>Support Package</a> for earlier releases.</li>
+</ul>
+<p>该类在android3.1出现。</p>
+<h1 id="源码探究"><a href="#源码探究" class="headerlink" title="源码探究"></a>源码探究</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private final LinkedHashMap&lt;K, V&gt; map;</span><br></pre></td></tr></table></figure>
+
+<p> 使用了linkedHashMap的方法来存储数据。有向图就是强引用方式，key在，value在。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/** Size of this cache in units. Not necessarily the number of elements. */</span><br><span class="line">private int size;</span><br><span class="line">   private int maxSize;</span><br><span class="line"></span><br><span class="line">   private int putCount;</span><br><span class="line">   private int createCount;</span><br><span class="line">   private int evictionCount;</span><br><span class="line">   private int hitCount;</span><br><span class="line">   private int missCount;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @param maxSize for caches that do not override &#123;@link #sizeOf&#125;, this is</span><br><span class="line"> *     the maximum number of entries in the cache. For all other caches,</span><br><span class="line"> *     this is the maximum sum of the sizes of the entries in this cache.</span><br><span class="line"> */</span><br><span class="line">public LruCache(int maxSize) &#123;</span><br><span class="line">    if (maxSize &lt;= 0) &#123;</span><br><span class="line">        throw new IllegalArgumentException(&quot;maxSize &lt;= 0&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    this.maxSize = maxSize;</span><br><span class="line">    this.map = new LinkedHashMap&lt;K, V&gt;(0, 0.75f, true);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>构造方面需要给一个maxSize，该参数是用于在为定义sizeof的对象计算容量大小</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Sets the size of the cache.</span><br><span class="line"> *</span><br><span class="line"> * @param maxSize The new maximum size.</span><br><span class="line"> */</span><br><span class="line">public void resize(int maxSize) &#123;</span><br><span class="line">    if (maxSize &lt;= 0) &#123;</span><br><span class="line">        throw new IllegalArgumentException(&quot;maxSize &lt;= 0&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    synchronized (this) &#123;</span><br><span class="line">        this.maxSize = maxSize;</span><br><span class="line">    &#125;</span><br><span class="line">    trimToSize(maxSize);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>重新设计maxsize</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Returns the value for &#123;@code key&#125; if it exists in the cache or can be</span><br><span class="line"> * created by &#123;@code #create&#125;. If a value was returned, it is moved to the</span><br><span class="line"> * head of the queue. This returns null if a value is not cached and cannot</span><br><span class="line"> * be created.</span><br><span class="line"> */</span><br><span class="line">public final V get(K key) &#123;</span><br><span class="line">    if (key == null) &#123;</span><br><span class="line">        throw new NullPointerException(&quot;key == null&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    V mapValue;</span><br><span class="line">    synchronized (this) &#123;</span><br><span class="line">        mapValue = map.get(key);</span><br><span class="line">        if (mapValue != null) &#123;</span><br><span class="line">            hitCount++;</span><br><span class="line">            return mapValue;</span><br><span class="line">        &#125;</span><br><span class="line">        missCount++;</span><br><span class="line">    &#125;</span><br><span class="line">     /*</span><br><span class="line">     * Attempt to create a value. This may take a long time, and the map</span><br><span class="line">     * may be different when create() returns. If a conflicting value was</span><br><span class="line">     * added to the map while create() was working, we leave that value in</span><br><span class="line">     * the map and release the created value.</span><br><span class="line">     */</span><br><span class="line"></span><br><span class="line">    V createdValue = create(key);</span><br><span class="line">    if (createdValue == null) &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    synchronized (this) &#123;</span><br><span class="line">        createCount++;</span><br><span class="line">        mapValue = map.put(key, createdValue);</span><br><span class="line"></span><br><span class="line">        if (mapValue != null) &#123;</span><br><span class="line">            // There was a conflict so undo that last put</span><br><span class="line">            map.put(key, mapValue);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            size += safeSizeOf(key, createdValue);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    if (mapValue != null) &#123;</span><br><span class="line">        entryRemoved(false, key, createdValue, mapValue);</span><br><span class="line">        return mapValue;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        trimToSize(maxSize);</span><br><span class="line">        return createdValue;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>get的时候加锁，每次有返回的话，hitcount自增。没有返回代表是缺失缓存，misscount自增。</p>
+<p>若找不到值，会调用createvalue来创建，创建成功，createcount自增，失败就代表没有该缓存内容，直接终端。创建成功同时加入到map里面，map的size会增加。</p>
+<p>创建出来的mapvalue会执行entryremoved的检查，对有设置过不加入的参数进行操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Called for entries that have been evicted or removed. This method is</span><br><span class="line"> * invoked when a value is evicted to make space, removed by a call to</span><br><span class="line"> * &#123;@link #remove&#125;, or replaced by a call to &#123;@link #put&#125;. The default</span><br><span class="line"> * implementation does nothing.</span><br><span class="line"> *</span><br><span class="line"> * &lt;p&gt;The method is called without synchronization: other threads may</span><br><span class="line"> * access the cache while this method is executing.</span><br><span class="line"> *</span><br><span class="line"> * @param evicted true if the entry is being removed to make space, false</span><br><span class="line"> *     if the removal was caused by a &#123;@link #put&#125; or &#123;@link #remove&#125;.</span><br><span class="line"> * @param newValue the new value for &#123;@code key&#125;, if it exists. If non-null,</span><br><span class="line"> *     this removal was caused by a &#123;@link #put&#125;. Otherwise it was caused by</span><br><span class="line"> *     an eviction or a &#123;@link #remove&#125;.</span><br><span class="line"> */</span><br><span class="line">protected void entryRemoved(boolean evicted, K key, V oldValue, V newValue) &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>entryRemoved的方法准确的说法是用于吊起被驱逐和移除的对象。确保key对应的value可以是正确的，newvalue为空的话就代表是移除老的对象。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Remove the eldest entries until the total of remaining entries is at or</span><br><span class="line"> * below the requested size.</span><br><span class="line"> *</span><br><span class="line"> * @param maxSize the maximum size of the cache before returning. May be -1</span><br><span class="line"> *            to evict even 0-sized elements.</span><br><span class="line"> */</span><br><span class="line">public void trimToSize(int maxSize) &#123;</span><br><span class="line">    while (true) &#123;</span><br><span class="line">        K key;</span><br><span class="line">        V value;</span><br><span class="line">        synchronized (this) &#123;</span><br><span class="line">            if (size &lt; 0 || (map.isEmpty() &amp;&amp; size != 0)) &#123;</span><br><span class="line">                throw new IllegalStateException(getClass().getName()</span><br><span class="line">                        + &quot;.sizeOf() is reporting inconsistent results!&quot;);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            if (size &lt;= maxSize) &#123;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            Map.Entry&lt;K, V&gt; toEvict = map.eldest();</span><br><span class="line">            if (toEvict == null) &#123;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            key = toEvict.getKey();</span><br><span class="line">            value = toEvict.getValue();</span><br><span class="line">            map.remove(key);</span><br><span class="line">            size -= safeSizeOf(key, value);</span><br><span class="line">            evictionCount++;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        entryRemoved(true, key, value, null);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>trimToSize方法是针对目前队列中的对象，移除最老的。移除的操作就是移除了key，去掉强引用的部分。移除完之后要减去移除的大小，之后移除数自增，确保安全之后将之前的key，映射关系改为一个null，这个移除的数量并不是固定的，这是一个死循环，会移除到size小于maxsize，或者最老的是空。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Removes the entry for &#123;@code key&#125; if it exists.</span><br><span class="line"> *</span><br><span class="line"> * @return the previous value mapped by &#123;@code key&#125;.</span><br><span class="line"> */</span><br><span class="line">public final V remove(K key) &#123;</span><br><span class="line">    if (key == null) &#123;</span><br><span class="line">        throw new NullPointerException(&quot;key == null&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    V previous;</span><br><span class="line">    synchronized (this) &#123;</span><br><span class="line">        previous = map.remove(key);</span><br><span class="line">        if (previous != null) &#123;</span><br><span class="line">            size -= safeSizeOf(key, previous);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (previous != null) &#123;</span><br><span class="line">        entryRemoved(false, key, previous, null);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return previous;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>remove操作和之前的那个操作几乎一样，移除，如果曾经存在就在此赋空。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Clear the cache, calling &#123;@link #entryRemoved&#125; on each removed entry.</span><br><span class="line"> */</span><br><span class="line">public final void evictAll() &#123;</span><br><span class="line">    trimToSize(-1); // -1 will evict 0-sized elements</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这是移除所有的元素</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@Override public synchronized final String toString() &#123;</span><br><span class="line">    int accesses = hitCount + missCount;</span><br><span class="line">    int hitPercent = accesses != 0 ? (100 * hitCount / accesses) : 0;</span><br><span class="line">    return String.format(&quot;LruCache[maxSize=%d,hits=%d,misses=%d,hitRate=%d%%]&quot;,</span><br><span class="line">            maxSize, hitCount, missCount, hitPercent);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>toString方法可以看到状态。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Returns a copy of the current contents of the cache, ordered from least</span><br><span class="line"> * recently accessed to most recently accessed.</span><br><span class="line"> */</span><br><span class="line">public synchronized final Map&lt;K, V&gt; snapshot() &#123;</span><br><span class="line">    return new LinkedHashMap&lt;K, V&gt;(map);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>snapshot直接一个以自己map构造的对象。（这种避免返回自身的操作值得学习）</p>
+<h1 id="学习心得"><a href="#学习心得" class="headerlink" title="学习心得"></a>学习心得</h1><p>整个LruCache的作用，说到底就是针对gc的树状搜索删除算法的一种方案。<br>但是我们平时使用的时候，需要针对几个地方进行定制，一是sizeof,二是removeentry。</p>
+<p>整个缓存还是在内存中的，所以lrucache是一种内存缓存框架。</p>
+<h1 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h1><p>value最好放软应用对象，确保释放之后的第一次gc就可以回收。<br>设置maxsize，可以使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Runtime.getRuntime().maxMemory()</span><br></pre></td></tr></table></figure>
+<p>也可针对不同情况进行设置。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/lrucache/" rel="tag"># lrucache</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/03/25/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93-20180325/" rel="prev" title="工作小结-2018三月(4)">
+                  <i class="fa fa-chevron-left"></i> 工作小结-2018三月(4)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/04/05/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93-20180405/" rel="next" title="工作小结-2018四月(1)">
+                  工作小结-2018四月(1) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
