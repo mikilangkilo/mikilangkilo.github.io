@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"github.io","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="本文对最近面试过程中遇到的handler没有答出来的问题做一次系统性的学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓基础-activity-handler更深入一层的学习">
+<meta property="og:url" content="http://mikilangkilo.yin@github.io/2021/07/18/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-activity-handler%E6%9B%B4%E6%B7%B1%E5%85%A5%E4%B8%80%E5%B1%82%E7%9A%84%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="个人小站">
+<meta property="og:description" content="本文对最近面试过程中遇到的handler没有答出来的问题做一次系统性的学习">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-18T08:21:32.000Z">
+<meta property="article:modified_time" content="2021-07-18T16:01:03.976Z">
+<meta property="article:author" content="殷鹏程">
+<meta property="article:tag" content="handler">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://mikilangkilo.yin@github.io/2021/07/18/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-activity-handler%E6%9B%B4%E6%B7%B1%E5%85%A5%E4%B8%80%E5%B1%82%E7%9A%84%E5%AD%A6%E4%B9%A0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://mikilangkilo.yin@github.io/2021/07/18/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-activity-handler%E6%9B%B4%E6%B7%B1%E5%85%A5%E4%B8%80%E5%B1%82%E7%9A%84%E5%AD%A6%E4%B9%A0/","path":"2021/07/18/安卓基础-activity-handler更深入一层的学习/","title":"安卓基础-activity-handler更深入一层的学习"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>安卓基础-activity-handler更深入一层的学习 | 个人小站</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">个人小站</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">31</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">106</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Handler%E6%A6%82%E8%A7%88"><span class="nav-number">1.</span> <span class="nav-text">Handler概览</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Handler%E6%9E%84%E9%80%A0"><span class="nav-number">1.1.</span> <span class="nav-text">Handler构造</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8C%E5%8F%82%E6%95%B0%E4%B8%ADlooper%E7%9A%84%E6%9D%A5%E6%BA%90"><span class="nav-number">1.1.1.</span> <span class="nav-text">双参数中looper的来源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8C%E5%8F%82%E6%95%B0%E5%92%8C%E4%B8%89%E5%8F%82%E6%95%B0%E7%9A%84%E5%85%B1%E5%90%8C%E7%82%B9"><span class="nav-number">1.1.2.</span> <span class="nav-text">双参数和三参数的共同点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#async-%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">async 的作用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Message-setAsynchronous"><span class="nav-number">1.2.1.</span> <span class="nav-text">Message#setAsynchronous()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#handler-%E5%8F%A6%E5%A4%96%E5%9B%9B%E7%A7%8D%E6%9E%84%E9%80%A0%E6%96%B9%E5%BC%8F"><span class="nav-number">1.3.</span> <span class="nav-text">handler 另外四种构造方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#public-static-Handler-createAsync-NonNull-Looper-looper"><span class="nav-number">1.3.1.</span> <span class="nav-text">public static Handler createAsync(@NonNull Looper looper)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#public-static-Handler-createAsync-NonNull-Looper-looper-NonNull-Callback-callback"><span class="nav-number">1.3.2.</span> <span class="nav-text">public static Handler createAsync(@NonNull Looper looper, @NonNull Callback callback)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#public-static-Handler-getMain"><span class="nav-number">1.3.3.</span> <span class="nav-text">public static Handler getMain()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#public-static-Handler-mainIfNull-Nullable-Handler-handler"><span class="nav-number">1.3.4.</span> <span class="nav-text">public static Handler mainIfNull(@Nullable Handler handler)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E9%80%A0message%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="nav-number">1.4.</span> <span class="nav-text">创造message的几种方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#public-final-Message-obtainMessage"><span class="nav-number">1.4.1.</span> <span class="nav-text">public final Message obtainMessage()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#obtaionMessage%E7%9A%84%E4%B8%80%E4%BA%9B%E5%8F%98%E7%A7%8D"><span class="nav-number">1.4.2.</span> <span class="nav-text">obtaionMessage的一些变种</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Message-obtain"><span class="nav-number">1.4.3.</span> <span class="nav-text">Message#obtain()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Post"><span class="nav-number">1.5.</span> <span class="nav-text">Post</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%EF%BC%9Apublic-final-boolean-post-Runnable-r"><span class="nav-number">1.5.1.</span> <span class="nav-text">第一种：public final boolean post(Runnable r)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%EF%BC%9Apublic-final-boolean-postAtTime-Runnable-r-long-uptimeMillis"><span class="nav-number">1.5.2.</span> <span class="nav-text">第二种：public final boolean postAtTime(Runnable r, long uptimeMillis)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E7%A7%8D%EF%BC%9Apublic-final-boolean-postAtTime-Runnable-r-Object-token-long-uptimeMillis"><span class="nav-number">1.5.3.</span> <span class="nav-text">第三种：public final boolean postAtTime(Runnable r, Object token, long uptimeMillis)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E7%A7%8D%EF%BC%9Apublic-final-boolean-postDelayed-Runnable-r-long-delayMillis"><span class="nav-number">1.5.4.</span> <span class="nav-text">第四种：public final boolean postDelayed(Runnable r, long delayMillis)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E7%A7%8D%EF%BC%9Apublic-final-boolean-postDelayed-Runnable-r-Object-token-long-delayMillis"><span class="nav-number">1.5.5.</span> <span class="nav-text">第五种：public final boolean postDelayed(Runnable r, Object token, long delayMillis)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%85%AD%E7%A7%8D%EF%BC%9Apublic-final-boolean-postAtFrontOfQueue-Runnable-r"><span class="nav-number">1.5.6.</span> <span class="nav-text">第六种：public final boolean postAtFrontOfQueue(Runnable r)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%83%E7%A7%8D%EF%BC%9Apublic-final-boolean-executeOrSendMessage-Message-msg"><span class="nav-number">1.5.7.</span> <span class="nav-text">第七种：public final boolean executeOrSendMessage(Message msg)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sendMessageDelayed"><span class="nav-number">1.5.8.</span> <span class="nav-text">sendMessageDelayed</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sendMessageAtTime"><span class="nav-number">1.5.9.</span> <span class="nav-text">sendMessageAtTime</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#enqueueMessage"><span class="nav-number">1.5.10.</span> <span class="nav-text">enqueueMessage</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Looper%E6%A6%82%E8%A7%88"><span class="nav-number">2.</span> <span class="nav-text">Looper概览</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#prepare"><span class="nav-number">2.1.</span> <span class="nav-text">prepare()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#myLooper"><span class="nav-number">2.2.</span> <span class="nav-text">myLooper()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E6%96%B9%E6%B3%95loop"><span class="nav-number">2.3.</span> <span class="nav-text">核心方法loop()</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MessageQueue"><span class="nav-number">3.</span> <span class="nav-text">MessageQueue</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E9%80%A0"><span class="nav-number">3.1.</span> <span class="nav-text">构造</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JNI%E5%B1%82%E7%9A%84Looper"><span class="nav-number">3.1.1.</span> <span class="nav-text">JNI层的Looper</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">殷鹏程</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mikilangkilo" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mikilangkilo" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:913925047@qq.com" title="E-Mail → mailto:913925047@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/mikilangkilo" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mikilangkilo.yin@github.io/2021/07/18/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80-activity-handler%E6%9B%B4%E6%B7%B1%E5%85%A5%E4%B8%80%E5%B1%82%E7%9A%84%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="殷鹏程">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人小站">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          安卓基础-activity-handler更深入一层的学习
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-18 16:21:32" itemprop="dateCreated datePublished" datetime="2021-07-18T16:21:32+08:00">2021-07-18</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-07-19 00:01:03" itemprop="dateModified" datetime="2021-07-19T00:01:03+08:00">2021-07-19</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">安卓基础</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">本文对最近面试过程中遇到的handler没有答出来的问题做一次系统性的学习</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>以前学handler还是在做framework的时候，有些细节也没有考虑过</p>
+<h1 id="Handler概览"><a href="#Handler概览" class="headerlink" title="Handler概览"></a>Handler概览</h1><h2 id="Handler构造"><a href="#Handler构造" class="headerlink" title="Handler构造"></a>Handler构造</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Default constructor associates this handler with the &#123;@link Looper&#125; for the</span><br><span class="line"> * current thread.</span><br><span class="line"> *</span><br><span class="line"> * If this thread does not have a looper, this handler won&#x27;t be able to receive messages</span><br><span class="line"> * so an exception is thrown.</span><br><span class="line"> */</span><br><span class="line">public Handler() &#123;</span><br><span class="line">    this(null, false);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Constructor associates this handler with the &#123;@link Looper&#125; for the</span><br><span class="line"> * current thread and takes a callback interface in which you can handle</span><br><span class="line"> * messages.</span><br><span class="line"> *</span><br><span class="line"> * If this thread does not have a looper, this handler won&#x27;t be able to receive messages</span><br><span class="line"> * so an exception is thrown.</span><br><span class="line"> *</span><br><span class="line"> * @param callback The callback interface in which to handle messages, or null.</span><br><span class="line"> */</span><br><span class="line">public Handler(Callback callback) &#123;</span><br><span class="line">    this(callback, false);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Use the provided &#123;@link Looper&#125; instead of the default one.</span><br><span class="line"> *</span><br><span class="line"> * @param looper The looper, must not be null.</span><br><span class="line"> */</span><br><span class="line">public Handler(Looper looper) &#123;</span><br><span class="line">    this(looper, null, false);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Use the provided &#123;@link Looper&#125; instead of the default one and take a callback</span><br><span class="line"> * interface in which to handle messages.</span><br><span class="line"> *</span><br><span class="line"> * @param looper The looper, must not be null.</span><br><span class="line"> * @param callback The callback interface in which to handle messages, or null.</span><br><span class="line"> */</span><br><span class="line">public Handler(Looper looper, Callback callback) &#123;</span><br><span class="line">    this(looper, callback, false);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Use the &#123;@link Looper&#125; for the current thread</span><br><span class="line"> * and set whether the handler should be asynchronous.</span><br><span class="line"> *</span><br><span class="line"> * Handlers are synchronous by default unless this constructor is used to make</span><br><span class="line"> * one that is strictly asynchronous.</span><br><span class="line"> *</span><br><span class="line"> * Asynchronous messages represent interrupts or events that do not require global ordering</span><br><span class="line"> * with respect to synchronous messages.  Asynchronous messages are not subject to</span><br><span class="line"> * the synchronization barriers introduced by &#123;@link MessageQueue#enqueueSyncBarrier(long)&#125;.</span><br><span class="line"> *</span><br><span class="line"> * @param async If true, the handler calls &#123;@link Message#setAsynchronous(boolean)&#125; for</span><br><span class="line"> * each &#123;@link Message&#125; that is sent to it or &#123;@link Runnable&#125; that is posted to it.</span><br><span class="line"> *</span><br><span class="line"> * @hide</span><br><span class="line"> */</span><br><span class="line">public Handler(boolean async) &#123;</span><br><span class="line">    this(null, async);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Use the &#123;@link Looper&#125; for the current thread with the specified callback interface</span><br><span class="line"> * and set whether the handler should be asynchronous.</span><br><span class="line"> *</span><br><span class="line"> * Handlers are synchronous by default unless this constructor is used to make</span><br><span class="line"> * one that is strictly asynchronous.</span><br><span class="line"> *</span><br><span class="line"> * Asynchronous messages represent interrupts or events that do not require global ordering</span><br><span class="line"> * with respect to synchronous messages.  Asynchronous messages are not subject to</span><br><span class="line"> * the synchronization barriers introduced by &#123;@link MessageQueue#enqueueSyncBarrier(long)&#125;.</span><br><span class="line"> *</span><br><span class="line"> * @param callback The callback interface in which to handle messages, or null.</span><br><span class="line"> * @param async If true, the handler calls &#123;@link Message#setAsynchronous(boolean)&#125; for</span><br><span class="line"> * each &#123;@link Message&#125; that is sent to it or &#123;@link Runnable&#125; that is posted to it.</span><br><span class="line"> *</span><br><span class="line"> * @hide</span><br><span class="line"> */</span><br><span class="line">public Handler(Callback callback, boolean async) &#123;</span><br><span class="line">    if (FIND_POTENTIAL_LEAKS) &#123;</span><br><span class="line">        final Class&lt;? extends Handler&gt; klass = getClass();</span><br><span class="line">        if ((klass.isAnonymousClass() || klass.isMemberClass() || klass.isLocalClass()) &amp;&amp;</span><br><span class="line">                (klass.getModifiers() &amp; Modifier.STATIC) == 0) &#123;</span><br><span class="line">            Log.w(TAG, &quot;The following Handler class should be static or leaks might occur: &quot; +</span><br><span class="line">                klass.getCanonicalName());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mLooper = Looper.myLooper();</span><br><span class="line">    if (mLooper == null) &#123;</span><br><span class="line">        throw new RuntimeException(</span><br><span class="line">            &quot;Can&#x27;t create handler inside thread &quot; + Thread.currentThread()</span><br><span class="line">                    + &quot; that has not called Looper.prepare()&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    mQueue = mLooper.mQueue;</span><br><span class="line">    mCallback = callback;</span><br><span class="line">    mAsynchronous = async;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Use the provided &#123;@link Looper&#125; instead of the default one and take a callback</span><br><span class="line"> * interface in which to handle messages.  Also set whether the handler</span><br><span class="line"> * should be asynchronous.</span><br><span class="line"> *</span><br><span class="line"> * Handlers are synchronous by default unless this constructor is used to make</span><br><span class="line"> * one that is strictly asynchronous.</span><br><span class="line"> *</span><br><span class="line"> * Asynchronous messages represent interrupts or events that do not require global ordering</span><br><span class="line"> * with respect to synchronous messages.  Asynchronous messages are not subject to</span><br><span class="line"> * the synchronization barriers introduced by conditions such as display vsync.</span><br><span class="line"> *</span><br><span class="line"> * @param looper The looper, must not be null.</span><br><span class="line"> * @param callback The callback interface in which to handle messages, or null.</span><br><span class="line"> * @param async If true, the handler calls &#123;@link Message#setAsynchronous(boolean)&#125; for</span><br><span class="line"> * each &#123;@link Message&#125; that is sent to it or &#123;@link Runnable&#125; that is posted to it.</span><br><span class="line"> *</span><br><span class="line"> * @hide</span><br><span class="line"> */</span><br><span class="line">public Handler(Looper looper, Callback callback, boolean async) &#123;</span><br><span class="line">    mLooper = looper;</span><br><span class="line">    mQueue = looper.mQueue;</span><br><span class="line">    mCallback = callback;</span><br><span class="line">    mAsynchronous = async;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>handler的构造函数其实就分成两种，一种构造最后走到双参数构造里面，一种走到三参数构造里面。</p>
+<p>区别在于双参数里面是通过  <code>mLooper = Looper.myLooper();</code>来获取looper。</p>
+<h3 id="双参数中looper的来源"><a href="#双参数中looper的来源" class="headerlink" title="双参数中looper的来源"></a>双参数中looper的来源</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Return the Looper object associated with the current thread.  Returns</span><br><span class="line"> * null if the calling thread is not associated with a Looper.</span><br><span class="line"> */</span><br><span class="line">public static @Nullable Looper myLooper() &#123;</span><br><span class="line">    return sThreadLocal.get();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Looper.myLooper()</code>的方法是如上，会从threadlocal中直接get出来。</p>
+<p><code>static final ThreadLocal&lt;Looper&gt; sThreadLocal = new ThreadLocal&lt;Looper&gt;();</code></p>
+<p>这个threadlocal是存在于Looper成员变量区域中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/** Initialize the current thread as a looper.</span><br><span class="line">  * This gives you a chance to create handlers that then reference</span><br><span class="line">  * this looper, before actually starting the loop. Be sure to call</span><br><span class="line">  * &#123;@link #loop()&#125; after calling this method, and end it by calling</span><br><span class="line">  * &#123;@link #quit()&#125;.</span><br><span class="line">  */</span><br><span class="line">public static void prepare() &#123;</span><br><span class="line">    prepare(true);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private static void prepare(boolean quitAllowed) &#123;</span><br><span class="line">    if (sThreadLocal.get() != null) &#123;</span><br><span class="line">        throw new RuntimeException(&quot;Only one Looper may be created per thread&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    sThreadLocal.set(new Looper(quitAllowed));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在prepare的过程中会创建新的Looper塞到对应的线程threadlocal中</p>
+<h3 id="双参数和三参数的共同点"><a href="#双参数和三参数的共同点" class="headerlink" title="双参数和三参数的共同点"></a>双参数和三参数的共同点</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mQueue = looper.mQueue;</span><br><span class="line">mCallback = callback;</span><br><span class="line">mAsynchronous = async;</span><br></pre></td></tr></table></figure>
+<p>可以看出messageQueue是在looper内部的一个变量</p>
+<h2 id="async-的作用"><a href="#async-的作用" class="headerlink" title="async 的作用"></a>async 的作用</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">* @param async If true, the handler calls &#123;@link Message#setAsynchronous(boolean)&#125; for</span><br><span class="line">* each &#123;@link Message&#125; that is sent to it or &#123;@link Runnable&#125; that is posted to it.</span><br></pre></td></tr></table></figure>
+
+<p>从备注里面可以看到，如果async为true的话，会在message中setAsynchronous</p>
+<h3 id="Message-setAsynchronous"><a href="#Message-setAsynchronous" class="headerlink" title="Message#setAsynchronous()"></a>Message#setAsynchronous()</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Sets whether the message is asynchronous, meaning that it is not</span><br><span class="line"> * subject to &#123;@link Looper&#125; synchronization barriers.</span><br><span class="line"> * &lt;p&gt;</span><br><span class="line"> * Certain operations, such as view invalidation, may introduce synchronization</span><br><span class="line"> * barriers into the &#123;@link Looper&#125;&#x27;s message queue to prevent subsequent messages</span><br><span class="line"> * from being delivered until some condition is met.  In the case of view invalidation,</span><br><span class="line"> * messages which are posted after a call to &#123;@link android.view.View#invalidate&#125;</span><br><span class="line"> * are suspended by means of a synchronization barrier until the next frame is</span><br><span class="line"> * ready to be drawn.  The synchronization barrier ensures that the invalidation</span><br><span class="line"> * request is completely handled before resuming.</span><br><span class="line"> * &lt;/p&gt;&lt;p&gt;</span><br><span class="line"> * Asynchronous messages are exempt from synchronization barriers.  They typically</span><br><span class="line"> * represent interrupts, input events, and other signals that must be handled independently</span><br><span class="line"> * even while other work has been suspended.</span><br><span class="line"> * &lt;/p&gt;&lt;p&gt;</span><br><span class="line"> * Note that asynchronous messages may be delivered out of order with respect to</span><br><span class="line"> * synchronous messages although they are always delivered in order among themselves.</span><br><span class="line"> * If the relative order of these messages matters then they probably should not be</span><br><span class="line"> * asynchronous in the first place.  Use with caution.</span><br><span class="line"> * &lt;/p&gt;</span><br><span class="line"> *</span><br><span class="line"> * @param async True if the message is asynchronous.</span><br><span class="line"> *</span><br><span class="line"> * @see #isAsynchronous()</span><br><span class="line"> */</span><br><span class="line">public void setAsynchronous(boolean async) &#123;</span><br><span class="line">    if (async) &#123;</span><br><span class="line">        flags |= FLAG_ASYNCHRONOUS;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        flags &amp;= ~FLAG_ASYNCHRONOUS;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个方法备注里面写的还是比较清楚的</p>
+<p>message设置了这个方法之后，将会不遵从looper的<code>同步屏障</code>。</p>
+<p>像一些方法，<code>view#invalidation</code>，该操作传入messagequeue的时候会同步往message queue中引入同步屏障，直到满足一些条件。</p>
+<p>在<code>invalidation</code>这种情况出现的时候，在invalidate之后post的message将会被同步屏障拦截，直到下一帧被绘制完毕。</p>
+<p>同步屏障会确保invalidation操作执行完毕之后在执行别的同步消息。</p>
+<p>异步消息则会被免除于同步屏障之外，异步消息一般是中断，输入事件，或者别的需要在其他工作停滞状态时独立分开处理的信号等。</p>
+<blockquote>
+<p>请注意，尽管异步消息之间总是按顺序传递，但与同步消息相比，异步消息的传递可能是无序的。如果这些消息的相对顺序很重要，那么它们可能一开始就不应该是异步的。谨慎使用。</p>
+</blockquote>
+<p>最后这句话就用谷歌翻译了。..</p>
+<h2 id="handler-另外四种构造方式"><a href="#handler-另外四种构造方式" class="headerlink" title="handler 另外四种构造方式"></a>handler 另外四种构造方式</h2><h3 id="public-static-Handler-createAsync-NonNull-Looper-looper"><a href="#public-static-Handler-createAsync-NonNull-Looper-looper" class="headerlink" title="public static Handler createAsync(@NonNull Looper looper)"></a>public static Handler createAsync(@NonNull Looper looper)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public static Handler createAsync(@NonNull Looper looper) &#123;</span><br><span class="line">    if (looper == null) throw new NullPointerException(&quot;looper must not be null&quot;);</span><br><span class="line">    return new Handler(looper, null, true);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个就是创建异步的handler</p>
+<h3 id="public-static-Handler-createAsync-NonNull-Looper-looper-NonNull-Callback-callback"><a href="#public-static-Handler-createAsync-NonNull-Looper-looper-NonNull-Callback-callback" class="headerlink" title="public static Handler createAsync(@NonNull Looper looper, @NonNull Callback callback)"></a>public static Handler createAsync(@NonNull Looper looper, @NonNull Callback callback)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@NonNull</span><br><span class="line"> public static Handler createAsync(@NonNull Looper looper, @NonNull Callback callback) &#123;</span><br><span class="line">     if (looper == null) throw new NullPointerException(&quot;looper must not be null&quot;);</span><br><span class="line">     if (callback == null) throw new NullPointerException(&quot;callback must not be null&quot;);</span><br><span class="line">     return new Handler(looper, callback, true);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>上一种handler的变体</p>
+<h3 id="public-static-Handler-getMain"><a href="#public-static-Handler-getMain" class="headerlink" title="public static Handler getMain()"></a>public static Handler getMain()</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/** @hide */</span><br><span class="line">@NonNull</span><br><span class="line">public static Handler getMain() &#123;</span><br><span class="line">    if (MAIN_THREAD_HANDLER == null) &#123;</span><br><span class="line">        MAIN_THREAD_HANDLER = new Handler(Looper.getMainLooper());</span><br><span class="line">    &#125;</span><br><span class="line">    return MAIN_THREAD_HANDLER;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个方法提供给系统使用</p>
+<h3 id="public-static-Handler-mainIfNull-Nullable-Handler-handler"><a href="#public-static-Handler-mainIfNull-Nullable-Handler-handler" class="headerlink" title="public static Handler mainIfNull(@Nullable Handler handler)"></a>public static Handler mainIfNull(@Nullable Handler handler)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/** @hide */</span><br><span class="line">@NonNull</span><br><span class="line">public static Handler mainIfNull(@Nullable Handler handler) &#123;</span><br><span class="line">    return handler == null ? getMain() : handler;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个方法提供给系统使用</p>
+<h2 id="创造message的几种方式"><a href="#创造message的几种方式" class="headerlink" title="创造message的几种方式"></a>创造message的几种方式</h2><h3 id="public-final-Message-obtainMessage"><a href="#public-final-Message-obtainMessage" class="headerlink" title="public final Message obtainMessage()"></a>public final Message obtainMessage()</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Returns a new &#123;@link android.os.Message Message&#125; from the global message pool. More efficient than</span><br><span class="line"> * creating and allocating new instances. The retrieved message has its handler set to this instance (Message.target == this).</span><br><span class="line"> *  If you don&#x27;t want that facility, just call Message.obtain() instead.</span><br><span class="line"> */</span><br><span class="line">public final Message obtainMessage()</span><br><span class="line">&#123;</span><br><span class="line">    return Message.obtain(this);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从全局的message pool里面获取一个新的message，比直接创建实例更有效率，并且已经设置过target = this了</p>
+<h3 id="obtaionMessage的一些变种"><a href="#obtaionMessage的一些变种" class="headerlink" title="obtaionMessage的一些变种"></a>obtaionMessage的一些变种</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">  * Same as &#123;@link #obtainMessage()&#125;, except that it also sets the what member of the returned Message.</span><br><span class="line">  * </span><br><span class="line">  * @param what Value to assign to the returned Message.what field.</span><br><span class="line">  * @return A Message from the global message pool.</span><br><span class="line">  */</span><br><span class="line"> public final Message obtainMessage(int what)</span><br><span class="line"> &#123;</span><br><span class="line">     return Message.obtain(this, what);</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> /**</span><br><span class="line">  * </span><br><span class="line">  * Same as &#123;@link #obtainMessage()&#125;, except that it also sets the what and obj members </span><br><span class="line">  * of the returned Message.</span><br><span class="line">  * </span><br><span class="line">  * @param what Value to assign to the returned Message.what field.</span><br><span class="line">  * @param obj Value to assign to the returned Message.obj field.</span><br><span class="line">  * @return A Message from the global message pool.</span><br><span class="line">  */</span><br><span class="line"> public final Message obtainMessage(int what, Object obj)</span><br><span class="line"> &#123;</span><br><span class="line">     return Message.obtain(this, what, obj);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> /**</span><br><span class="line">  * </span><br><span class="line">  * Same as &#123;@link #obtainMessage()&#125;, except that it also sets the what, arg1 and arg2 members of the returned</span><br><span class="line">  * Message.</span><br><span class="line">  * @param what Value to assign to the returned Message.what field.</span><br><span class="line">  * @param arg1 Value to assign to the returned Message.arg1 field.</span><br><span class="line">  * @param arg2 Value to assign to the returned Message.arg2 field.</span><br><span class="line">  * @return A Message from the global message pool.</span><br><span class="line">  */</span><br><span class="line"> public final Message obtainMessage(int what, int arg1, int arg2)</span><br><span class="line"> &#123;</span><br><span class="line">     return Message.obtain(this, what, arg1, arg2);</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> /**</span><br><span class="line">  * </span><br><span class="line">  * Same as &#123;@link #obtainMessage()&#125;, except that it also sets the what, obj, arg1,and arg2 values on the </span><br><span class="line">  * returned Message.</span><br><span class="line">  * @param what Value to assign to the returned Message.what field.</span><br><span class="line">  * @param arg1 Value to assign to the returned Message.arg1 field.</span><br><span class="line">  * @param arg2 Value to assign to the returned Message.arg2 field.</span><br><span class="line">  * @param obj Value to assign to the returned Message.obj field.</span><br><span class="line">  * @return A Message from the global message pool.</span><br><span class="line">  */</span><br><span class="line"> public final Message obtainMessage(int what, int arg1, int arg2, Object obj)</span><br><span class="line"> &#123;</span><br><span class="line">     return Message.obtain(this, what, arg1, arg2, obj);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Message-obtain"><a href="#Message-obtain" class="headerlink" title="Message#obtain()"></a>Message#obtain()</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Return a new Message instance from the global pool. Allows us to</span><br><span class="line"> * avoid allocating new objects in many cases.</span><br><span class="line"> */</span><br><span class="line">public static Message obtain() &#123;</span><br><span class="line">    synchronized (sPoolSync) &#123;</span><br><span class="line">        if (sPool != null) &#123;</span><br><span class="line">            Message m = sPool;</span><br><span class="line">            sPool = m.next;</span><br><span class="line">            m.next = null;</span><br><span class="line">            m.flags = 0; // clear in-use flag</span><br><span class="line">            sPoolSize--;</span><br><span class="line">            return m;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return new Message();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>obtain方法其实就是判断pool是否有值，有值的话返回出来，没值就新增。</p>
+<p>sPool的赋值过程如下</p>
+<p><code> Message#recycle() =&gt; Message#recycleUnchecked() =&gt; sPool = this</code></p>
+<p>这也代表着Message其实是一个单链表节点，其会静态缓存一系列的被recycle的Message，这也代表平时使用完Message之后，记得recycle一下</p>
+<h2 id="Post"><a href="#Post" class="headerlink" title="Post"></a>Post</h2><p>Post其实就是核心中的核心，其有很多post的方法</p>
+<h3 id="第一种：public-final-boolean-post-Runnable-r"><a href="#第一种：public-final-boolean-post-Runnable-r" class="headerlink" title="第一种：public final boolean post(Runnable r)"></a>第一种：public final boolean post(Runnable r)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Causes the Runnable r to be added to the message queue.</span><br><span class="line"> * The runnable will be run on the thread to which this handler is </span><br><span class="line"> * attached. </span><br><span class="line"> *  </span><br><span class="line"> * @param r The Runnable that will be executed.</span><br><span class="line"> * </span><br><span class="line"> * @return Returns true if the Runnable was successfully placed in to the </span><br><span class="line"> *         message queue.  Returns false on failure, usually because the</span><br><span class="line"> *         looper processing the message queue is exiting.</span><br><span class="line"> */</span><br><span class="line">public final boolean post(Runnable r)</span><br><span class="line">&#123;</span><br><span class="line">   return  sendMessageDelayed(getPostMessage(r), 0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里调用getPostMessage方法，将runnable改为Message，然后执行sendMessageDelayed</p>
+<h3 id="第二种：public-final-boolean-postAtTime-Runnable-r-long-uptimeMillis"><a href="#第二种：public-final-boolean-postAtTime-Runnable-r-long-uptimeMillis" class="headerlink" title="第二种：public final boolean postAtTime(Runnable r, long uptimeMillis)"></a>第二种：public final boolean postAtTime(Runnable r, long uptimeMillis)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public final boolean postAtTime(Runnable r, long uptimeMillis)</span><br><span class="line">&#123;</span><br><span class="line">    return sendMessageAtTime(getPostMessage(r), uptimeMillis);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该方法和是在固定的时间点执行</p>
+<h3 id="第三种：public-final-boolean-postAtTime-Runnable-r-Object-token-long-uptimeMillis"><a href="#第三种：public-final-boolean-postAtTime-Runnable-r-Object-token-long-uptimeMillis" class="headerlink" title="第三种：public final boolean postAtTime(Runnable r, Object token, long uptimeMillis)"></a>第三种：public final boolean postAtTime(Runnable r, Object token, long uptimeMillis)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public final boolean postAtTime(Runnable r, Object token, long uptimeMillis)</span><br><span class="line">&#123;</span><br><span class="line">    return sendMessageAtTime(getPostMessage(r, token), uptimeMillis);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>和第二种方式类似，token的作用是用于cancel这个message</p>
+<h3 id="第四种：public-final-boolean-postDelayed-Runnable-r-long-delayMillis"><a href="#第四种：public-final-boolean-postDelayed-Runnable-r-long-delayMillis" class="headerlink" title="第四种：public final boolean postDelayed(Runnable r, long delayMillis)"></a>第四种：public final boolean postDelayed(Runnable r, long delayMillis)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public final boolean postDelayed(Runnable r, long delayMillis)</span><br><span class="line">&#123;</span><br><span class="line">    return sendMessageDelayed(getPostMessage(r), delayMillis);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该方式和第一种类似，加上了delaymillis</p>
+<h3 id="第五种：public-final-boolean-postDelayed-Runnable-r-Object-token-long-delayMillis"><a href="#第五种：public-final-boolean-postDelayed-Runnable-r-Object-token-long-delayMillis" class="headerlink" title="第五种：public final boolean postDelayed(Runnable r, Object token, long delayMillis)"></a>第五种：public final boolean postDelayed(Runnable r, Object token, long delayMillis)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public final boolean postDelayed(Runnable r, Object token, long delayMillis)</span><br><span class="line">&#123;</span><br><span class="line">    return sendMessageDelayed(getPostMessage(r, token), delayMillis);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>加上了token的第四种方式</p>
+<h3 id="第六种：public-final-boolean-postAtFrontOfQueue-Runnable-r"><a href="#第六种：public-final-boolean-postAtFrontOfQueue-Runnable-r" class="headerlink" title="第六种：public final boolean postAtFrontOfQueue(Runnable r)"></a>第六种：public final boolean postAtFrontOfQueue(Runnable r)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public final boolean postAtFrontOfQueue(Runnable r)</span><br><span class="line">&#123;</span><br><span class="line">    return sendMessageAtFrontOfQueue(getPostMessage(r));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>往头部插入message，虽好不要使用，特殊场景除外，会造成顺序问题以及别的影响</p>
+<h3 id="第七种：public-final-boolean-executeOrSendMessage-Message-msg"><a href="#第七种：public-final-boolean-executeOrSendMessage-Message-msg" class="headerlink" title="第七种：public final boolean executeOrSendMessage(Message msg)"></a>第七种：public final boolean executeOrSendMessage(Message msg)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public final boolean executeOrSendMessage(Message msg) &#123;</span><br><span class="line">    if (mLooper == Looper.myLooper()) &#123;</span><br><span class="line">        dispatchMessage(msg);</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">    return sendMessage(msg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果当前的线程就是handler的线程，直接执行message，否则塞入该handler的线程</p>
+<h3 id="sendMessageDelayed"><a href="#sendMessageDelayed" class="headerlink" title="sendMessageDelayed"></a>sendMessageDelayed</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Enqueue a message into the message queue after all pending messages</span><br><span class="line"> * before (current time + delayMillis). You will receive it in</span><br><span class="line"> * &#123;@link #handleMessage&#125;, in the thread attached to this handler.</span><br><span class="line"> *  </span><br><span class="line"> * @return Returns true if the message was successfully placed in to the </span><br><span class="line"> *         message queue.  Returns false on failure, usually because the</span><br><span class="line"> *         looper processing the message queue is exiting.  Note that a</span><br><span class="line"> *         result of true does not mean the message will be processed -- if</span><br><span class="line"> *         the looper is quit before the delivery time of the message</span><br><span class="line"> *         occurs then the message will be dropped.</span><br><span class="line"> */</span><br><span class="line">public final boolean sendMessageDelayed(Message msg, long delayMillis)</span><br><span class="line">&#123;</span><br><span class="line">    if (delayMillis &lt; 0) &#123;</span><br><span class="line">        delayMillis = 0;</span><br><span class="line">    &#125;</span><br><span class="line">    return sendMessageAtTime(msg, SystemClock.uptimeMillis() + delayMillis);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>事实上sendMessageDelayed也是执行了sendMessageAtTime</p>
+<p>SystemClock.uptimeMillis()是指从开机到现在的毫秒数，并非System.currentTimeMillis()这种从1970年1月1日 UTC到现在的毫秒数</p>
+<h3 id="sendMessageAtTime"><a href="#sendMessageAtTime" class="headerlink" title="sendMessageAtTime"></a>sendMessageAtTime</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public boolean sendMessageAtTime(Message msg, long uptimeMillis) &#123;</span><br><span class="line">    MessageQueue queue = mQueue;</span><br><span class="line">    if (queue == null) &#123;</span><br><span class="line">        RuntimeException e = new RuntimeException(</span><br><span class="line">                this + &quot; sendMessageAtTime() called with no mQueue&quot;);</span><br><span class="line">        Log.w(&quot;Looper&quot;, e.getMessage(), e);</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    return enqueueMessage(queue, msg, uptimeMillis);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果messageQueue不存在就报错，否则就执行enqueueMessage操作，mq的初始化在handler构造器里面赋值的。</p>
+<h3 id="enqueueMessage"><a href="#enqueueMessage" class="headerlink" title="enqueueMessage"></a>enqueueMessage</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">private boolean enqueueMessage(MessageQueue queue, Message msg, long uptimeMillis) &#123;</span><br><span class="line">    msg.target = this;</span><br><span class="line">    if (mAsynchronous) &#123;</span><br><span class="line">        msg.setAsynchronous(true);</span><br><span class="line">    &#125;</span><br><span class="line">    return queue.enqueueMessage(msg, uptimeMillis);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果消息是异步消息，设置一下状态，然后塞到MessageQueue里面</p>
+<h1 id="Looper概览"><a href="#Looper概览" class="headerlink" title="Looper概览"></a>Looper概览</h1><p>刚才看完handler相关，其实looper大部分的已经经过了。在提一下。</p>
+<h2 id="prepare"><a href="#prepare" class="headerlink" title="prepare()"></a>prepare()</h2><p>prepare事实上有一个参数，是是否允许退出，mainlooper不允许，其他的是允许的</p>
+<p>prepare核心是创建一个looper塞到threadlocal里面</p>
+<h2 id="myLooper"><a href="#myLooper" class="headerlink" title="myLooper()"></a>myLooper()</h2><p>Looper.myLooper()就是当前线程的looper</p>
+<h2 id="核心方法loop"><a href="#核心方法loop" class="headerlink" title="核心方法loop()"></a>核心方法loop()</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Run the message queue in this thread. Be sure to call</span><br><span class="line"> * &#123;@link #quit()&#125; to end the loop.</span><br><span class="line"> */</span><br><span class="line">public static void loop() &#123;</span><br><span class="line">    //获取当前线程的looper</span><br><span class="line">    final Looper me = myLooper();</span><br><span class="line">    if (me == null) &#123;</span><br><span class="line">        throw new RuntimeException(&quot;No Looper; Looper.prepare() wasn&#x27;t called on this thread.&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    //获取该looper对应的mq</span><br><span class="line">    final MessageQueue queue = me.mQueue;</span><br><span class="line"></span><br><span class="line">    // Make sure the identity of this thread is that of the local process,</span><br><span class="line">    // and keep track of what that identity token actually is.</span><br><span class="line">    //重设置远端的uid和pid，用当前本地进程的uid和pid替代</span><br><span class="line">    Binder.clearCallingIdentity();</span><br><span class="line">    final long ident = Binder.clearCallingIdentity();</span><br><span class="line"></span><br><span class="line">    // Allow overriding a threshold with a system prop. e.g.</span><br><span class="line">    // adb shell &#x27;setprop log.looper.1000.main.slow 1 &amp;&amp; stop &amp;&amp; start&#x27;</span><br><span class="line">    final int thresholdOverride =</span><br><span class="line">            SystemProperties.getInt(&quot;log.looper.&quot;</span><br><span class="line">                    + Process.myUid() + &quot;.&quot;</span><br><span class="line">                    + Thread.currentThread().getName()</span><br><span class="line">                    + &quot;.slow&quot;, 0);</span><br><span class="line">    //用于监控慢函数</span><br><span class="line">    boolean slowDeliveryDetected = false;</span><br><span class="line"></span><br><span class="line">    for (;;) &#123;</span><br><span class="line">        Message msg = queue.next(); // might block</span><br><span class="line">        //next之后拿到的msg是null，这时候代表其实是要退出的，因为普通时候这个next是会阻塞的</span><br><span class="line">        if (msg == null) &#123;</span><br><span class="line">            // No message indicates that the message queue is quitting.</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        // This must be in a local variable, in case a UI event sets the logger</span><br><span class="line">        final Printer logging = me.mLogging;</span><br><span class="line">        if (logging != null) &#123;</span><br><span class="line">            logging.println(&quot;&gt;&gt;&gt;&gt;&gt; Dispatching to &quot; + msg.target + &quot; &quot; +</span><br><span class="line">                    msg.callback + &quot;: &quot; + msg.what);</span><br><span class="line">        &#125;</span><br><span class="line">        final long traceTag = me.mTraceTag;</span><br><span class="line">        long slowDispatchThresholdMs = me.mSlowDispatchThresholdMs;</span><br><span class="line">        long slowDeliveryThresholdMs = me.mSlowDeliveryThresholdMs;</span><br><span class="line">        if (thresholdOverride &gt; 0) &#123;</span><br><span class="line">            slowDispatchThresholdMs = thresholdOverride;</span><br><span class="line">            slowDeliveryThresholdMs = thresholdOverride;</span><br><span class="line">        &#125;</span><br><span class="line">        final boolean logSlowDelivery = (slowDeliveryThresholdMs &gt; 0) &amp;&amp; (msg.when &gt; 0);</span><br><span class="line">        final boolean logSlowDispatch = (slowDispatchThresholdMs &gt; 0);</span><br><span class="line"></span><br><span class="line">        final boolean needStartTime = logSlowDelivery || logSlowDispatch;</span><br><span class="line">        final boolean needEndTime = logSlowDispatch;</span><br><span class="line"></span><br><span class="line">        if (traceTag != 0 &amp;&amp; Trace.isTagEnabled(traceTag)) &#123;</span><br><span class="line">            Trace.traceBegin(traceTag, msg.target.getTraceName(msg));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        final long dispatchStart = needStartTime ? SystemClock.uptimeMillis() : 0;</span><br><span class="line">        final long dispatchEnd;</span><br><span class="line">        try &#123;</span><br><span class="line">            //target就是handler，传给handler去处理</span><br><span class="line">            msg.target.dispatchMessage(msg);</span><br><span class="line">            dispatchEnd = needEndTime ? SystemClock.uptimeMillis() : 0;</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            if (traceTag != 0) &#123;</span><br><span class="line">                Trace.traceEnd(traceTag);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (logSlowDelivery) &#123;</span><br><span class="line">            if (slowDeliveryDetected) &#123;</span><br><span class="line">                if ((dispatchStart - msg.when) &lt;= 10) &#123;</span><br><span class="line">                    Slog.w(TAG, &quot;Drained&quot;);</span><br><span class="line">                    slowDeliveryDetected = false;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                if (showSlowLog(slowDeliveryThresholdMs, msg.when, dispatchStart, &quot;delivery&quot;,</span><br><span class="line">                        msg)) &#123;</span><br><span class="line">                    // Once we write a slow delivery log, suppress until the queue drains.</span><br><span class="line">                    slowDeliveryDetected = true;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (logSlowDispatch) &#123;</span><br><span class="line">            showSlowLog(slowDispatchThresholdMs, dispatchStart, dispatchEnd, &quot;dispatch&quot;, msg);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (logging != null) &#123;</span><br><span class="line">            logging.println(&quot;&lt;&lt;&lt;&lt;&lt; Finished to &quot; + msg.target + &quot; &quot; + msg.callback);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // Make sure that during the course of dispatching the</span><br><span class="line">        // identity of the thread wasn&#x27;t corrupted.</span><br><span class="line">        final long newIdent = Binder.clearCallingIdentity();</span><br><span class="line">        if (ident != newIdent) &#123;</span><br><span class="line">            Log.wtf(TAG, &quot;Thread identity changed from 0x&quot;</span><br><span class="line">                    + Long.toHexString(ident) + &quot; to 0x&quot;</span><br><span class="line">                    + Long.toHexString(newIdent) + &quot; while dispatching to &quot;</span><br><span class="line">                    + msg.target.getClass().getName() + &quot; &quot;</span><br><span class="line">                    + msg.callback + &quot; what=&quot; + msg.what);</span><br><span class="line">        &#125;</span><br><span class="line">        //清理msg</span><br><span class="line">        msg.recycleUnchecked();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里就是进入到消息循环中去了，它不断地从消息队列mQueue中去获取下一个要处理的消息msg，如果消息的target成员变量为null，就表示要退出消息循环了，否则的话就要调用这个target对象的dispatchMessage成员函数来处理这个消息，这个target对象的类型为Handler</p>
+<p>Looper核心没有太多东西，主要是Loop。</p>
+<p>还有一个问题，loop是谁执行的？</p>
+<p>主线程的looper其实在main函数里面执行的。</p>
+<p>子线程需要改写一下，手动调用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">*  class LooperThread extends Thread &#123;</span><br><span class="line">*      public Handler mHandler;</span><br><span class="line">*</span><br><span class="line">*      public void run() &#123;</span><br><span class="line">*          Looper.prepare();</span><br><span class="line">*</span><br><span class="line">*          mHandler = new Handler() &#123;</span><br><span class="line">*              public void handleMessage(Message msg) &#123;</span><br><span class="line">*                  // process incoming messages here</span><br><span class="line">*              &#125;</span><br><span class="line">*          &#125;;</span><br><span class="line">*</span><br><span class="line">*          Looper.loop();</span><br><span class="line">*      &#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="MessageQueue"><a href="#MessageQueue" class="headerlink" title="MessageQueue"></a>MessageQueue</h1><p>MessageQueue可以说是最重要的，其next方法核心才是loop不阻塞的根源。</p>
+<h2 id="构造"><a href="#构造" class="headerlink" title="构造"></a>构造</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">MessageQueue(boolean quitAllowed) &#123;</span><br><span class="line">    mQuitAllowed = quitAllowed;</span><br><span class="line">    mPtr = nativeInit();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>quitAllowed主线程是false，子线程是true。</p>
+<p>nativeInit是native的构造方法，其会在native这一层构造一个nativeMessageQueue。</p>
+<p>同时NativeMessageQueue也会创建一个Native的Looper，该looper的实现在jni层并非java层的looper</p>
+<p>创建完之后会将nativeMQ存入到mPtr中</p>
+<h3 id="JNI层的Looper"><a href="#JNI层的Looper" class="headerlink" title="JNI层的Looper"></a>JNI层的Looper</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">Looper::Looper(bool allowNonCallbacks) :</span><br><span class="line">	mAllowNonCallbacks(allowNonCallbacks),</span><br><span class="line">	mResponseIndex(0) &#123;</span><br><span class="line">	int wakeFds[2];</span><br><span class="line">	int result = pipe(wakeFds);</span><br><span class="line">	......</span><br><span class="line"> </span><br><span class="line">	mWakeReadPipeFd = wakeFds[0];</span><br><span class="line">	mWakeWritePipeFd = wakeFds[1];</span><br><span class="line"> </span><br><span class="line">	......</span><br><span class="line"> </span><br><span class="line">#ifdef LOOPER_USES_EPOLL</span><br><span class="line">	// Allocate the epoll instance and register the wake pipe.</span><br><span class="line">	mEpollFd = epoll_create(EPOLL_SIZE_HINT);</span><br><span class="line">	......</span><br><span class="line"> </span><br><span class="line">	struct epoll_event eventItem;</span><br><span class="line">	memset(&amp; eventItem, 0, sizeof(epoll_event)); // zero out unused members of data field union</span><br><span class="line">	eventItem.events = EPOLLIN;</span><br><span class="line">	eventItem.data.fd = mWakeReadPipeFd;</span><br><span class="line">	result = epoll_ctl(mEpollFd, EPOLL_CTL_ADD, mWakeReadPipeFd, &amp; eventItem);</span><br><span class="line">	......</span><br><span class="line">#else</span><br><span class="line">	......</span><br><span class="line">#endif</span><br><span class="line"> </span><br><span class="line">	......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个Looper重要的就是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">int wakeFds[2];</span><br><span class="line">int result = pipe(wakeFds);</span><br><span class="line">......</span><br><span class="line"> </span><br><span class="line">mWakeReadPipeFd = wakeFds[0];</span><br><span class="line">mWakeWritePipeFd = wakeFds[1];</span><br></pre></td></tr></table></figure>
+<p>使用Pipe创建了一个管道对应的两个句柄，一个读一个写</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mEpollFd = epoll_create(EPOLL_SIZE_HINT);</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/handler/" rel="tag"># handler</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/11/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-map-HashMap%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/" rel="prev" title="数据结构-map-HashMap代码分析">
+                  <i class="fa fa-chevron-left"></i> 数据结构-map-HashMap代码分析
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">殷鹏程</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
