@@ -3,6 +3,9 @@ languageCode: 'zh-cn'
 title: '个人小站'
 theme: 'PaperMod'
 
+buildFuture: true
+buildExpired: true
+
 params:
   env: production
   author: '殷鹏程'
